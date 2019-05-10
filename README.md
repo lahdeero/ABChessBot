@@ -1,4 +1,4 @@
-# ab_chessbot
+# ABChessbot
 
 [Määrittelydokumentti](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Maarittelydokumentti.md)
 
