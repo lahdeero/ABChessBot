@@ -1,4 +1,4 @@
-Viikkoraportti 1 - ab_chessbot
+Viikkoraportti 1 - ABChessbot
 ========
 
 ### Mitä olet tehnyt tällä viikolla
