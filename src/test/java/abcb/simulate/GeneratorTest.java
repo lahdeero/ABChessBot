@@ -39,7 +39,6 @@ public class GeneratorTest {
     @Test
     public void whiteHas20StartingMoves() {
         List<Position> nextMoves = generator.getNextPositions(startingPosition);
-        System.out.println("nextMoves.size() = " + nextMoves.size());
         assertEquals(nextMoves.size(), 20);
     }
 

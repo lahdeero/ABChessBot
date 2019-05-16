@@ -15,12 +15,12 @@ public class Main {
         List<Position> blackOpenings = gen.getNextPositions(nextPos.get(0));
         System.out.println(blackOpenings.size());
         
-        int i = 1;
-        for (Position p : blackOpenings) {
-            System.out.println("i: " + i++);
-            p.print();
-            System.out.println("");
-        }
+//        int i = 1;
+//        for (Position p : blackOpenings) {
+//            System.out.println("i: " + i++);
+//            p.print();
+//            System.out.println("");
+//        }
         
 //        nextPos.get(1).print();
 //        System.out.println(nextPos.get(1).whitesMove);

@@ -72,11 +72,15 @@ public class Generator {
         List<Position> nextKnights = new ArrayList();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
-                if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(i, j) && !occupied(i, j, piece)) {
+                if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x+i, y+j) && !occupied(x+i, y+j, piece)) {
+                    System.out.println("i = " + i);
+                    System.out.println("j = " + j);
+                    System.out.println("");
                     Position p = new Position();
                     p.clonePosition(currentPosition, x, y);
-                    p.board[i][j] = piece < 20 ? whiteKnight : blackKnight;
+                    p.board[y+j][x+i] = piece < 20 ? whiteKnight : blackKnight;
                     nextKnights.add(p);
+                    p.print();
                 }
             }
         }
