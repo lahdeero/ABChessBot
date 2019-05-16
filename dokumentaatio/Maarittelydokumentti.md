@@ -21,6 +21,7 @@ Aikavaativuus: O(b^d) huonoimmassa tapauksessa, jossa b puun haaroituvuus ja d s
 ### Lähteet
 
 https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+https://www.youtube.com/watch?v=l-hh51ncgDI
  
 
 

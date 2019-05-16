@@ -15,10 +15,10 @@ Viikkoraportti 1 - ab_chessbot
 
 ### Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
-- Kurssin sivusto on hieman hankalasti navigoitava mutta pikkuhiljaa tottuu..
+- Kokonaisuus vähän hakusessa(eli mitä kaikkea pitää tehdä), mutta mennään viikko kerralla.
 
 ### Mitä teen seuraavaksi?
 
-Luen vähän teoriaa alpha-beta algoritmista ja alan koodaamaan
+Luen vähän teoriaa alpha-beta algoritmista ja alan koodaamaan alpha-betan esiversiota minimax algoritmia.
 
 
