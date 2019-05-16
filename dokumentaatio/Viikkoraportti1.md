@@ -7,7 +7,7 @@ Viikkoraportti 1 - ABChessbot
 
 ### Miten ohjelma on edistynyt?
 
--En ole aloittanut varsinaista ohjelmointityötä vielä
+- En ole aloittanut varsinaista ohjelmointityötä vielä
 
 ### Mitä opin tällä viikolla / tänään?
 
@@ -19,6 +19,6 @@ Viikkoraportti 1 - ABChessbot
 
 ### Mitä teen seuraavaksi?
 
-Luen vähän teoriaa alpha-beta algoritmista ja alan koodaamaan alpha-betan esiversiota minimax algoritmia.
+- Luen vähän teoriaa alpha-beta algoritmista ja alan koodaamaan alpha-betan esiversiota minimax algoritmia.
 
 
