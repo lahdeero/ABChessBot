@@ -1,4 +1,4 @@
-Määrittelydokumentti - ab_chessbot
+Määrittelydokumentti - ABChessbot
 ========
 
 ### Mitä algoritmeja ja tietorakenteita toteutat työssäsi
