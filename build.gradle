@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+mainClassName = 'abcb.Main'
+
 repositories { 
 	jcenter() 
 }
@@ -17,5 +19,4 @@ sourceSets {
     }
 }
 
-mainClassName = 'Main'
 
