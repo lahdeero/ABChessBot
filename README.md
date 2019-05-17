@@ -6,5 +6,5 @@
 
 [Viikkoraportti2](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti2.md)
 
-[Tuntikirjanpito]((https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Tuntikirjanpito.md)
+[Tuntikirjanpito](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Tuntikirjanpito.md)
 
