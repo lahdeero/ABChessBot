@@ -11,6 +11,11 @@ dependencies {
     compile 'junit:junit:4.12'
 }
 
+javadoc {
+	exclude 'test/**'
+  source = sourceSets.main.allJava
+}
+
 sourceSets {
     main {
         java {

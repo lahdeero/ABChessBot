@@ -36,6 +36,12 @@ public class Position {
         this.whitesMove = whitesMove;
     }
 
+    /**
+     * Clones position without moving piece.
+     * @param previous
+     * @param cx X-coordinate of removed(moving) piece
+     * @param cy Y-coordinate of removed(moving) piece
+     */
     void clonePosition(Position previous, int cx, int cy) {
         for (int y = 0; y < boardRows; y++) {
             for (int x = 0; x < boardCols; x++) {
@@ -49,6 +55,9 @@ public class Position {
         this.whitesMove = !previous.whitesMove;
     }
 
+    /**
+     * For command line for an exploratory testing use: Can print current Position.
+     */
     public void print() {
         for (int y = 0; y < 8; y++) {
             System.out.print(8-y);

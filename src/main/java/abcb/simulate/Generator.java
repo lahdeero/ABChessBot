@@ -9,6 +9,9 @@ public class Generator {
 
     public Position currentPosition;
 
+    /**
+     * @return Classic chess starting position
+     */
     public Position createStartingPosition() {
         int[][] board = new int[8][8];
         for (int i = 0; i < 8; i++) {
@@ -35,6 +38,12 @@ public class Generator {
         return new Position(board, true);
     }
 
+    /**
+     * Generates all possible positions after current position.
+     *
+     * @param currentPosition
+     * @return List<Position>
+     */
     public List<Position> getNextPositions(Position currentPosition) {
         this.currentPosition = currentPosition;
         List<Position> nextPositions = Collections.synchronizedList(new ArrayList());
@@ -154,10 +163,6 @@ public class Generator {
         List<Position> queenMoves = new ArrayList();
         queenMoves.addAll(rookMoves(x, y, piece));
         queenMoves.addAll(bishopMoves(x, y, piece));
-        for (Position p : queenMoves) {
-            p.print();
-            System.out.println("");
-        }
         return queenMoves;
     }
 
