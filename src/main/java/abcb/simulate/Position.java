@@ -1,7 +1,9 @@
 package abcb.simulate;
 
 public class Position {
-
+    public final static int boardRows = 8;
+    public final static int boardCols = 8;
+    
     public static int whiteKing = 10;
     public static int whiteQueen = 11;
     public static int whiteKnight = 12;
@@ -18,10 +20,16 @@ public class Position {
 
     public int board[][];
     public boolean whitesMove;
+    public Position parent;
 
     public Position() {
-        this.board = new int[8][8];
+        this.board = new int[boardRows][boardCols];
     }
+    
+    public Position(Position parent) {
+        this.board = new int[boardRows][boardCols];
+        this.parent = parent;
+    } 
 
     public Position(int[][] board, boolean whitesMove) {
         this.board = board;
@@ -29,8 +37,8 @@ public class Position {
     }
 
     void clonePosition(Position previous, int cx, int cy) {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < boardRows; y++) {
+            for (int x = 0; x < boardCols; x++) {
                 if (y == cy && x == cx) {
                     this.board[y][x] = 0;
                     continue;
@@ -43,10 +51,11 @@ public class Position {
 
     public void print() {
         for (int y = 0; y < 8; y++) {
+            System.out.print(8-y);
             for (int x = 0; x < 8; x++) {
                 int piece = board[y][x];
                 if (piece == 0) {
-                    System.out.print(" ");
+                    System.out.print(".");
                 } else if (piece >= 10 && piece < 20) {
                     if (piece == whitePawn) {
                         System.out.print("P");
@@ -79,6 +88,7 @@ public class Position {
             }
             System.out.println("");
         }
+        System.out.println(" abcdefgh");
     }
 
 }

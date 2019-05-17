@@ -44,17 +44,33 @@ public class Generator {
                 if (piece == 0) {
                     continue;
                 }
-                if (!currentPosition.whitesMove) {
+                if (!currentPosition.whitesMove) { // BLACK
                     if (piece == blackPawn) {
                         blackPawnMoves(x, y, nextPositions);
+                    } else if (piece == blackRook) {
+                        nextPositions.addAll(rookMoves(x, y, blackRook));
                     } else if (piece == blackKnight) {
                         nextPositions.addAll(knightMoves(x, y, blackKnight));
+                    } else if (piece == blackBishop) {
+                        nextPositions.addAll(bishopMoves(x, y, blackBishop));
+                    } else if (piece == blackQueen) {
+                        nextPositions.addAll(queenMoves(x, y, blackQueen));
+                    } else if (piece == blackKing) {
+                        nextPositions.addAll(kingMoves(x, y, blackKing));
                     }
-                } else {
+                } else {  // WHITE
                     if (piece == whitePawn) {
                         whitePawnMoves(x, y, nextPositions);
+                    } else if (piece == whiteRook) {
+                        nextPositions.addAll(rookMoves(x, y, whiteRook));
                     } else if (piece == whiteKnight) {
                         nextPositions.addAll(knightMoves(x, y, whiteKnight));
+                    } else if (piece == whiteBishop) {
+                        nextPositions.addAll(bishopMoves(x, y, whiteBishop));
+                    } else if (piece == whiteQueen) {
+                        nextPositions.addAll(queenMoves(x, y, whiteQueen));
+                    } else if (piece == whiteKing) {
+                        nextPositions.addAll(kingMoves(x, y, whiteKing));
                     }
                 }
             }
@@ -64,39 +80,118 @@ public class Generator {
 
     public List<Position> rookMoves(int x, int y, int piece) {
         List<Position> nextRooks = new ArrayList();
-
+        boolean[] blocked = {false, false, false, false};
+        for (int i = 1; i < 8; i++) {
+            if (!blocked[0] && insideBoard(x - i, y) && !occupied(x - i, y, piece)) {
+                if (eats(x - i, y, piece)) {
+                    blocked[0] = true;
+                }
+                nextRooks.add(createPosition(x, y, x - i, y, piece));
+            } else {
+                blocked[0] = true;
+            }
+            if (!blocked[1] && insideBoard(x + i, y) && !occupied(x + i, y, piece)) {
+                if (eats(x + i, y, piece)) {
+                    blocked[1] = true;
+                }
+                nextRooks.add(createPosition(x, y, x + i, y, piece));
+            } else {
+                blocked[1] = true;
+            }
+            if (!blocked[2] && insideBoard(x, y - i) && !occupied(x, y - i, piece)) {
+                if (eats(x, y - i, piece)) {
+                    blocked[2] = true;
+                }
+                nextRooks.add(createPosition(x, y, x, y - i, piece));
+            } else {
+                blocked[2] = true;
+            }
+            if (!blocked[3] && insideBoard(x, y + i) && !occupied(x, y + i, piece)) {
+                if (eats(x, y + i, piece)) {
+                    blocked[3] = true;
+                }
+                nextRooks.add(createPosition(x, y, x, y + i, piece));
+            } else {
+                blocked[3] = true;
+            }
+        }
         return nextRooks;
+    }
+
+    public List<Position> bishopMoves(int x, int y, int piece) {
+        List<Position> nextBishops = new ArrayList();
+        int k = -1;
+        int e = -1;
+        for (int j = 0; j < 4; j++) {
+            int i = 1;
+            while (insideBoard(x + (k * i), y + (e * i)) && !occupied(x + (k * i), y + (e * i), piece)) {
+                boolean eating = false;
+                if (eats(x + k * i, y + e * i, piece)) {
+                    eating = true;
+                }
+                Position p = new Position();
+                p.clonePosition(currentPosition, x, y);
+                p.board[y + e * i][x + k * i] = piece;
+                nextBishops.add(p);
+                if (eating) {
+                    break;
+                }
+                i++;
+            }
+            if (k == -1 && e == -1) {
+                e = 1;
+            } else if (k == -1 && e == 1) {
+                k = 1;
+                e = -1;
+            } else if (k == 1 && e == -1) {
+                e = 1;
+            }
+        }
+        return nextBishops;
+    }
+
+    public List<Position> queenMoves(int x, int y, int piece) {
+        List<Position> queenMoves = new ArrayList();
+        queenMoves.addAll(rookMoves(x, y, piece));
+        queenMoves.addAll(bishopMoves(x, y, piece));
+        for (Position p : queenMoves) {
+            p.print();
+            System.out.println("");
+        }
+        return queenMoves;
+    }
+
+    public List<Position> kingMoves(int x, int y, int piece) {
+        List<Position> nextKings = new ArrayList();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (insideBoard(x + j, y + i) && !occupied(x + j, y + i, piece)) {
+                    Position p = new Position();
+                    p.clonePosition(currentPosition, x, y);
+                    p.board[y + i][x + j] = piece;
+                    nextKings.add(p);
+                }
+            }
+        }
+        return nextKings;
     }
 
     public List<Position> knightMoves(int x, int y, int piece) {
         List<Position> nextKnights = new ArrayList();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
-                if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x+i, y+j) && !occupied(x+i, y+j, piece)) {
-                    System.out.println("i = " + i);
-                    System.out.println("j = " + j);
-                    System.out.println("");
+                if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x + i, y + j) && !occupied(x + i, y + j, piece)) {
                     Position p = new Position();
                     p.clonePosition(currentPosition, x, y);
-                    p.board[y+j][x+i] = piece < 20 ? whiteKnight : blackKnight;
+                    p.board[y + j][x + i] = piece < 20 ? whiteKnight : blackKnight;
                     nextKnights.add(p);
-                    p.print();
                 }
             }
         }
         return nextKnights;
-    }
-
-    private boolean occupied(int x, int y, int piece) {
-        if (currentPosition.board[y][x] == 0) {
-            return false;
-        }
-        if (currentPosition.board[y][x] >= 20 && piece >= 20) {
-            return true;
-        } else if (currentPosition.board[y][x] < 20 && piece < 20) {
-            return true;
-        }
-        return false;
     }
 
     public List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
@@ -137,8 +232,8 @@ public class Generator {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(x, y - 1);
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;
-        moves[2] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);
-        moves[3] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
+        moves[2] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
+        moves[3] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);
 
         if (moves[0]) {
             Position p = new Position();
@@ -165,6 +260,33 @@ public class Generator {
             nextPositions.add(p);
         }
         return nextPositions;
+    }
+
+    private boolean occupied(int x, int y, int piece) {
+        if (currentPosition.board[y][x] == 0) {
+            return false;
+        }
+        if (currentPosition.board[y][x] >= 20 && piece >= 20) {
+            return true;
+        } else if (currentPosition.board[y][x] < 20 && piece < 20) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean eats(int x, int y, int piece) {
+        if (currentPosition.board[y][x] == 0) {
+            return false;
+        }
+        return currentPosition.board[y][x] < 20 && piece >= 20
+                || currentPosition.board[y][x] >= 20 && piece < 20;
+    }
+
+    private Position createPosition(int x, int y, int nx, int ny, int piece) {
+        Position p = new Position();
+        p.clonePosition(currentPosition, x, y);
+        p.board[ny][nx] = piece;
+        return p;
     }
 
     private boolean insideBoard(int x, int y) {

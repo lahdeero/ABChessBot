@@ -11,7 +11,8 @@ Uusia positioita voi generoida
 
 ### Mitä opin tällä viikolla / tänään?
 
-Opin paljon debuggausta
+Opin paljon debuggausta.
+Opin myös että jos teet ikuisen silmukan jossa on System.out.println("") joudut usemman minuutin yrittää taskin pysäyttämistä Netbeansissa.. Tuntuu gradle+netbeans spesifiltä jutulta, en ainakaan muista että ennen olisi ollut näin hankalaa.
 
 ### Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
