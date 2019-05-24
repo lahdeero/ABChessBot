@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Position.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.simulate</a> &gt; <span class="el_source">Position.java</span></div><h1>Position.java</h1><pre class="source lang-java linenums">package abcb.simulate;
+
+public class Position {
+    public final static int boardRows = 8;
+    public final static int boardCols = 8;
+    
+<span class="fc" id="L7">    public static int whiteKing = 10;</span>
+<span class="fc" id="L8">    public static int whiteQueen = 11;</span>
+<span class="fc" id="L9">    public static int whiteBishop = 12;</span>
+<span class="fc" id="L10">    public static int whiteKnight = 13;</span>
+<span class="fc" id="L11">    public static int whiteRook = 14;</span>
+<span class="fc" id="L12">    public static int whitePawn = 15;</span>
+
+<span class="fc" id="L14">    public static int blackKing = 20;</span>
+<span class="fc" id="L15">    public static int blackQueen = 21;</span>
+<span class="fc" id="L16">    public static int blackBishop = 22;</span>
+<span class="fc" id="L17">    public static int blackKnight = 23;</span>
+<span class="fc" id="L18">    public static int blackRook = 24;</span>
+<span class="fc" id="L19">    public static int blackPawn = 25;</span>
+
+    public int board[][];
+    public boolean whitesMove;
+    public Position parent;
+
+<span class="fc" id="L25">    public Position() {</span>
+<span class="fc" id="L26">        this.board = new int[boardRows][boardCols];</span>
+<span class="fc" id="L27">        this.whitesMove = true;</span>
+<span class="fc" id="L28">    }</span>
+    
+<span class="nc" id="L30">    public Position(Position parent) {</span>
+<span class="nc" id="L31">        this.board = new int[boardRows][boardCols];</span>
+<span class="nc" id="L32">        this.parent = parent;</span>
+<span class="nc" id="L33">    } </span>
+
+<span class="fc" id="L35">    public Position(int[][] board, boolean whitesMove) {</span>
+<span class="fc" id="L36">        this.board = board;</span>
+<span class="fc" id="L37">        this.whitesMove = whitesMove;</span>
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * Clones position without moving piece.
+     * @param previous
+     * @param cx X-coordinate of removed(moving) piece
+     * @param cy Y-coordinate of removed(moving) piece
+     */
+    void clonePosition(Position previous, int cx, int cy) {
+<span class="fc" id="L47">        this.parent = previous;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (int y = 0; y &lt; boardRows; y++) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            for (int x = 0; x &lt; boardCols; x++) {</span>
+<span class="fc bfc" id="L50" title="All 4 branches covered.">                if (y == cy &amp;&amp; x == cx) {</span>
+<span class="fc" id="L51">                    this.board[y][x] = 0;</span>
+<span class="fc" id="L52">                    continue;</span>
+                }
+<span class="fc" id="L54">                this.board[y][x] = previous.board[y][x];</span>
+            }
+        }
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        this.whitesMove = !previous.whitesMove;</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * For command line for an exploratory testing use: Can print current Position.
+     */
+    public void print() {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (int y = 0; y &lt; 8; y++) {</span>
+<span class="fc" id="L65">            System.out.print(8-y);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc" id="L67">                int piece = board[y][x];</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                if (piece == 0) {</span>
+<span class="fc" id="L69">                    System.out.print(&quot;.&quot;);</span>
+<span class="pc bpc" id="L70" title="1 of 4 branches missed.">                } else if (piece &gt;= 10 &amp;&amp; piece &lt; 20) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                    if (piece == whitePawn) {</span>
+<span class="fc" id="L72">                        System.out.print(&quot;P&quot;);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                    } else if (piece == whiteRook) {</span>
+<span class="fc" id="L74">                        System.out.print(&quot;R&quot;);</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                    } else if (piece == whiteBishop) {</span>
+<span class="nc" id="L76">                        System.out.print(&quot;B&quot;);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                    } else if (piece == whiteKnight) {</span>
+<span class="nc" id="L78">                        System.out.print(&quot;N&quot;);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                    } else if (piece == whiteQueen) {</span>
+<span class="nc" id="L80">                        System.out.print(&quot;Q&quot;);</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">                    } else if (piece == whiteKing) {</span>
+<span class="fc" id="L82">                        System.out.print(&quot;K&quot;);</span>
+                    }
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                } else if (piece &gt;= 20) {</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">                    if (piece == blackPawn) {</span>
+<span class="fc" id="L86">                        System.out.print(&quot;p&quot;);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                    } else if (piece == blackRook) {</span>
+<span class="fc" id="L88">                        System.out.print(&quot;r&quot;);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                    } else if (piece == blackBishop) {</span>
+<span class="nc" id="L90">                        System.out.print(&quot;b&quot;);</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                    } else if (piece == blackKnight) {</span>
+<span class="nc" id="L92">                        System.out.print(&quot;n&quot;);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                    } else if (piece == blackQueen) {</span>
+<span class="nc" id="L94">                        System.out.print(&quot;q&quot;);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">                    } else if (piece == blackKing) {</span>
+<span class="fc" id="L96">                        System.out.print(&quot;k&quot;);</span>
+                    }
+                }
+            }
+<span class="fc" id="L100">            System.out.println(&quot;&quot;);</span>
+        }
+<span class="fc" id="L102">        System.out.println(&quot; abcdefgh&quot;);</span>
+<span class="fc" id="L103">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

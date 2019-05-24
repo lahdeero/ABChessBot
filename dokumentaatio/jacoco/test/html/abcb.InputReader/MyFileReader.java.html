@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyFileReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.InputReader</a> &gt; <span class="el_source">MyFileReader.java</span></div><h1>MyFileReader.java</h1><pre class="source lang-java linenums">package abcb.InputReader;
+
+import abcb.simulate.Position;
+import static abcb.simulate.Position.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+<span class="fc" id="L10">public class MyFileReader {</span>
+
+    public Position fileToPosition(String location) throws IOException {
+<span class="fc" id="L13">        Position position = new Position();</span>
+<span class="fc" id="L14">        File file = new File(location);</span>
+<span class="fc" id="L15">        BufferedReader br = new BufferedReader(new FileReader(file));</span>
+        String st;
+<span class="fc" id="L17">        int y = 0;</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        while ((st = br.readLine()) != null) {</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc" id="L20">                position.board[y][x] = characterToPiece(st.charAt(x));</span>
+            }
+<span class="fc" id="L22">            y++;</span>
+        }
+<span class="fc" id="L24">        return position;</span>
+    }
+
+    private int characterToPiece(char c) {
+<span class="pc bpc" id="L28" title="6 of 13 branches missed.">        switch (c) {</span>
+            case 'K':
+<span class="fc" id="L30">                return whiteKing;</span>
+            case 'Q':
+<span class="nc" id="L32">                return whiteQueen;</span>
+            case 'B':
+<span class="nc" id="L34">                return whiteBishop;</span>
+            case 'N':
+<span class="nc" id="L36">                return whiteKnight;</span>
+            case 'R':
+<span class="fc" id="L38">                return whiteRook;</span>
+            case 'P':
+<span class="fc" id="L40">                return whitePawn;</span>
+            case 'k':
+<span class="fc" id="L42">                return blackKing;</span>
+            case 'q':
+<span class="nc" id="L44">                return blackQueen;</span>
+            case 'b':
+<span class="nc" id="L46">                return blackBishop;</span>
+            case 'n':
+<span class="nc" id="L48">                return blackKnight;</span>
+            case 'r':
+<span class="fc" id="L50">                return blackRook;</span>
+            case 'p':
+<span class="fc" id="L52">                return blackPawn;</span>
+        }
+<span class="fc" id="L54">        return 0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlphaBeta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.algorithm</a> &gt; <span class="el_source">AlphaBeta.java</span></div><h1>AlphaBeta.java</h1><pre class="source lang-java linenums">package abcb.algorithm;
+
+import abcb.heurestic.Evaluator;
+import abcb.simulate.Generator;
+import abcb.simulate.Position;
+import abcb.util.MoveConverter;
+
+public class AlphaBeta {
+
+    private Evaluator evaluator;
+    private Generator generator;
+    private MoveConverter moveConverter;
+    private Position bestMaxMove;
+    private Position bestMinMove;
+    private int initialDepth;
+    private int bestMin;
+    private int bestMax;
+
+<span class="fc" id="L19">    public AlphaBeta() {</span>
+<span class="fc" id="L20">        evaluator = new Evaluator();</span>
+<span class="fc" id="L21">        generator = new Generator();</span>
+<span class="fc" id="L22">        moveConverter = new MoveConverter();</span>
+<span class="fc" id="L23">    }</span>
+
+    private void setupInitialValues(int initialDepth) {
+<span class="fc" id="L26">        this.initialDepth = initialDepth;</span>
+<span class="fc" id="L27">        this.bestMax = Integer.MIN_VALUE;</span>
+<span class="fc" id="L28">        this.bestMin = Integer.MAX_VALUE;</span>
+<span class="fc" id="L29">    }</span>
+
+    public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
+<span class="fc" id="L32">        setupInitialValues(depth);</span>
+<span class="fc" id="L33">        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (maxPlayer) {</span>
+<span class="fc" id="L35">            return moveConverter.positionsToChessNotation(currentPosition, bestMaxMove);</span>
+        } else {
+<span class="fc" id="L37">            return moveConverter.positionsToChessNotation(currentPosition, bestMinMove);</span>
+        }
+    }
+
+    private int alphabeta(Position currentPosition, int depth, int Î±, int Î², boolean maxPlayer) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (depth == 0) {</span>
+//            int value = evaluator.evaluate(currentPosition);
+//            System.out.println(&quot;value = &quot; + value);
+//            currentPosition.print();
+//            System.out.println(&quot;&quot;);
+<span class="fc" id="L47">            return evaluator.evaluate(currentPosition);</span>
+        }
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (maxPlayer) {</span>
+<span class="fc" id="L51">            int value = Integer.MIN_VALUE;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            for (Position nextPosition : generator.getNextPositions(currentPosition)) {</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
+<span class="fc" id="L54">                value = Math.max(value, alphabeta(nextPosition, depth - 1, Î±, Î², false));</span>
+<span class="fc" id="L55">                Î± = Math.max(Î±, value);</span>
+<span class="fc bfc" id="L56" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î± &gt; bestMax) {</span>
+<span class="fc" id="L57">                    bestMax = Î±;</span>
+<span class="fc" id="L58">                    bestMaxMove = nextPosition;</span>
+                }
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
+<span class="fc" id="L61">                    break;</span>
+                }
+<span class="fc" id="L63">            }</span>
+<span class="fc" id="L64">            return Î±;</span>
+        } else {
+<span class="fc" id="L66">            int value = Integer.MAX_VALUE;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            for (Position nextPosition : generator.getNextPositions(currentPosition)) {</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
+<span class="fc" id="L69">                value = Math.min(value, alphabeta(nextPosition, depth - 1, Î±, Î², true));</span>
+<span class="fc" id="L70">                Î² = Math.min(Î², value);</span>
+
+<span class="fc bfc" id="L72" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î² &lt; bestMin) {</span>
+<span class="fc" id="L73">                    bestMin = Î²;</span>
+<span class="fc" id="L74">                    bestMinMove = nextPosition;</span>
+                    
+                }
+<span class="fc bfc" id="L77" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
+<span class="fc" id="L78">                    break;</span>
+                }
+<span class="fc" id="L80">            }</span>
+            
+<span class="fc" id="L82">            return Î²;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

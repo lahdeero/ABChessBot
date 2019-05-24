@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Evaluator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.heurestic</a> &gt; <span class="el_source">Evaluator.java</span></div><h1>Evaluator.java</h1><pre class="source lang-java linenums">package abcb.heurestic;
+
+import abcb.simulate.Position;
+import static abcb.simulate.Position.*;
+
+public class Evaluator {
+
+    public final int pawnValue;
+    public final int rookValue;
+    public final int knightValue;
+    public final int bishopValue;
+    public final int queenValue;
+    public final int kingValue;
+
+<span class="fc" id="L15">    public Evaluator() {</span>
+<span class="fc" id="L16">        pawnValue = 1;</span>
+<span class="fc" id="L17">        rookValue = 5;</span>
+<span class="fc" id="L18">        knightValue = 3;</span>
+<span class="fc" id="L19">        bishopValue = 3;</span>
+<span class="fc" id="L20">        queenValue = 9;</span>
+<span class="fc" id="L21">        kingValue = 1000;</span>
+<span class="fc" id="L22">    }</span>
+
+    public int evaluate(Position p) {
+<span class="fc" id="L25">        int value = 0;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (int y = 0; y &lt; 8; y++) {</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">                if (p.board[y][x] == 0) {</span>
+<span class="fc" id="L29">                    continue;</span>
+                }
+<span class="fc" id="L31">                int piece = p.board[y][x];</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">                if (piece == whitePawn) {</span>
+<span class="fc" id="L33">                    value += pawnValue;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">                } else if (piece == whiteRook) {</span>
+<span class="fc" id="L35">                    value += rookValue;</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">                } else if (piece == whiteKnight) {</span>
+<span class="fc" id="L37">                    value += knightValue;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">                } else if (piece == whiteBishop) {</span>
+<span class="fc" id="L39">                    value += bishopValue;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                } else if (piece == whiteQueen) {</span>
+<span class="fc" id="L41">                    value += queenValue;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                } else if (piece == whiteKing) {</span>
+<span class="fc" id="L43">                    value += kingValue;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                } else if (piece == blackPawn) {</span>
+<span class="fc" id="L45">                    value -= pawnValue;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                } else if (piece == blackRook) {</span>
+<span class="fc" id="L47">                    value -= rookValue;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">                } else if (piece == blackKnight) {</span>
+<span class="fc" id="L49">                    value -= knightValue;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">                } else if (piece == blackBishop) {</span>
+<span class="fc" id="L51">                    value -= bishopValue;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                } else if (piece == blackQueen) {</span>
+<span class="fc" id="L53">                    value -= queenValue;</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                } else if (piece == blackKing) {</span>
+<span class="fc" id="L55">                    value -= kingValue;</span>
+                }
+            }
+        }
+<span class="fc" id="L59">        return value;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
