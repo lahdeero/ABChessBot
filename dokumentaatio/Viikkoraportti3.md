@@ -24,6 +24,7 @@ Viikkoraportti 3 - ABChessbot
 
 ### Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
+- En saa unicode merkkejä näkymään komentoriville, esim: ♘, ♞
 - Saako lopullisessa työssä käyttää seuraavia: Math.max/min, Scanner, BufferedReader?
 
 ### Mitä teen seuraavaksi?
