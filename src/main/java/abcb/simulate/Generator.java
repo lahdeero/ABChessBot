@@ -46,7 +46,7 @@ public class Generator {
      */
     public List<Position> getNextPositions(Position currentPosition) {
         this.currentPosition = currentPosition;
-        List<Position> nextPositions = Collections.synchronizedList(new ArrayList());
+        List<Position> nextPositions = Collections.synchronizedList(new ArrayList<>());
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 int piece = currentPosition.board[y][x];
@@ -88,7 +88,7 @@ public class Generator {
     }
 
     private List<Position> rookMoves(int x, int y, int piece) {
-        List<Position> nextRooks = new ArrayList();
+        List<Position> nextRooks = new ArrayList<Position>();
         boolean[] blocked = {false, false, false, false};
         for (int i = 1; i < 8; i++) {
             if (!blocked[0] && insideBoard(x - i, y) && !occupied(x - i, y, piece)) {
@@ -128,7 +128,7 @@ public class Generator {
     }
 
     private List<Position> bishopMoves(int x, int y, int piece) {
-        List<Position> nextBishops = new ArrayList();
+        List<Position> nextBishops = new ArrayList<Position>();
         int k = -1;
         int e = -1;
         for (int j = 0; j < 4; j++) {
@@ -160,14 +160,14 @@ public class Generator {
     }
 
     private List<Position> queenMoves(int x, int y, int piece) {
-        List<Position> queenMoves = new ArrayList();
+        List<Position> queenMoves = new ArrayList<Position>();
         queenMoves.addAll(rookMoves(x, y, piece));
         queenMoves.addAll(bishopMoves(x, y, piece));
         return queenMoves;
     }
 
     private List<Position> kingMoves(int x, int y, int piece) {
-        List<Position> nextKings = new ArrayList();
+        List<Position> nextKings = new ArrayList<Position>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
@@ -185,7 +185,7 @@ public class Generator {
     }
 
     private List<Position> knightMoves(int x, int y, int piece) {
-        List<Position> nextKnights = new ArrayList();
+        List<Position> nextKnights = new ArrayList<Position>();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x + i, y + j) && !occupied(x + i, y + j, piece)) {

@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class MyFileReader {
 
-    public Position fileToPosition() throws IOException {
+    public Position fileToPosition(String location) throws IOException {
         Position position = new Position();
-        File file = new File("sample.txt");
+        File file = new File(location);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         int y = 0;

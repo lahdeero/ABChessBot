@@ -4,36 +4,55 @@ import abcb.simulate.Position;
 import static abcb.simulate.Position.*;
 
 public class Evaluator {
+
+    public final int pawnValue;
+    public final int rookValue;
+    public final int knightValue;
+    public final int bishopValue;
+    public final int queenValue;
+    public final int kingValue;
+
+    public Evaluator() {
+        pawnValue = 1;
+        rookValue = 5;
+        knightValue = 3;
+        bishopValue = 3;
+        queenValue = 9;
+        kingValue = 1000;
+    }
+
     public int evaluate(Position p) {
         int value = 0;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                if (p.board[y][x] == 0) continue;
+                if (p.board[y][x] == 0) {
+                    continue;
+                }
                 int piece = p.board[y][x];
                 if (piece == whitePawn) {
-                    value += 1;
+                    value += pawnValue;
                 } else if (piece == whiteRook) {
-                    value += 5;
+                    value += rookValue;
                 } else if (piece == whiteKnight) {
-                    value += 3;
+                    value += knightValue;
                 } else if (piece == whiteBishop) {
-                    value += 3;
+                    value += bishopValue;
                 } else if (piece == whiteQueen) {
-                    value += 9;
+                    value += queenValue;
                 } else if (piece == whiteKing) {
-                    value += 1000;
+                    value += kingValue;
                 } else if (piece == blackPawn) {
-                    value -= 1;
+                    value -= pawnValue;
                 } else if (piece == blackRook) {
-                    value -= 5;
+                    value -= rookValue;
                 } else if (piece == blackKnight) {
-                    value -= 3;
+                    value -= knightValue;
                 } else if (piece == blackBishop) {
-                    value -= 3;
+                    value -= bishopValue;
                 } else if (piece == blackQueen) {
-                    value -= 9;
+                    value -= queenValue;
                 } else if (piece == blackKing) {
-                    value -= 1000;
+                    value -= kingValue;
                 }
             }
         }

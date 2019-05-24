@@ -40,35 +40,46 @@ public class AlphaBeta {
 
     private int alphabeta(Position currentPosition, int depth, int α, int β, boolean maxPlayer) {
         if (depth == 0) {
+//            int value = evaluator.evaluate(currentPosition);
+//            System.out.println("value = " + value);
+//            currentPosition.print();
+//            System.out.println("");
             return evaluator.evaluate(currentPosition);
         }
 
         if (maxPlayer) {
             int value = Integer.MIN_VALUE;
             for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+                nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.max(value, alphabeta(nextPosition, depth - 1, α, β, false));
                 α = Math.max(α, value);
-                if (depth == initialDepth && value > bestMax) {
+                if (depth == initialDepth && α > bestMax) {
+                    bestMax = α;
                     bestMaxMove = nextPosition;
                 }
                 if (α >= β) {
                     break;
                 }
             }
-            return value;
+            return α;
         } else {
             int value = Integer.MAX_VALUE;
             for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+                nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.min(value, alphabeta(nextPosition, depth - 1, α, β, true));
                 β = Math.min(β, value);
-                if (depth == initialDepth && value < bestMin) {
-                    bestMinMove = currentPosition;
+
+                if (depth == initialDepth && β < bestMin) {
+                    bestMin = β;
+                    bestMinMove = nextPosition;
+                    
                 }
                 if (α >= β) {
                     break;
                 }
             }
-            return value;
+            
+            return β;
         }
     }
 }

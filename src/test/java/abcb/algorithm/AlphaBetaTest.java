@@ -12,14 +12,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AlphaBetaTest {
+
     private MyFileReader mfr;
     private AlphaBeta ab;
+    private String fileDirectory = "./src/test/resources/";
+
     public AlphaBetaTest() {
     }
-        
+
     @BeforeClass
     public static void setUpClass() {
-        
+
     }
 
     @AfterClass
@@ -35,11 +38,18 @@ public class AlphaBetaTest {
     @After
     public void tearDown() {
     }
-    
+
     @Test
-    public void whiteCheckmates() throws IOException {
-        Position pos = mfr.fileToPosition();
-        assertEquals("Rh8", ab.calculateNextMove(pos, 1, true));
+    public void whiteCheckmatesNextMove() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "w1mCm.txt");
+        assertEquals("Rh8", ab.calculateNextMove(pos, 3, true));
+    }
+
+    @Test
+    public void blackCheckmatesNextMove() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "b1mCm.txt");
+        pos.whitesMove = false;
+        assertEquals("Re1", ab.calculateNextMove(pos, 3, false));
     }
 
 }
