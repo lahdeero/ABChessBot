@@ -6,15 +6,15 @@ public class Position {
     
     public static int whiteKing = 10;
     public static int whiteQueen = 11;
-    public static int whiteKnight = 12;
-    public static int whiteBishop = 13;
+    public static int whiteBishop = 12;
+    public static int whiteKnight = 13;
     public static int whiteRook = 14;
     public static int whitePawn = 15;
 
     public static int blackKing = 20;
     public static int blackQueen = 21;
-    public static int blackKnight = 22;
-    public static int blackBishop = 23;
+    public static int blackBishop = 22;
+    public static int blackKnight = 23;
     public static int blackRook = 24;
     public static int blackPawn = 25;
 
@@ -24,6 +24,7 @@ public class Position {
 
     public Position() {
         this.board = new int[boardRows][boardCols];
+        this.whitesMove = true;
     }
     
     public Position(Position parent) {

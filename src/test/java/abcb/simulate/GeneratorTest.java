@@ -1,4 +1,4 @@
-package test.java.abcb.simulate;
+package abcb.simulate;
 
 import abcb.simulate.Generator;
 import abcb.simulate.Position;

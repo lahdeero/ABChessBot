@@ -1,25 +1,18 @@
 package abcb;
 
-import abcb.algorithm.Search;
+import abcb.InputReader.MyFileReader;
+import abcb.algorithm.AlphaBeta;
 import abcb.simulate.Position;
-import abcb.simulate.Generator;
-
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        Generator generator = new Generator();
-        Position p = generator.createStartingPosition();
-        Search mx = new Search(generator);
-        
-        mx.minimax(p, 5, true);
-        Position max = mx.getBestMaxPosition();
-        max.print();
-        
-        while (max.parent != null) {
-            System.out.println("");
-            max = max.parent;
-            max.print();
-        }
 
+    public static void main(String[] args) throws IOException {
+        MyFileReader mfr = new MyFileReader();
+        Position pos = mfr.fileToPosition();
+        System.out.println("");
+
+        AlphaBeta ab = new AlphaBeta();
+        System.out.println(ab.calculateNextMove(pos, 1, true));
     }
 }

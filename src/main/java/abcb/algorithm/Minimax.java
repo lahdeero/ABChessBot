@@ -4,14 +4,14 @@ import abcb.heurestic.Evaluator;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
 
-public class Search {
+public class Minimax {
 
     private Generator generator;
     private Evaluator evaluator;
     private Position bestMaxPosition;
     private Position bestMinPosition;
 
-    public Search(Generator generator) {
+    public Minimax(Generator generator) {
         this.generator = generator;
         this.evaluator = new Evaluator();
     }

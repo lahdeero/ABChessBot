@@ -14,6 +14,7 @@ Simuloinut minimaxilla.
 
 ### Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
+Saako lopullisessa työssä käyttää seuraavia: Math.max, Scanner?
 
 ### Mitä teen seuraavaksi?
 

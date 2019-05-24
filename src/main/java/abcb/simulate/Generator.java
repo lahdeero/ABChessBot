@@ -87,7 +87,7 @@ public class Generator {
         return nextPositions;
     }
 
-    public List<Position> rookMoves(int x, int y, int piece) {
+    private List<Position> rookMoves(int x, int y, int piece) {
         List<Position> nextRooks = new ArrayList();
         boolean[] blocked = {false, false, false, false};
         for (int i = 1; i < 8; i++) {
@@ -127,7 +127,7 @@ public class Generator {
         return nextRooks;
     }
 
-    public List<Position> bishopMoves(int x, int y, int piece) {
+    private List<Position> bishopMoves(int x, int y, int piece) {
         List<Position> nextBishops = new ArrayList();
         int k = -1;
         int e = -1;
@@ -159,14 +159,14 @@ public class Generator {
         return nextBishops;
     }
 
-    public List<Position> queenMoves(int x, int y, int piece) {
+    private List<Position> queenMoves(int x, int y, int piece) {
         List<Position> queenMoves = new ArrayList();
         queenMoves.addAll(rookMoves(x, y, piece));
         queenMoves.addAll(bishopMoves(x, y, piece));
         return queenMoves;
     }
 
-    public List<Position> kingMoves(int x, int y, int piece) {
+    private List<Position> kingMoves(int x, int y, int piece) {
         List<Position> nextKings = new ArrayList();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -184,7 +184,7 @@ public class Generator {
         return nextKings;
     }
 
-    public List<Position> knightMoves(int x, int y, int piece) {
+    private List<Position> knightMoves(int x, int y, int piece) {
         List<Position> nextKnights = new ArrayList();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
@@ -199,7 +199,7 @@ public class Generator {
         return nextKnights;
     }
 
-    public List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
+    private List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(y + 1, x);
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
@@ -233,7 +233,7 @@ public class Generator {
         return nextPositions;
     }
 
-    public List<Position> whitePawnMoves(int x, int y, List<Position> nextPositions) {
+    private List<Position> whitePawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(x, y - 1);
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;

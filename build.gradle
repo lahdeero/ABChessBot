@@ -19,7 +19,7 @@ javadoc {
 
 jacoco {
 	toolVersion = "0.8.3"
-  reportsDir = file("$buildDir/jacoco")
+  reportsDir = file("$buildDir/reports/jacoco")
 	applyTo run
 }
 
@@ -28,12 +28,24 @@ task applicationCodeCoverageReport(type:JacocoReport) {
     sourceSets sourceSets.main
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 sourceSets {
     main {
         java {
-            srcDir 'src'
+            srcDir 'src/main/java'
         }
     }
+		test {
+				java {
+						srcDir 'src/test/java'
+				}
+		}
 }
+
 
 
