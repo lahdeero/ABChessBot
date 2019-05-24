@@ -1,3 +1,5 @@
+23.5.2019 3h   Simulointia, lukemista
+
 17.5.2019 5,5h   Nappuloiden liikkumiset, Evaluator ja minimax rungot, javadocia, testejä. 
 
 16.5.2019 8.5h Simulointia, sotilaiden, hevosen liikkumiset, testejä.

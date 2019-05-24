@@ -43,6 +43,7 @@ public class Position {
      * @param cy Y-coordinate of removed(moving) piece
      */
     void clonePosition(Position previous, int cx, int cy) {
+        this.parent = previous;
         for (int y = 0; y < boardRows; y++) {
             for (int x = 0; x < boardCols; x++) {
                 if (y == cy && x == cx) {
