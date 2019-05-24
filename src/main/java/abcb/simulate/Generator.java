@@ -201,7 +201,7 @@ public class Generator {
 
     private List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
-        moves[0] = insideBoard(y + 1, x);
+        moves[0] = insideBoard(y + 1, x) && currentPosition.board[y+1][x] == 0;
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
         moves[2] = insideBoard(x - 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x - 1]);
         moves[3] = insideBoard(x + 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x + 1]);
@@ -235,7 +235,7 @@ public class Generator {
 
     private List<Position> whitePawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
-        moves[0] = insideBoard(x, y - 1);
+        moves[0] = insideBoard(x, y - 1) && currentPosition.board[y-1][x] == 0;
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;
         moves[2] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
         moves[3] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);

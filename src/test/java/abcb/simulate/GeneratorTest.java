@@ -1,14 +1,14 @@
 package abcb.simulate;
 
-import abcb.simulate.Generator;
-import abcb.simulate.Position;
 import static abcb.simulate.Position.blackKing;
 import static abcb.simulate.Position.blackKnight;
+import static abcb.simulate.Position.blackPawn;
 import static abcb.simulate.Position.blackQueen;
 import static abcb.simulate.Position.blackRook;
 import static abcb.simulate.Position.whiteBishop;
 import static abcb.simulate.Position.whiteKing;
 import static abcb.simulate.Position.whiteKnight;
+import static abcb.simulate.Position.whitePawn;
 import static abcb.simulate.Position.whiteRook;
 import java.util.List;
 import org.junit.After;
@@ -134,5 +134,25 @@ public class GeneratorTest {
         p.board[0][5] = whiteKnight;
         List<Position> hungryQueen = generator.getNextPositions(p);
         assertEquals(3 + 3, hungryQueen.size());
+    }
+
+    @Test
+    public void pawnCantEatStraight() {
+        Position p = new Position(new int[8][8], false);
+        p.board[5][3] = whitePawn;
+        p.board[4][3] = blackPawn;
+        List<Position> blockedPawn = generator.getNextPositions(p);
+        assertEquals(0, blockedPawn.size());
+    }
+
+    @Test
+    public void pawnCanEatCross() {
+        Position p = new Position(new int[8][8], true);
+        p.board[5][3] = whitePawn;
+        p.board[4][2] = blackPawn;
+        p.board[4][3] = blackPawn;
+        p.board[4][4] = blackPawn;
+        List<Position> twoWayHungry = generator.getNextPositions(p);
+        assertEquals(2, twoWayHungry.size());
     }
 }

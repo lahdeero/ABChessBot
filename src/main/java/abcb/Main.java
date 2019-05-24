@@ -10,8 +10,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("args = " + args.length);
         
-        
-        
         if (args.length == 3) { 
             System.out.println("File: " + args[0] + "\nTurn: Blacks move");
             MyFileReader mfr = new MyFileReader();

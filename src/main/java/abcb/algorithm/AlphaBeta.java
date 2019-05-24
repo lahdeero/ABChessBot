@@ -26,6 +26,8 @@ public class AlphaBeta {
         this.initialDepth = initialDepth;
         this.bestMax = Integer.MIN_VALUE;
         this.bestMin = Integer.MAX_VALUE;
+        bestMaxMove = null;
+        bestMinMove = null;
     }
 
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
@@ -61,25 +63,22 @@ public class AlphaBeta {
                     break;
                 }
             }
-            return α;
+            return value;
         } else {
             int value = Integer.MAX_VALUE;
             for (Position nextPosition : generator.getNextPositions(currentPosition)) {
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.min(value, alphabeta(nextPosition, depth - 1, α, β, true));
                 β = Math.min(β, value);
-
                 if (depth == initialDepth && β < bestMin) {
                     bestMin = β;
                     bestMinMove = nextPosition;
-                    
                 }
                 if (α >= β) {
                     break;
                 }
             }
-            
-            return β;
+            return value;
         }
     }
 }
