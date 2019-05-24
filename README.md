@@ -1,5 +1,13 @@
 # ABChessbot
 
+* args[0] = filename
+* args[1] = color (black or white)
+* args[2] = search tree deepness
+
+example:
+
+gradle run --args='sample.txt black 5'
+
 [Määrittelydokumentti](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Maarittelydokumentti.md)
 
 [Viikkoraportti1](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti1.md)

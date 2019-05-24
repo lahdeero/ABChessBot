@@ -1,3 +1,5 @@
+24.5.2019 7h Algoritmin kirjoitus, testejä, käyttöliittymää, arvioijaa(evaluator)
+
 23.5.2019 3h   Simulointia, lukemista
 
 17.5.2019 5,5h   Nappuloiden liikkumiset, Evaluator ja minimax rungot, javadocia, testejä. 

@@ -4,7 +4,6 @@ import abcb.simulate.Position;
 import static abcb.simulate.Position.*;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 

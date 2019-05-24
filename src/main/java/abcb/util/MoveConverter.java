@@ -27,9 +27,9 @@ public class MoveConverter {
                 }
             }
         }
-        System.out.println("piece = " + piece);
-        System.out.println("nx = " + nx);
-        System.out.println("ny = " + ny);
+//        System.out.println("piece = " + piece);
+//        System.out.println("nx = " + nx);
+//        System.out.println("ny = " + ny);
         return cordinatesToChessNotation(piece, nx, ny);
     }
 
