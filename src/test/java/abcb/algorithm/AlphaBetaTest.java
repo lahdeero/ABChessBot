@@ -52,4 +52,12 @@ public class AlphaBetaTest {
         assertEquals("Re1", ab.calculateNextMove(pos, 3, false));
     }
 
+    @Test
+    public void blackPlsDontEatYourOwnKing() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "bpdeyok.txt");
+        pos.whitesMove = false;
+        String str = ab.calculateNextMove(pos, 1, false);
+        assertFalse(str.equals("Ne8") || str.equals("Nh7"));
+    }
+
 }

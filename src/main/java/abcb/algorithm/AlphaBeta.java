@@ -30,6 +30,14 @@ public class AlphaBeta {
         bestMinMove = null;
     }
 
+    /**
+     * Calculates next move using alpha-beta pruning and returns chess notation.
+     *
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
         setupInitialValues(depth);
         alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
@@ -38,6 +46,12 @@ public class AlphaBeta {
         } else {
             return moveConverter.positionsToChessNotation(currentPosition, bestMinMove);
         }
+    }
+
+    public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
+        setupInitialValues(depth);
+        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
+        return maxPlayer ? bestMaxMove : bestMinMove;
     }
 
     private int alphabeta(Position currentPosition, int depth, int α, int β, boolean maxPlayer) {
