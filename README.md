@@ -10,6 +10,10 @@ gradle run --args='sample.txt black 5'
 
 [Määrittelydokumentti](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Maarittelydokumentti.md)
 
+[Toteutusdokumentti](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Toteutusdokumentti.md)
+
+[Testausdokumentti](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Testausdokumentti.md)
+
 [Viikkoraportti1](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti1.md)
 
 [Viikkoraportti2](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti2.md)

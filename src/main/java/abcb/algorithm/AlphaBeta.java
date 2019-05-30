@@ -51,6 +51,13 @@ public class AlphaBeta {
         }
     }
 
+    /**
+     * Calculates next Position using alpha-beta pruning and returns suggested Position.
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return 
+     */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
         setupInitialValues(depth, maxPlayer);
         currentPosition.whitesMove = maxPlayer;

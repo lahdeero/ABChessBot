@@ -1,3 +1,5 @@
+31.5.2019 1h Dokumentaatiota
+
 30.5.2019 4h Tutkimusta, bugin/bugien korjausta, uuden tietorakenteen alottelua
 
 29.5.2019 6h Shakin pelaamista, Testausta, koodin yhdenmukaistamista
