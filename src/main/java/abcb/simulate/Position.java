@@ -1,9 +1,10 @@
 package abcb.simulate;
 
 public class Position {
+
     public final static int boardRows = 8;
     public final static int boardCols = 8;
-    
+
     public static int whiteKing = 10;
     public static int whiteQueen = 11;
     public static int whiteBishop = 12;
@@ -26,11 +27,11 @@ public class Position {
         this.board = new int[boardRows][boardCols];
         this.whitesMove = true;
     }
-    
+
     public Position(Position parent) {
         this.board = new int[boardRows][boardCols];
         this.parent = parent;
-    } 
+    }
 
     public Position(int[][] board, boolean whitesMove) {
         this.board = board;
@@ -38,7 +39,8 @@ public class Position {
     }
 
     /**
-     * Clones position without moving piece.
+     * Clones previous position, except leaves moving piece as empty.
+     *
      * @param previous
      * @param cx X-coordinate of removed(moving) piece
      * @param cy Y-coordinate of removed(moving) piece
@@ -49,20 +51,21 @@ public class Position {
             for (int x = 0; x < boardCols; x++) {
                 if (y == cy && x == cx) {
                     this.board[y][x] = 0;
-                    continue;
+                } else {
+                    this.board[y][x] = previous.board[y][x];
                 }
-                this.board[y][x] = previous.board[y][x];
             }
         }
         this.whitesMove = !previous.whitesMove;
     }
 
     /**
-     * For command line for an exploratory testing use: Can print current Position.
+     * For command line for an exploratory testing use: Can print current
+     * Position.
      */
     public void print() {
         for (int y = 0; y < 8; y++) {
-            System.out.print(8-y);
+            System.out.print(8 - y);
             for (int x = 0; x < 8; x++) {
                 int piece = board[y][x];
                 if (piece == 0) {
@@ -99,7 +102,7 @@ public class Position {
             }
             System.out.println("");
         }
-        System.out.println(" abcdefgh");
+        System.out.println(" abcdefgh\n");
     }
 
 }

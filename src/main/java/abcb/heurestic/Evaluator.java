@@ -13,12 +13,12 @@ public class Evaluator {
     public final int kingValue;
 
     public Evaluator() {
-        pawnValue = 1;
-        rookValue = 5;
-        knightValue = 3;
-        bishopValue = 3;
-        queenValue = 9;
-        kingValue = 1000;
+        pawnValue = 10;
+        rookValue = 50;
+        knightValue = 30;
+        bishopValue = 30;
+        queenValue = 90;
+        kingValue = 100000;
     }
 
     public int evaluate(Position p) {

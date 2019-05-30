@@ -40,7 +40,15 @@ public class AlphaBetaTest {
     @After
     public void tearDown() {
     }
-    
+
+    @Test
+    public void kingShouldHide() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "kingShouldHide.txt");
+        assertEquals("Kd8", ab.calculateNextMove(pos, 3, false));
+        assertEquals("Kd8", ab.calculateNextMove(pos, 4, false));
+        assertEquals("Kd8", ab.calculateNextMove(pos, 5, false));
+    }
+
     @Test
     public void miniMaxiReturnsSameAsAB() {
         Position pos = new Position();
@@ -53,9 +61,9 @@ public class AlphaBetaTest {
         pos.board[4][4] = whiteBishop;
         pos.board[5][4] = whiteBishop;
         Minimax mx = new Minimax(new Generator());
-        mx.minimax(pos, 5, true);
-        Position mxNextPos = mx.calculateNextPosition(pos, 5, true);
-        Position abNextPos = ab.calculateNextPosition(pos, 5, true);
+        mx.minimax(pos, 3, true);
+        Position mxNextPos = mx.calculateNextPosition(pos, 3, true);
+        Position abNextPos = ab.calculateNextPosition(pos, 3, true);
         boolean same = true;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -67,7 +75,6 @@ public class AlphaBetaTest {
         }
         assertTrue(same);
     }
-    
 
     @Test
     public void whiteCheckmatesNextMove() throws IOException {

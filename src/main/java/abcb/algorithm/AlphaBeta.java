@@ -36,26 +36,58 @@ public class AlphaBeta {
      */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
         Position bestMove = null;
+        System.out.println("eka");
+        currentPosition.print();
         int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        System.out.println("bestValue = " + bestValue);
+        currentPosition.whitesMove = maxPlayer;
         for (Position position : generator.getNextPositions(currentPosition)) {
-            int value = alphabeta(position, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
-            if (maxPlayer && value > bestValue) {
+            int value = alphabeta(position, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
+            if (maxPlayer && value > bestValue && kingLives(position, maxPlayer)) {
                 bestValue = value;
                 bestMove = position;
-            } else if (!maxPlayer && value < bestValue) {
+            } else if (!maxPlayer && value < bestValue && kingLives(position, maxPlayer)) {
                 bestValue = value;
                 bestMove = position;
+                System.out.println("meneee");
+                position.print();
+                System.out.println(moveConverter.positionsToChessNotation(currentPosition, bestMove));
+                System.out.println("value = " + value + "\n\n");
             }
         }
         return moveConverter.positionsToChessNotation(currentPosition, bestMove);
     }
 
+    private boolean kingLives(Position somePosition, boolean white) {
+        for (Position position : generator.getNextPositions(somePosition)) {
+            boolean hasKing = false;
+            for (int y = 0; y < 8; y++) {
+                for (int x = 0; x < 8; x++) {
+                    if (white && position.board[y][x] == 10) {
+                        hasKing = true;
+                    }
+                    if (!white && position.board[y][x] == 20) {
+                        hasKing = true;
+                    }
+                }
+                if (hasKing) {
+                    break;
+                }
+            }
+            if (!hasKing) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Similar to calculateNextMove, but returns Position.
+     *
      * @param currentPosition
      * @param depth
      * @param maxPlayer
-     * @return 
+     * @return
      */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
         Position bestMove = null;
