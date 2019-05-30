@@ -1,6 +1,6 @@
-31.5.2019 1h Tutkimusta
+30.5.2019 4h Tutkimusta, bugin/bugien korjausta, uuden tietorakenteen alottelua
 
-30.5.2019 6h Peilailua, Testausta, yhdenmukaistamista
+29.5.2019 6h Shakin pelaamista, Testausta, koodin yhdenmukaistamista
 
 24.5.2019 8h Algoritmin kirjoitus, testejä, käyttöliittymää, arvioijaa(evaluator)
 
