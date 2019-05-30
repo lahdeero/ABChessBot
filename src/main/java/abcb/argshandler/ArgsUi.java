@@ -5,7 +5,7 @@ import abcb.algorithm.AlphaBeta;
 import abcb.simulate.Position;
 import java.io.IOException;
 
-public class argsUi {
+public class ArgsUi {
 
     public void run(String[] args) throws IOException {
         System.out.println("args = " + args.length);
