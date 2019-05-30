@@ -16,6 +16,22 @@ public class Minimax {
         this.evaluator = new Evaluator();
     }
 
+    public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
+        Position bestMove = null;
+        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        for (Position position : generator.getNextPositions(currentPosition)) {
+            int value = minimax(position, depth - 1, !maxPlayer);
+            if (maxPlayer && value > bestValue) {
+                bestValue = value;
+                bestMove = position;
+            } else if (!maxPlayer && value < bestValue) {
+                bestValue = value;
+                bestMove = position;
+            }
+        }
+        return bestMove;
+    }
+
     public int minimax(Position currentPosition, int depth, boolean maxPlayer) {
         if (depth == 0) {
             return evaluator.evaluate(currentPosition);
@@ -23,24 +39,15 @@ public class Minimax {
 
         if (maxPlayer) {
             int value = Integer.MIN_VALUE;
-            int max = Integer.MIN_VALUE;
             for (Position p : generator.getNextPositions(currentPosition)) {
                 value = Math.max(value, minimax(p, depth - 1, false));
-                if (value > max) {
-                    bestMaxPosition = p;
-                    max = value;
-                }
             }
             return value;
         }
         int value = Integer.MAX_VALUE;
-        int min = Integer.MAX_VALUE;
         for (Position p : generator.getNextPositions(currentPosition)) {
             value = Math.min(value, minimax(p, depth - 1, true));
-            if (value < min) {
-                bestMinPosition = p;
-                min = value;
-            }
+
         }
         return value;
     }

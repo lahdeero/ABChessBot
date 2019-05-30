@@ -12,9 +12,6 @@ public class AlphaBeta {
     private MoveConverter moveConverter;
     private Position bestMaxMove;
     private Position bestMinMove;
-    private int initialDepth;
-    private int bestMin;
-    private int bestMax;
 
     public AlphaBeta() {
         evaluator = new Evaluator();
@@ -22,14 +19,13 @@ public class AlphaBeta {
         moveConverter = new MoveConverter();
     }
 
-    private void setupInitialValues(int initialDepth) {
-        this.initialDepth = initialDepth;
-        this.bestMax = Integer.MIN_VALUE;
-        this.bestMin = Integer.MAX_VALUE;
-        bestMaxMove = null;
-        bestMinMove = null;
-    }
-
+//    private void setupInitialValues(int initialDepth) {
+//        this.initialDepth = initialDepth;
+//        this.bestMax = Integer.MIN_VALUE;
+//        this.bestMin = Integer.MAX_VALUE;
+//        bestMaxMove = null;
+//        bestMinMove = null;
+//    }
     /**
      * Calculates next move using alpha-beta pruning and returns chess notation.
      *
@@ -39,19 +35,42 @@ public class AlphaBeta {
      * @return
      */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
-        setupInitialValues(depth);
-        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
-        if (maxPlayer) {
-            return moveConverter.positionsToChessNotation(currentPosition, bestMaxMove);
-        } else {
-            return moveConverter.positionsToChessNotation(currentPosition, bestMinMove);
+        Position bestMove = null;
+        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        for (Position position : generator.getNextPositions(currentPosition)) {
+            int value = alphabeta(position, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
+            if (maxPlayer && value > bestValue) {
+                bestValue = value;
+                bestMove = position;
+            } else if (!maxPlayer && value < bestValue) {
+                bestValue = value;
+                bestMove = position;
+            }
         }
+        return moveConverter.positionsToChessNotation(currentPosition, bestMove);
     }
 
+    /**
+     * Similar to calculateNextMove, but returns Position.
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return 
+     */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
-        setupInitialValues(depth);
-        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
-        return maxPlayer ? bestMaxMove : bestMinMove;
+        Position bestMove = null;
+        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        for (Position position : generator.getNextPositions(currentPosition)) {
+            int value = alphabeta(position, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
+            if (maxPlayer && value > bestValue) {
+                bestValue = value;
+                bestMove = position;
+            } else if (!maxPlayer && value < bestValue) {
+                bestValue = value;
+                bestMove = position;
+            }
+        }
+        return bestMove;
     }
 
     private int alphabeta(Position currentPosition, int depth, int α, int β, boolean maxPlayer) {
@@ -69,10 +88,6 @@ public class AlphaBeta {
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.max(value, alphabeta(nextPosition, depth - 1, α, β, false));
                 α = Math.max(α, value);
-                if (depth == initialDepth && α > bestMax) {
-                    bestMax = α;
-                    bestMaxMove = nextPosition;
-                }
                 if (α >= β) {
                     break;
                 }
@@ -84,10 +99,6 @@ public class AlphaBeta {
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.min(value, alphabeta(nextPosition, depth - 1, α, β, true));
                 β = Math.min(β, value);
-                if (depth == initialDepth && β < bestMin) {
-                    bestMin = β;
-                    bestMinMove = nextPosition;
-                }
                 if (α >= β) {
                     break;
                 }

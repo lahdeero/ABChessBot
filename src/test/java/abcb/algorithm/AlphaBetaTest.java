@@ -3,6 +3,8 @@ package abcb.algorithm;
 import abcb.InputReader.MyFileReader;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
+import static abcb.simulate.Position.blackKnight;
+import static abcb.simulate.Position.whiteBishop;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,6 +40,34 @@ public class AlphaBetaTest {
     @After
     public void tearDown() {
     }
+    
+    @Test
+    public void miniMaxiReturnsSameAsAB() {
+        Position pos = new Position();
+        pos.board[4][5] = blackKnight;
+        pos.board[4][6] = blackKnight;
+        pos.board[4][7] = blackKnight;
+        pos.board[4][1] = blackKnight;
+        pos.board[2][4] = whiteBishop;
+        pos.board[3][4] = whiteBishop;
+        pos.board[4][4] = whiteBishop;
+        pos.board[5][4] = whiteBishop;
+        Minimax mx = new Minimax(new Generator());
+        mx.minimax(pos, 5, true);
+        Position mxNextPos = mx.calculateNextPosition(pos, 5, true);
+        Position abNextPos = ab.calculateNextPosition(pos, 5, true);
+        boolean same = true;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                if (mxNextPos.board[y][x] != abNextPos.board[y][x]) {
+                    same = false;
+                    break;
+                }
+            }
+        }
+        assertTrue(same);
+    }
+    
 
     @Test
     public void whiteCheckmatesNextMove() throws IOException {
