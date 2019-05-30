@@ -3,8 +3,12 @@ package abcb.algorithm;
 import abcb.InputReader.MyFileReader;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
+import static abcb.simulate.Position.blackKing;
 import static abcb.simulate.Position.blackKnight;
+import static abcb.simulate.Position.blackPawn;
 import static abcb.simulate.Position.whiteBishop;
+import static abcb.simulate.Position.whiteKing;
+import static abcb.simulate.Position.whitePawn;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -40,10 +44,21 @@ public class AlphaBetaTest {
     @After
     public void tearDown() {
     }
-    
+
+    @Test
+    public void kingShouldHide() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "kingShouldHide.txt");
+        assertEquals("Kd8", ab.calculateNextMove(pos, 3, false));
+        assertEquals("Kd8", ab.calculateNextMove(pos, 4, false));
+        assertEquals("Kd8", ab.calculateNextMove(pos, 5, false));
+    }
+
     @Test
     public void miniMaxiReturnsSameAsAB() {
         Position pos = new Position();
+        pos.board[0][0] = blackKing;
+        pos.board[1][0] = blackPawn;
+        pos.board[1][1] = blackPawn;
         pos.board[4][5] = blackKnight;
         pos.board[4][6] = blackKnight;
         pos.board[4][7] = blackKnight;
@@ -52,10 +67,13 @@ public class AlphaBetaTest {
         pos.board[3][4] = whiteBishop;
         pos.board[4][4] = whiteBishop;
         pos.board[5][4] = whiteBishop;
+        pos.board[6][0] = whitePawn;
+        pos.board[6][1] = whitePawn;
+        pos.board[7][0] = whiteKing;
         Minimax mx = new Minimax(new Generator());
-        mx.minimax(pos, 5, true);
-        Position mxNextPos = mx.calculateNextPosition(pos, 5, true);
-        Position abNextPos = ab.calculateNextPosition(pos, 5, true);
+        mx.minimax(pos, 3, true);
+        Position mxNextPos = mx.calculateNextPosition(pos, 3, true);
+        Position abNextPos = ab.calculateNextPosition(pos, 3, true);
         boolean same = true;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -67,7 +85,6 @@ public class AlphaBetaTest {
         }
         assertTrue(same);
     }
-    
 
     @Test
     public void whiteCheckmatesNextMove() throws IOException {
