@@ -1,4 +1,6 @@
-30.5.2019 6h Testausta, yhdenmukaistamista
+31.5.2019 1h Tutkimusta
+
+30.5.2019 6h Peilailua, Testausta, yhdenmukaistamista
 
 24.5.2019 8h Algoritmin kirjoitus, testejä, käyttöliittymää, arvioijaa(evaluator)
 

@@ -23,16 +23,18 @@ public class Position {
     public boolean whitesMove;
     public Position parent;
 
+    public boolean whiteKingLives;
+    public boolean blackKingLives;
+
     public Position() {
         this.board = new int[boardRows][boardCols];
         this.whitesMove = true;
     }
 
-    public Position(Position parent) {
-        this.board = new int[boardRows][boardCols];
-        this.parent = parent;
-    }
-
+//    public Position(Position parent) {
+//        this.board = new int[boardRows][boardCols];
+//        this.parent = parent;
+//    }
     public Position(int[][] board, boolean whitesMove) {
         this.board = board;
         this.whitesMove = whitesMove;
@@ -57,6 +59,27 @@ public class Position {
             }
         }
         this.whitesMove = !previous.whitesMove;
+    }
+
+    /**
+     * There is scenarios where algorithm wants to trade kings, anyone who's
+     * familiar to rules of chess knows this isn't current meta. So we are using
+     * this method to trying to prevent that from happening
+     *
+     * @param white
+     * @return
+     */
+    public boolean kingLives(boolean white) {
+        for (int y = 0; y < boardRows; y++) {
+            for (int x = 0; x < boardCols; x++) {
+                if (board[y][x] == 10 && white) {
+                    return true;
+                } else if (board[y][x] == 20 && !white) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

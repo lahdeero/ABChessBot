@@ -12,6 +12,10 @@ public class AlphaBeta {
     private MoveConverter moveConverter;
     private Position bestMaxMove;
     private Position bestMinMove;
+    private int initialDepth;
+    private int bestMin;
+    private int bestMax;
+    private boolean initialMaxPlayer;
 
     public AlphaBeta() {
         evaluator = new Evaluator();
@@ -19,13 +23,15 @@ public class AlphaBeta {
         moveConverter = new MoveConverter();
     }
 
-//    private void setupInitialValues(int initialDepth) {
-//        this.initialDepth = initialDepth;
-//        this.bestMax = Integer.MIN_VALUE;
-//        this.bestMin = Integer.MAX_VALUE;
-//        bestMaxMove = null;
-//        bestMinMove = null;
-//    }
+    private void setupInitialValues(int initialDepth, boolean maxPlayer) {
+        this.initialDepth = initialDepth;
+        this.bestMax = Integer.MIN_VALUE;
+        this.bestMin = Integer.MAX_VALUE;
+        bestMaxMove = null;
+        bestMinMove = null;
+        this.initialMaxPlayer = maxPlayer;
+    }
+
     /**
      * Calculates next move using alpha-beta pruning and returns chess notation.
      *
@@ -35,91 +41,41 @@ public class AlphaBeta {
      * @return
      */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
-        Position bestMove = null;
-        System.out.println("eka");
-        currentPosition.print();
-        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-        System.out.println("bestValue = " + bestValue);
+        setupInitialValues(depth, maxPlayer);
         currentPosition.whitesMove = maxPlayer;
-        for (Position position : generator.getNextPositions(currentPosition)) {
-            int value = alphabeta(position, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
-            if (maxPlayer && value > bestValue && kingLives(position, maxPlayer)) {
-                bestValue = value;
-                bestMove = position;
-            } else if (!maxPlayer && value < bestValue && kingLives(position, maxPlayer)) {
-                bestValue = value;
-                bestMove = position;
-                System.out.println("meneee");
-                position.print();
-                System.out.println(moveConverter.positionsToChessNotation(currentPosition, bestMove));
-                System.out.println("value = " + value + "\n\n");
-            }
+        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
+        if (maxPlayer) {
+            return moveConverter.positionsToChessNotation(currentPosition, bestMaxMove);
+        } else {
+            return moveConverter.positionsToChessNotation(currentPosition, bestMinMove);
         }
-        return moveConverter.positionsToChessNotation(currentPosition, bestMove);
     }
 
-    private boolean kingLives(Position somePosition, boolean white) {
-        for (Position position : generator.getNextPositions(somePosition)) {
-            boolean hasKing = false;
-            for (int y = 0; y < 8; y++) {
-                for (int x = 0; x < 8; x++) {
-                    if (white && position.board[y][x] == 10) {
-                        hasKing = true;
-                    }
-                    if (!white && position.board[y][x] == 20) {
-                        hasKing = true;
-                    }
-                }
-                if (hasKing) {
-                    break;
-                }
-            }
-            if (!hasKing) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Similar to calculateNextMove, but returns Position.
-     *
-     * @param currentPosition
-     * @param depth
-     * @param maxPlayer
-     * @return
-     */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
-        Position bestMove = null;
-        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-        for (Position position : generator.getNextPositions(currentPosition)) {
-            int value = alphabeta(position, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, !maxPlayer);
-            if (maxPlayer && value > bestValue) {
-                bestValue = value;
-                bestMove = position;
-            } else if (!maxPlayer && value < bestValue) {
-                bestValue = value;
-                bestMove = position;
-            }
-        }
-        return bestMove;
+        setupInitialValues(depth, maxPlayer);
+        currentPosition.whitesMove = maxPlayer;
+        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
+        return maxPlayer ? bestMaxMove : bestMinMove;
     }
 
     private int alphabeta(Position currentPosition, int depth, int α, int β, boolean maxPlayer) {
         if (depth == 0) {
-//            int value = evaluator.evaluate(currentPosition);
-//            System.out.println("value = " + value);
-//            currentPosition.print();
-//            System.out.println("");
             return evaluator.evaluate(currentPosition);
         }
 
         if (maxPlayer) {
             int value = Integer.MIN_VALUE;
             for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+                if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
+                    return Integer.MIN_VALUE;
+                }
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.max(value, alphabeta(nextPosition, depth - 1, α, β, false));
                 α = Math.max(α, value);
+                if (depth == initialDepth && α > bestMax) {
+                    bestMax = α;
+                    bestMaxMove = nextPosition;
+                }
                 if (α >= β) {
                     break;
                 }
@@ -128,9 +84,16 @@ public class AlphaBeta {
         } else {
             int value = Integer.MAX_VALUE;
             for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+                if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
+                    return Integer.MAX_VALUE;
+                }
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.min(value, alphabeta(nextPosition, depth - 1, α, β, true));
                 β = Math.min(β, value);
+                if (depth == initialDepth && β < bestMin) {
+                    bestMin = β;
+                    bestMinMove = nextPosition;
+                }
                 if (α >= β) {
                     break;
                 }

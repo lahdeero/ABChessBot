@@ -16,6 +16,8 @@ gradle run --args='sample.txt black 5'
 
 [Viikkoraportti3](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti3.md)
 
+[Viikkoraportti4](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti4.md)
+
 [Jacoco](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/jacoco/test/html)
 
 [Tuntikirjanpito](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Tuntikirjanpito.md)

@@ -35,7 +35,11 @@ public class Generator {
         board[7][6] = whiteKnight;
         board[7][7] = whiteRook;
 
-        return new Position(board, true);
+        Position startingPosition = new Position(board, true);
+        startingPosition.whiteKingLives = true;
+        startingPosition.blackKingLives = true;
+
+        return startingPosition;
     }
 
     /**
@@ -185,7 +189,7 @@ public class Generator {
     }
 
     private List<Position> knightMoves(int x, int y, int piece) {
-        List<Position> nextKnights = new ArrayList<Position>();
+        List<Position> nextKnights = new ArrayList<>();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x + i, y + j) && !occupied(x + i, y + j, piece)) {
@@ -201,10 +205,12 @@ public class Generator {
 
     private List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
-        moves[0] = insideBoard(y + 1, x) && currentPosition.board[y+1][x] == 0;
+        moves[0] = insideBoard(y + 1, x) && currentPosition.board[y + 1][x] == 0;
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
-        moves[2] = insideBoard(x - 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x - 1]);
-        moves[3] = insideBoard(x + 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x + 1]);
+//        moves[2] = insideBoard(x - 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x - 1]);
+//        moves[3] = insideBoard(x + 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x + 1]);
+        moves[2] = insideBoard(x - 1, y - 1) && eats(x - 1, y + 1, blackPawn);
+        moves[3] = insideBoard(x + 1, y - 1) && eats(x + 1, y + 1, blackPawn);
 
         if (moves[0]) {
             Position p = new Position();
@@ -235,10 +241,12 @@ public class Generator {
 
     private List<Position> whitePawnMoves(int x, int y, List<Position> nextPositions) {
         boolean moves[] = new boolean[4];
-        moves[0] = insideBoard(x, y - 1) && currentPosition.board[y-1][x] == 0;
+        moves[0] = insideBoard(x, y - 1) && currentPosition.board[y - 1][x] == 0;
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;
-        moves[2] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
-        moves[3] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);
+//        moves[2] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
+//        moves[3] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);
+        moves[2] = insideBoard(x - 1, y - 1) && eats(x - 1, y - 1, whitePawn);
+        moves[3] = insideBoard(x + 1, y - 1) && eats(x + 1, y - 1, whitePawn);
 
         if (moves[0]) {
             Position p = new Position();

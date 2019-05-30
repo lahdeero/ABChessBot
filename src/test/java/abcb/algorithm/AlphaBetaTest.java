@@ -3,8 +3,12 @@ package abcb.algorithm;
 import abcb.InputReader.MyFileReader;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
+import static abcb.simulate.Position.blackKing;
 import static abcb.simulate.Position.blackKnight;
+import static abcb.simulate.Position.blackPawn;
 import static abcb.simulate.Position.whiteBishop;
+import static abcb.simulate.Position.whiteKing;
+import static abcb.simulate.Position.whitePawn;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,6 +56,9 @@ public class AlphaBetaTest {
     @Test
     public void miniMaxiReturnsSameAsAB() {
         Position pos = new Position();
+        pos.board[0][0] = blackKing;
+        pos.board[1][0] = blackPawn;
+        pos.board[1][1] = blackPawn;
         pos.board[4][5] = blackKnight;
         pos.board[4][6] = blackKnight;
         pos.board[4][7] = blackKnight;
@@ -60,6 +67,9 @@ public class AlphaBetaTest {
         pos.board[3][4] = whiteBishop;
         pos.board[4][4] = whiteBishop;
         pos.board[5][4] = whiteBishop;
+        pos.board[6][0] = whitePawn;
+        pos.board[6][1] = whitePawn;
+        pos.board[7][0] = whiteKing;
         Minimax mx = new Minimax(new Generator());
         mx.minimax(pos, 3, true);
         Position mxNextPos = mx.calculateNextPosition(pos, 3, true);
