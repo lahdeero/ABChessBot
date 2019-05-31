@@ -6,7 +6,6 @@ import abcb.simulate.Position;
 import abcb.util.MoveConverter;
 
 public class AlphaBeta {
-
     private Evaluator evaluator;
     private Generator generator;
     private MoveConverter moveConverter;

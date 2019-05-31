@@ -5,6 +5,8 @@ Viikkoraportti 4 - ABChessbot
 
 * Pelannut shakkia bottia vastaan
 * Koittanut simuloida virhetilanteita, eli paikantaa bugeja
+* Parantanu toiminnallisuutta, algoritmin ei pitäisi enää koittaa "tradeta kuninkaita"
+* Alotellu omaa tietorakennetta
 
 ### Miten ohjelma on edistynyt?
 
@@ -16,7 +18,7 @@ Viikkoraportti 4 - ABChessbot
 
 ### Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
-* Oon iha hukassa noiden omien tietorakenteiden toteutuksen suhteen, en tiiä mistä alottais
+* En ymmärrä miks mun tarvii ilmottaa ton olion tyyppi ku haen sen Position getPos = (Position) myRecord.get(0); @ MyRecordTest.java
 
 ### Mitä teen seuraavaksi?
 

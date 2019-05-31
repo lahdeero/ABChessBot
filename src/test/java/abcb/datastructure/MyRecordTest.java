@@ -11,12 +11,11 @@ import org.junit.Test;
 public class MyRecordTest {
 
     Generator generator;
-    MyRecord myRecord;
+    
 
     @Before
     public void setUp() {
         generator = new Generator();
-        myRecord = new MyRecord();
     }
 
     @After
@@ -26,6 +25,7 @@ public class MyRecordTest {
     @Test
     public void canAdd() {
         Position pos = generator.createStartingPosition();
+        MyRecord myRecord = new MyRecord<>();
         myRecord.add(pos);
         assertEquals(1, myRecord.size());
     }
@@ -34,6 +34,7 @@ public class MyRecordTest {
     public void canGet() {
         Position pos = generator.createStartingPosition();
         Position pos2 = new Position();
+        MyRecord myRecord = new MyRecord<Position>();
         myRecord.add(pos);
         myRecord.add(pos2);
         Position getPos = (Position) myRecord.get(0);

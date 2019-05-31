@@ -1,27 +1,31 @@
 package abcb.datastructure;
 
-public class MyRecord {
+public class MyRecord<E> {
 
-    Object[] arr;
+    private E[] arr;
     private int size;
 
     public MyRecord() {
-        this.arr = new Object[128];
+        this.arr = (E[]) new Object[128];
         this.size = 0;
     }
 
-    public void add(Object obj) {
-        arr[size++] = obj;
+    /**
+     * Adds element end of MyRecord.
+     * @param obj 
+     */
+    public void add(E element) {
+        arr[size++] = element;
         if (size == arr.length) {
-            Object[] arr2 = new Object[arr.length*2];
+            E[] arr2 = (E[]) new Object[arr.length*2];
             java.lang.System.arraycopy(arr, 0, arr2, 0, arr.length);
             this.arr = arr2;
             size = arr2.length;
         }
     }
 
-    public Object get(int index) {
-        return arr[index];
+    public E get(int index) {
+        return (E) arr[index];
     }
     
     public int size() {
