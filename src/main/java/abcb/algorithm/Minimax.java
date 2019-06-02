@@ -1,5 +1,6 @@
 package abcb.algorithm;
 
+import abcb.datastructure.MyRecord;
 import abcb.heurestic.Evaluator;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
@@ -19,7 +20,9 @@ public class Minimax {
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
         Position bestMove = null;
         int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-        for (Position position : generator.getNextPositions(currentPosition)) {
+        MyRecord myRecord = generator.getNextPositions(currentPosition);
+        for (int i = 0; i < myRecord.size(); i++) {
+            Position position = (Position) myRecord.get(i);
             int value = minimax(position, depth - 1, !maxPlayer);
             if (maxPlayer && value > bestValue) {
                 bestValue = value;
@@ -39,13 +42,17 @@ public class Minimax {
 
         if (maxPlayer) {
             int value = Integer.MIN_VALUE;
-            for (Position p : generator.getNextPositions(currentPosition)) {
+            MyRecord myRecord = generator.getNextPositions(currentPosition);
+            for (int i = 0; i < myRecord.size(); i++) {
+                Position p = (Position) myRecord.get(i);
                 value = Math.max(value, minimax(p, depth - 1, false));
             }
             return value;
         }
         int value = Integer.MAX_VALUE;
-        for (Position p : generator.getNextPositions(currentPosition)) {
+        MyRecord myRecord = generator.getNextPositions(currentPosition);
+        for (int i = 0; i < myRecord.size(); i++) {
+            Position p = (Position) myRecord.get(i);
             value = Math.min(value, minimax(p, depth - 1, true));
 
         }

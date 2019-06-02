@@ -1,5 +1,6 @@
 package abcb.simulate;
 
+import abcb.datastructure.MyRecord;
 import static abcb.simulate.Position.blackKing;
 import static abcb.simulate.Position.blackKnight;
 import static abcb.simulate.Position.blackPawn;
@@ -10,7 +11,6 @@ import static abcb.simulate.Position.whiteKing;
 import static abcb.simulate.Position.whiteKnight;
 import static abcb.simulate.Position.whitePawn;
 import static abcb.simulate.Position.whiteRook;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,14 +46,14 @@ public class GeneratorTest {
 
     @Test
     public void whiteHas20StartingMoves() {
-        List<Position> nextMoves = generator.getNextPositions(startingPosition);
+        MyRecord<Position> nextMoves = generator.getNextPositions(startingPosition);
         assertEquals(20, nextMoves.size());
     }
 
     @Test
     public void blackHas20StartingMoves() {
         Position blacksFirst = generator.getNextPositions(startingPosition).get(0);
-        List<Position> blackOpenings = generator.getNextPositions(blacksFirst);
+        MyRecord<Position> blackOpenings = generator.getNextPositions(blacksFirst);
         assertEquals(20, blackOpenings.size());
     }
 
@@ -61,7 +61,7 @@ public class GeneratorTest {
     public void rookHas14MovesMax() {
         Position p = new Position(new int[8][8], false);
         p.board[3][3] = blackRook;
-        List<Position> lonelyRook = generator.getNextPositions(p);
+        MyRecord<Position> lonelyRook = generator.getNextPositions(p);
         assertEquals(14, lonelyRook.size());
     }
 
@@ -69,7 +69,7 @@ public class GeneratorTest {
     public void knightHas8MovesMax() {
         Position p = new Position(new int[8][8], true);
         p.board[3][3] = whiteKnight;
-        List<Position> lonelyKnight = generator.getNextPositions(p);
+        MyRecord<Position> lonelyKnight = generator.getNextPositions(p);
         assertEquals(8, lonelyKnight.size());
     }
 
@@ -77,7 +77,7 @@ public class GeneratorTest {
     public void bishopHas13MovesMax() {
         Position p = new Position(new int[8][8], true);
         p.board[3][3] = whiteBishop;
-        List<Position> lonelyBishop = generator.getNextPositions(p);
+        MyRecord<Position> lonelyBishop = generator.getNextPositions(p);
         assertEquals(13, lonelyBishop.size());
     }
 
@@ -85,7 +85,7 @@ public class GeneratorTest {
     public void queenHas27MovesMax() {
         Position p = new Position(new int[8][8], false);
         p.board[3][3] = blackQueen;
-        List<Position> lonelyQueen = generator.getNextPositions(p);
+        MyRecord<Position> lonelyQueen = generator.getNextPositions(p);
         assertEquals(27, lonelyQueen.size());
     }
 
@@ -93,7 +93,7 @@ public class GeneratorTest {
     public void kingHas8MovesMax() {
         Position p = new Position(new int[8][8], false);
         p.board[3][3] = blackKing;
-        List<Position> lonelyKing = generator.getNextPositions(p);
+        MyRecord<Position> lonelyKing = generator.getNextPositions(p);
         assertEquals(8, lonelyKing.size());
     }
 
@@ -101,7 +101,7 @@ public class GeneratorTest {
     public void corneredKingHas3Moves() {
         Position p = new Position(new int[8][8], true);
         p.board[0][0] = whiteKing;
-        List<Position> lonelyKing = generator.getNextPositions(p);
+        MyRecord<Position> lonelyKing = generator.getNextPositions(p);
         assertEquals(3, lonelyKing.size());
     }
 
@@ -110,7 +110,7 @@ public class GeneratorTest {
         Position p = new Position(new int[8][8], true);
         p.board[7][0] = whiteRook;
         p.board[7][1] = blackKnight;
-        List<Position> hungryRook = generator.getNextPositions(p);
+        MyRecord<Position> hungryRook = generator.getNextPositions(p);
         assertEquals(7 + 1, hungryRook.size());
     }
 
@@ -119,7 +119,7 @@ public class GeneratorTest {
         Position p = new Position(new int[8][8], true);
         p.board[6][1] = whiteBishop;
         p.board[5][2] = blackKnight;
-        List<Position> hungryBishop = generator.getNextPositions(p);
+        MyRecord<Position> hungryBishop = generator.getNextPositions(p);
         assertEquals(3 + 1, hungryBishop.size());
     }
 
@@ -132,7 +132,7 @@ public class GeneratorTest {
         p.board[2][5] = whiteKnight;
         p.board[1][5] = whiteKnight;
         p.board[0][5] = whiteKnight;
-        List<Position> hungryQueen = generator.getNextPositions(p);
+        MyRecord<Position> hungryQueen = generator.getNextPositions(p);
         assertEquals(3 + 3, hungryQueen.size());
     }
 
@@ -141,7 +141,7 @@ public class GeneratorTest {
         Position p = new Position(new int[8][8], false);
         p.board[5][3] = whitePawn;
         p.board[4][3] = blackPawn;
-        List<Position> blockedPawn = generator.getNextPositions(p);
+        MyRecord<Position> blockedPawn = generator.getNextPositions(p);
         assertEquals(0, blockedPawn.size());
     }
 
@@ -152,7 +152,7 @@ public class GeneratorTest {
         p.board[4][2] = blackPawn;
         p.board[4][3] = blackPawn;
         p.board[4][4] = blackPawn;
-        List<Position> twoWayHungry = generator.getNextPositions(p);
+        MyRecord<Position> twoWayHungry = generator.getNextPositions(p);
         assertEquals(2, twoWayHungry.size());
     }
 }

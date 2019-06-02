@@ -1,11 +1,13 @@
 package abcb.algorithm;
 
+import abcb.datastructure.MyRecord;
 import abcb.heurestic.Evaluator;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
 import abcb.util.MoveConverter;
 
 public class AlphaBeta {
+
     private Evaluator evaluator;
     private Generator generator;
     private MoveConverter moveConverter;
@@ -51,11 +53,13 @@ public class AlphaBeta {
     }
 
     /**
-     * Calculates next Position using alpha-beta pruning and returns suggested Position.
+     * Calculates next Position using alpha-beta pruning and returns suggested
+     * Position.
+     *
      * @param currentPosition
      * @param depth
      * @param maxPlayer
-     * @return 
+     * @return
      */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
         setupInitialValues(depth, maxPlayer);
@@ -71,7 +75,9 @@ public class AlphaBeta {
 
         if (maxPlayer) {
             int value = Integer.MIN_VALUE;
-            for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+            MyRecord myRecord = generator.getNextPositions(currentPosition);
+            for (int i = 0; i < myRecord.size(); i++) {
+                Position nextPosition = (Position) myRecord.get(i);
                 if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
                     return Integer.MIN_VALUE;
                 }
@@ -89,7 +95,9 @@ public class AlphaBeta {
             return value;
         } else {
             int value = Integer.MAX_VALUE;
-            for (Position nextPosition : generator.getNextPositions(currentPosition)) {
+            MyRecord myRecord = generator.getNextPositions(currentPosition);
+            for (int i = 0; i < myRecord.size(); i++) {
+                Position nextPosition = (Position) myRecord.get(i);
                 if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
                     return Integer.MAX_VALUE;
                 }

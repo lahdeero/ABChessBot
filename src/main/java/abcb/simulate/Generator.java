@@ -1,8 +1,6 @@
 package abcb.simulate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import abcb.datastructure.MyRecord;
 import static abcb.simulate.Position.*;
 
 public class Generator {
@@ -48,9 +46,10 @@ public class Generator {
      * @param currentPosition
      * @return List<Position>
      */
-    public List<Position> getNextPositions(Position currentPosition) {
+    public MyRecord<Position> getNextPositions(Position currentPosition) {
         this.currentPosition = currentPosition;
-        List<Position> nextPositions = Collections.synchronizedList(new ArrayList<>());
+//        List<Position> nextPositions = Collections.synchronizedList(new MyRecord<>());
+        MyRecord<Position> nextPositions = new MyRecord<>();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 int piece = currentPosition.board[y][x];
@@ -91,8 +90,8 @@ public class Generator {
         return nextPositions;
     }
 
-    private List<Position> rookMoves(int x, int y, int piece) {
-        List<Position> nextRooks = new ArrayList<Position>();
+    private MyRecord<Position> rookMoves(int x, int y, int piece) {
+        MyRecord<Position> nextRooks = new MyRecord<Position>();
         boolean[] blocked = {false, false, false, false};
         for (int i = 1; i < 8; i++) {
             if (!blocked[0] && insideBoard(x - i, y) && !occupied(x - i, y, piece)) {
@@ -131,8 +130,8 @@ public class Generator {
         return nextRooks;
     }
 
-    private List<Position> bishopMoves(int x, int y, int piece) {
-        List<Position> nextBishops = new ArrayList<Position>();
+    private MyRecord<Position> bishopMoves(int x, int y, int piece) {
+        MyRecord<Position> nextBishops = new MyRecord<Position>();
         int k = -1;
         int e = -1;
         for (int j = 0; j < 4; j++) {
@@ -163,15 +162,15 @@ public class Generator {
         return nextBishops;
     }
 
-    private List<Position> queenMoves(int x, int y, int piece) {
-        List<Position> queenMoves = new ArrayList<Position>();
+    private MyRecord<Position> queenMoves(int x, int y, int piece) {
+        MyRecord<Position> queenMoves = new MyRecord<Position>();
         queenMoves.addAll(rookMoves(x, y, piece));
         queenMoves.addAll(bishopMoves(x, y, piece));
         return queenMoves;
     }
 
-    private List<Position> kingMoves(int x, int y, int piece) {
-        List<Position> nextKings = new ArrayList<Position>();
+    private MyRecord<Position> kingMoves(int x, int y, int piece) {
+        MyRecord<Position> nextKings = new MyRecord<Position>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
@@ -188,8 +187,8 @@ public class Generator {
         return nextKings;
     }
 
-    private List<Position> knightMoves(int x, int y, int piece) {
-        List<Position> nextKnights = new ArrayList<>();
+    private MyRecord<Position> knightMoves(int x, int y, int piece) {
+        MyRecord<Position> nextKnights = new MyRecord<>();
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 if (Math.abs(i) + Math.abs(j) == 3 && insideBoard(x + i, y + j) && !occupied(x + i, y + j, piece)) {
@@ -203,7 +202,7 @@ public class Generator {
         return nextKnights;
     }
 
-    private List<Position> blackPawnMoves(int x, int y, List<Position> nextPositions) {
+    private MyRecord<Position> blackPawnMoves(int x, int y, MyRecord<Position> nextPositions) {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(y + 1, x) && currentPosition.board[y + 1][x] == 0;
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
@@ -239,7 +238,7 @@ public class Generator {
         return nextPositions;
     }
 
-    private List<Position> whitePawnMoves(int x, int y, List<Position> nextPositions) {
+    private MyRecord<Position> whitePawnMoves(int x, int y, MyRecord<Position> nextPositions) {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(x, y - 1) && currentPosition.board[y - 1][x] == 0;
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;
@@ -305,13 +304,4 @@ public class Generator {
     private boolean insideBoard(int x, int y) {
         return x >= 0 && x <= 7 && y >= 0 && y <= 7;
     }
-
-    private boolean isWhitePiece(int piece) {
-        return piece >= 10 && piece <= 15;
-    }
-
-    private boolean isBlackPiece(int piece) {
-        return piece >= 20 && piece <= 25;
-    }
-
 }
