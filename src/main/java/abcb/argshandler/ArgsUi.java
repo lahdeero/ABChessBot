@@ -1,4 +1,4 @@
-package abcb.argshandler;
+package abcb.argsHandler;
 
 import abcb.InputReader.MyFileReader;
 import abcb.algorithm.AlphaBeta;

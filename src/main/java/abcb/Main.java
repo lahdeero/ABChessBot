@@ -1,6 +1,6 @@
 package abcb;
 
-import abcb.argshandler.ArgsUi;
+import abcb.argsHandler.ArgsUi;
 import java.io.IOException;
 
 public class Main {

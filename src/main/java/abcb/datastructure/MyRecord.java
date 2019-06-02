@@ -6,7 +6,7 @@ public class MyRecord<E> {
     private int size;
 
     public MyRecord() {
-        this.arr = (E[]) new Object[128];
+        this.arr = (E[]) new Object[8];
         this.size = 0;
     }
 
@@ -18,27 +18,35 @@ public class MyRecord<E> {
     public void add(E element) {
         arr[size++] = element;
         if (size == arr.length) {
-            grow();
+            grow(2);
         }
     }
 
     public void addAll(MyRecord mr) {
-        if (mr.size() + this.size > arr.length) {
-            grow();
+        if (mr.size() + size >= arr.length) {
+            int multiplier = 1;
+            while (mr.size() + size >= arr.length * multiplier) {
+                multiplier += 1;
+            }
+            grow(multiplier);
         }
+
         for (int i = 0; i < mr.size(); i++) {
             arr[size++] = (E) mr.get(i);
         }
     }
 
-    private void grow() {
-        E[] arr2 = (E[]) new Object[arr.length * 2];
+    private void grow(int multiplier) {
+        E[] arr2 = (E[]) new Object[arr.length * multiplier];
         java.lang.System.arraycopy(arr, 0, arr2, 0, arr.length);
         this.arr = arr2;
-        size = arr2.length;
     }
 
     public E get(int index) {
+        if (index > size) {
+            System.out.println(this.toString() + ": index out of bounds!");
+            return null;
+        }
         return (E) arr[index];
     }
 
