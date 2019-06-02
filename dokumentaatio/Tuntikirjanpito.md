@@ -1,3 +1,5 @@
+2.6.2019 3h Tietorakenteita, testejä, päätysotilaan käsittely
+
 31.5.2019 2h Dokumentaatiota, Tietorakenteita
 
 30.5.2019 4h Tutkimusta, bugin/bugien korjausta, uuden tietorakenteen alottelua

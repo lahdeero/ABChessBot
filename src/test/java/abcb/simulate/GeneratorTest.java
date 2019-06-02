@@ -1,6 +1,7 @@
 package abcb.simulate;
 
 import abcb.datastructure.MyRecord;
+import static abcb.simulate.Position.blackBishop;
 import static abcb.simulate.Position.blackKing;
 import static abcb.simulate.Position.blackKnight;
 import static abcb.simulate.Position.blackPawn;
@@ -10,6 +11,7 @@ import static abcb.simulate.Position.whiteBishop;
 import static abcb.simulate.Position.whiteKing;
 import static abcb.simulate.Position.whiteKnight;
 import static abcb.simulate.Position.whitePawn;
+import static abcb.simulate.Position.whiteQueen;
 import static abcb.simulate.Position.whiteRook;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -154,5 +156,43 @@ public class GeneratorTest {
         p.board[4][4] = blackPawn;
         MyRecord<Position> twoWayHungry = generator.getNextPositions(p);
         assertEquals(2, twoWayHungry.size());
+    }
+
+    @Test
+    public void whitePawnCanBecomeQueen() {
+        Position p = new Position(new int[8][8], true);
+        p.board[1][2] = whitePawn;
+        MyRecord<Position> shesGrowingFast = generator.getNextPositions(p);
+        assertEquals(whiteQueen, shesGrowingFast.get(0).board[0][2]);
+    }
+
+    @Test
+    public void blackPawnCanBecomeQueen() {
+        Position p = new Position(new int[8][8], true);
+        p.board[6][2] = blackPawn;
+        p.whitesMove = false;
+        MyRecord<Position> shesGrowingFast = generator.getNextPositions(p);
+        assertEquals(blackQueen, shesGrowingFast.get(0).board[7][2]);
+    }
+
+    @Test
+    public void whitePawnCanBecomeQueen2() {
+        Position p = new Position(new int[8][8], true);
+        p.board[1][2] = whitePawn;
+        p.board[0][1] = blackBishop;
+        p.board[0][2] = blackBishop;
+        MyRecord<Position> shesGrowingFast = generator.getNextPositions(p);
+        assertEquals(whiteQueen, shesGrowingFast.get(0).board[0][1]);
+    }
+
+    @Test
+    public void blackPawnCanBecomeQueen2() {
+        Position p = new Position(new int[8][8], true);
+        p.board[6][2] = blackPawn;
+        p.board[7][2] = whiteKnight;
+        p.board[7][3] = whiteKnight;
+        p.whitesMove = false;
+        MyRecord<Position> shesGrowingFast = generator.getNextPositions(p);
+        assertEquals(blackQueen, shesGrowingFast.get(0).board[7][3]);
     }
 }

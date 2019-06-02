@@ -206,51 +206,67 @@ public class Generator {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(y + 1, x) && currentPosition.board[y + 1][x] == 0;
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
-//        moves[2] = insideBoard(x - 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x - 1]);
-//        moves[3] = insideBoard(x + 1, y + 1) && isWhitePiece(currentPosition.board[y + 1][x + 1]);
         moves[2] = insideBoard(x - 1, y - 1) && eats(x - 1, y + 1, blackPawn);
         moves[3] = insideBoard(x + 1, y - 1) && eats(x + 1, y + 1, blackPawn);
 
         if (moves[0]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y + 1][x] = blackPawn;
+            pawnMoves(blackPawn, p, x, y+1);
             nextPositions.add(p);
         }
         if (moves[1]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y + 2][x] = blackPawn;
+            p.board[y + 2][x] = blackPawn; // no need to use PawnMoves
             nextPositions.add(p);
         }
         if (moves[2]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y + 1][x - 1] = blackPawn;
+//            p.board[y + 1][x - 1] = blackPawn;
+            pawnMoves(blackPawn, p, x-1, y+1);
             nextPositions.add(p);
         }
         if (moves[3]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y + 1][x + 1] = blackPawn;
+//            p.board[y + 1][x + 1] = blackPawn;
+            pawnMoves(blackPawn, p, x+1, y+1);
             nextPositions.add(p);
         }
         return nextPositions;
+    }
+    
+    private Position pawnMoves(int piece, Position p, int nx, int ny) {
+        if (piece == 25) {
+            if (ny == 7) {
+                p.board[ny][nx] = blackQueen;
+            } else {
+                p.board[ny][nx] = blackPawn;
+            }
+        } else if (piece == 15) {
+            if (ny == 0) {
+                p.board[ny][nx] = whiteQueen;
+            } else {
+                p.board[ny][nx] = whitePawn;
+            }
+        }
+        return p;
     }
 
     private MyRecord<Position> whitePawnMoves(int x, int y, MyRecord<Position> nextPositions) {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(x, y - 1) && currentPosition.board[y - 1][x] == 0;
         moves[1] = y == 6 && currentPosition.board[y - 1][x] == 0 && currentPosition.board[y - 2][x] == 0;
-//        moves[2] = insideBoard(x - 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x - 1]);
-//        moves[3] = insideBoard(x + 1, y - 1) && isBlackPiece(currentPosition.board[y - 1][x + 1]);
         moves[2] = insideBoard(x - 1, y - 1) && eats(x - 1, y - 1, whitePawn);
         moves[3] = insideBoard(x + 1, y - 1) && eats(x + 1, y - 1, whitePawn);
 
         if (moves[0]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y - 1][x] = whitePawn;
+//            p.board[y - 1][x] = whitePawn;
+            pawnMoves(whitePawn, p, x, y-1);
             nextPositions.add(p);
         }
         if (moves[1]) {
@@ -262,13 +278,15 @@ public class Generator {
         if (moves[2]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y - 1][x - 1] = whitePawn;
+//            p.board[y - 1][x - 1] = whitePawn;
+            pawnMoves(whitePawn, p, x-1, y-1);
             nextPositions.add(p);
         }
         if (moves[3]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-            p.board[y - 1][x + 1] = whitePawn;
+//            p.board[y - 1][x + 1] = whitePawn;
+            pawnMoves(whitePawn, p, x+1, y-1);
             nextPositions.add(p);
         }
         return nextPositions;

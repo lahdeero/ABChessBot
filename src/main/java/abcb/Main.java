@@ -1,12 +1,12 @@
 package abcb;
 
-import abcb.argsHandler.ArgsUi;
+import abcb.argsHandler.CliUi;
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-       ArgsUi au = new ArgsUi();
+       CliUi au = new CliUi();
        au.run(args);
     }
 }

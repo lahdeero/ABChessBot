@@ -5,8 +5,13 @@ import abcb.algorithm.AlphaBeta;
 import abcb.simulate.Position;
 import java.io.IOException;
 
-public class ArgsUi {
+public class CliUi {
 
+    /**
+     * When running bot from command line
+     * @param args
+     * @throws IOException 
+     */
     public void run(String[] args) throws IOException {
         System.out.println("args = " + args.length);
 
