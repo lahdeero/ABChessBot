@@ -84,25 +84,20 @@ public class Abcb {
 
     public Position figureOutNextPosition(Position currentPosition) {
         if (history.size() < 20) {
-            System.out.println("search begins");
             if (openings.search(historyToString())) {
-                System.out.println("eka");
                 String moveStr = openings.getNextMove();
-                System.out.println("moveStr = " + moveStr);
                 Siirto siirto = getNextSiirto(currentPosition, moveStr);
                 if (siirto != null) {
-                    System.out.println("siirto = " + siirto.toString());
                     Position p = new Position();
                     p.clonePosition(currentPosition, siirto.getX(), siirto.getY());
                     p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();
-                    System.out.println("opening found!");
+                    System.out.println("opening found! " + openings.getOpeningName());
                     return p;
                 }
                 System.out.println("could not find opening..");
             }
         }
-        System.out.println("historyToString = " + historyToString());
-        System.out.println("search failed..");
+        System.out.println("search failed... historyToString = " + historyToString());
         currentPosition.whitesMove = vari == VALKOINEN;
         return ab.calculateNextPosition(currentPosition, depth, vari == VALKOINEN);
     }

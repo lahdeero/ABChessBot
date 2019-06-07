@@ -7,7 +7,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 //        Openings o = new Openings();
-        
         CliUi au = new CliUi();
         au.run(args);
 

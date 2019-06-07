@@ -28,6 +28,10 @@ task applicationCodeCoverageReport(type:JacocoReport) {
     sourceSets sourceSets.main
 }
 
+run {
+	outputs.upToDateWhen { false }
+}
+
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {

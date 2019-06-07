@@ -71,6 +71,7 @@ public class Openings {
 
     public String getNextMove() {
         int randomIndex = generateRandomInt(this.nextMove.size());
+        System.out.println("random = " + randomIndex + ", max = " + nextMove.size());
         this.indexSelected = randomIndex;
         return this.nextMove.get(randomIndex);
     }
