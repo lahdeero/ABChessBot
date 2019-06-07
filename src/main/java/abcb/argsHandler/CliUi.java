@@ -4,18 +4,24 @@ import abcb.InputReader.MyFileReader;
 import abcb.algorithm.AlphaBeta;
 import abcb.simulate.Position;
 import java.io.IOException;
+import shakkibeli.kayttoliittyma.Kayttoliittyma;
 
 public class CliUi {
 
     /**
      * When running bot from command line
+     *
      * @param args
-     * @throws IOException 
+     * @throws IOException
      */
     public void run(String[] args) throws IOException {
         System.out.println("args = " + args.length);
 
-        if (args.length == 3) {
+        if (args.length == 0) {
+            Kayttoliittyma ka = new Kayttoliittyma();
+
+            ka.menu();
+        } else if (args.length == 3) {
             System.out.println("File: " + args[0] + "\nTurn: Blacks move");
             MyFileReader mfr = new MyFileReader();
             Position pos = mfr.fileToPosition(args[0]);

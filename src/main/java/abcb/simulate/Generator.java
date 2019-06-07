@@ -34,9 +34,11 @@ public class Generator {
         board[7][7] = whiteRook;
 
         Position startingPosition = new Position(board, true);
-        startingPosition.whiteKingLives = true;
-        startingPosition.blackKingLives = true;
-
+        startingPosition.whiteCastleKingSide = true;
+        startingPosition.whiteCastleQueenSide = true;
+        startingPosition.blackCastleKingSide = true;
+        startingPosition.blackCastleQueenSide = true;
+        
         return startingPosition;
     }
 

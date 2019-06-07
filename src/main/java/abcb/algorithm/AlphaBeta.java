@@ -42,14 +42,7 @@ public class AlphaBeta {
      * @return
      */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
-        setupInitialValues(depth, maxPlayer);
-        currentPosition.whitesMove = maxPlayer;
-        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
-        if (maxPlayer) {
-            return moveConverter.positionsToChessNotation(currentPosition, bestMaxMove);
-        } else {
-            return moveConverter.positionsToChessNotation(currentPosition, bestMinMove);
-        }
+        return moveConverter.positionsToChessNotation(currentPosition, calculateNextPosition(currentPosition, depth, maxPlayer));
     }
 
     /**

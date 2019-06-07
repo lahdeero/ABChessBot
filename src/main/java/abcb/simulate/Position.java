@@ -26,18 +26,48 @@ public class Position {
     public boolean whiteKingLives;
     public boolean blackKingLives;
 
+    public boolean whiteCastleKingSide;
+    public boolean whiteCastleQueenSide;
+    public boolean blackCastleKingSide;
+    public boolean blackCastleQueenSide;
+    
+    public String history;
+
     public Position() {
         this.board = new int[boardRows][boardCols];
         this.whitesMove = true;
     }
 
-//    public Position(Position parent) {
-//        this.board = new int[boardRows][boardCols];
-//        this.parent = parent;
-//    }
     public Position(int[][] board, boolean whitesMove) {
         this.board = board;
         this.whitesMove = whitesMove;
+    }
+
+    @Override
+    public String toString() {
+        String fen = "";
+        for (int y = 0; y < boardRows; y++) {
+            int k = 0;
+            for (int x = 0; x < boardCols; x++) {
+                if (this.board[y][x] == 0) {
+                    k += 1;
+                } else {
+                    if (k > 0) {
+                        fen += k;
+                        k = 0;
+                    }
+                    fen += pieceToChar(this.board[y][x]);
+                }
+            }
+            if (k > 0) {
+                fen += k;
+            }
+            if (y < boardRows - 1) {
+                fen += '/';
+            }
+        }
+        fen += whitesMove ? " w" : " b";
+        return fen;
     }
 
     /**
@@ -91,41 +121,43 @@ public class Position {
             System.out.print(8 - y);
             for (int x = 0; x < 8; x++) {
                 int piece = board[y][x];
-                if (piece == 0) {
-                    System.out.print(".");
-                } else if (piece >= 10 && piece < 20) {
-                    if (piece == whitePawn) {
-                        System.out.print("P");
-                    } else if (piece == whiteRook) {
-                        System.out.print("R");
-                    } else if (piece == whiteBishop) {
-                        System.out.print("B");
-                    } else if (piece == whiteKnight) {
-                        System.out.print("N");
-                    } else if (piece == whiteQueen) {
-                        System.out.print("Q");
-                    } else if (piece == whiteKing) {
-                        System.out.print("K");
-                    }
-                } else if (piece >= 20) {
-                    if (piece == blackPawn) {
-                        System.out.print("p");
-                    } else if (piece == blackRook) {
-                        System.out.print("r");
-                    } else if (piece == blackBishop) {
-                        System.out.print("b");
-                    } else if (piece == blackKnight) {
-                        System.out.print("n");
-                    } else if (piece == blackQueen) {
-                        System.out.print("q");
-                    } else if (piece == blackKing) {
-                        System.out.print("k");
-                    }
-                }
+                System.out.print(pieceToChar(piece));
             }
             System.out.println("");
         }
         System.out.println(" abcdefgh\n");
     }
 
+    private char pieceToChar(int piece) {
+        if (piece >= 20) {
+            if (piece == blackPawn) {
+                return 'p';
+            } else if (piece == blackRook) {
+                return 'r';
+            } else if (piece == blackKnight) {
+                return 'n';
+            } else if (piece == blackBishop) {
+                return 'b';
+            } else if (piece == blackQueen) {
+                return 'q';
+            } else if (piece == blackKing) {
+                return 'k';
+            }
+        } else if (piece >= 10 && piece < 20) {
+            if (piece == whitePawn) {
+                return 'P';
+            } else if (piece == whiteRook) {
+                return 'R';
+            } else if (piece == whiteKnight) {
+                return 'N';
+            } else if (piece == whiteBishop) {
+                return 'B';
+            } else if (piece == whiteQueen) {
+                return 'Q';
+            } else if (piece == whiteKing) {
+                return 'K';
+            }
+        }
+        return '.';
+    }
 }
