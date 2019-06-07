@@ -79,6 +79,10 @@ public class Position {
      */
     public void clonePosition(Position previous, int cx, int cy) {
         this.parent = previous;
+        this.whiteCastleKingSide = previous.whiteCastleKingSide;
+        this.whiteCastleQueenSide = previous.whiteCastleQueenSide;
+        this.blackCastleKingSide = previous.blackCastleKingSide;
+        this.blackCastleQueenSide = previous.blackCastleQueenSide;
         for (int y = 0; y < boardRows; y++) {
             for (int x = 0; x < boardCols; x++) {
                 if (y == cy && x == cx) {

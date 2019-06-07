@@ -92,6 +92,10 @@ public class Siirto {
     public String toString() {
         return muuntaja.muunnaSiirtoShakkimuotoon(this.x, this.y, this.uusix, this.uusiy);
     }
+    
+    public String toChessNotation() {
+        return muuntaja.muunna(this.uusix, this.uusiy, this.liikuteltava);
+    }
 
     public void setTesti(boolean testataanko) {
         this.testi = testataanko;

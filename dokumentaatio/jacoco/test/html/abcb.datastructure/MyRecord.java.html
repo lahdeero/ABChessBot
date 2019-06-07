@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.datastructure</a> &gt; <span class="el_source">MyRecord.java</span></div><h1>MyRecord.java</h1><pre class="source lang-java linenums">package abcb.datastructure;
+
+public class MyRecord&lt;E&gt; {
+
+    private E[] arr;
+    private int size;
+
+<span class="fc" id="L8">    public MyRecord() {</span>
+<span class="fc" id="L9">        this.arr = (E[]) new Object[8];</span>
+<span class="fc" id="L10">        this.size = 0;</span>
+<span class="fc" id="L11">    }</span>
+
+    /**
+     * Adds element end of MyRecord.
+     *
+     * @param obj
+     */
+    public void add(E element) {
+<span class="fc" id="L19">        arr[size++] = element;</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (size == arr.length) {</span>
+<span class="fc" id="L21">            grow(2);</span>
+        }
+<span class="fc" id="L23">    }</span>
+
+    public void addAll(MyRecord mr) {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (mr.size() + size &gt;= arr.length) {</span>
+<span class="fc" id="L27">            int multiplier = 1;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            while (mr.size() + size &gt;= arr.length * multiplier) {</span>
+<span class="fc" id="L29">                multiplier += 1;</span>
+            }
+<span class="fc" id="L31">            grow(multiplier);</span>
+        }
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (int i = 0; i &lt; mr.size(); i++) {</span>
+<span class="fc" id="L35">            arr[size++] = (E) mr.get(i);</span>
+        }
+<span class="fc" id="L37">    }</span>
+
+    private void grow(int multiplier) {
+<span class="fc" id="L40">        E[] arr2 = (E[]) new Object[arr.length * multiplier];</span>
+<span class="fc" id="L41">        java.lang.System.arraycopy(arr, 0, arr2, 0, arr.length);</span>
+<span class="fc" id="L42">        this.arr = arr2;</span>
+<span class="fc" id="L43">    }</span>
+
+    public E get(int index) {
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (index &gt; size) {</span>
+<span class="nc" id="L47">            System.out.println(this.toString() + &quot;: index out of bounds!&quot;);</span>
+<span class="nc" id="L48">            return null;</span>
+        }
+<span class="fc" id="L50">        return (E) arr[index];</span>
+    }
+
+    public int size() {
+<span class="fc" id="L54">        return this.size;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

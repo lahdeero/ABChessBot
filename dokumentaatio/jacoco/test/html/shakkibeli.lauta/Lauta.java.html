@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lauta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">shakkibeli.lauta</a> &gt; <span class="el_source">Lauta.java</span></div><h1>Lauta.java</h1><pre class="source lang-java linenums">package shakkibeli.lauta;
+
+import shakkibeli.logiikka.Siirto;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import static shakkibeli.nappula.Arvo.*;
+import shakkibeli.nappula.Nappula;
+import shakkibeli.nappula.Vari;
+import static shakkibeli.nappula.Vari.*;
+
+public class Lauta {
+
+    private List&lt;Nappula&gt; nappulat;
+    private Historia pelihistoria;
+    private Nappula valkoinenKuningas;
+    private Nappula mustaKuningas;
+
+    /**
+     * Konstruktori luo uuden nappulalistan ja pelihistorian.
+     */
+<span class="nc" id="L22">    public Lauta() {</span>
+<span class="nc" id="L23">        this.nappulat = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L24">        this.pelihistoria = new Historia();</span>
+<span class="nc" id="L25">    }</span>
+
+    /**
+     * LisÃ¤Ã¤ laudalle(listalle) Nappula-olion.
+     *
+     * @param lisattava LisÃ¤ttÃ¤vÃ¤ Nappula.
+     * @return True mikÃ¤li lisÃ¤ttÃ¤vÃ¤n nappulan koordinaateissa olevassa ruudussa
+     * ei ole ennestÃ¤Ã¤n nappulaa. False mikÃ¤li nappulat menisivÃ¤t pÃ¤Ã¤llekkÃ¤in.
+     */
+    public boolean lisaaNappula(Nappula lisattava) {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (Nappula nappula : nappulat) {</span>
+<span class="nc bnc" id="L36" title="All 4 branches missed.">            if (nappula.getX() == lisattava.getX() &amp;&amp; nappula.getY() == lisattava.getY()) {</span>
+<span class="nc" id="L37">                return false;</span>
+            }
+<span class="nc" id="L39">        }</span>
+<span class="nc" id="L40">        nappulat.add(lisattava);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (lisattava.getArvo() == KUNINGAS) {</span>
+<span class="nc" id="L42">            setKuningas(lisattava);</span>
+        }
+<span class="nc" id="L44">        return true;</span>
+    }
+
+    /**
+     * TyhjentÃ¤Ã¤ laudan.
+     */
+    public void poistaKaikkiNappulat() {
+<span class="nc" id="L51">        List&lt;Nappula&gt; tyhja = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L52">        this.nappulat = tyhja;</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Poistaa nappulan ruudusta.
+     *
+     * @param x -koordinaatti
+     * @param y -koordinaatti
+     */
+    public void poistaNappula(int x, int y) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (Nappula nappula : nappulat) {</span>
+<span class="nc bnc" id="L63" title="All 4 branches missed.">            if (nappula.getX() == x &amp;&amp; nappula.getY() == y) {</span>
+<span class="nc" id="L64">                nappulat.remove(nappula);</span>
+<span class="nc" id="L65">                System.out.println(&quot;nappi poistettu&quot;);</span>
+<span class="nc" id="L66">                break;</span>
+            }
+<span class="nc" id="L68">        }</span>
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * Poistaa parametrina saadun nappulan listalta/laudalta.
+     *
+     * @param poistettava poistettava nappula.
+     */
+    public void poistaNappula(Nappula poistettava) {
+<span class="nc" id="L77">        int indeksi = -1;</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (int i = 0; i &lt; nappulat.size(); i++) {</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">            if (nappulat.get(i).getX() == poistettava.getX() &amp;&amp; nappulat.get(i).getY() == poistettava.getY()) {</span>
+<span class="nc" id="L80">                indeksi = i;</span>
+            }
+        }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (indeksi &gt;= 0) {</span>
+<span class="nc" id="L84">            nappulat.remove(indeksi);</span>
+        }
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * LisÃ¤Ã¤ siirron siirtohistoriaan.
+     *
+     * @param siirto Historiaan lisÃ¤ttÃ¤vÃ¤ siirto.
+     */
+    public void lisaaSiirto(Siirto siirto) {
+<span class="nc" id="L94">        pelihistoria.lisaaSiirto(siirto);</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * Palauttaa viimeisen toteutuneen siirron nykyisestÃ¤ pelistÃ¤.
+     *
+     * @return Siirto-olio edellisestÃ¤ suoritetusta siirrosta, jossei ole(esim.
+     * ennen ensimmÃ¤istÃ¤ siirtoa), palautetaan null.
+     */
+    public Siirto getViimeinenSiirto() {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (pelihistoria.getHistoriaKoko() &gt; 0) {</span>
+<span class="nc" id="L105">            return pelihistoria.getViimeinenSiirto();</span>
+        }
+<span class="nc" id="L107">        return null;</span>
+    }
+
+    /**
+     * Palauttaa siirtohistorian.
+     *
+     * @return Siirtohistoria listana.
+     */
+    public Historia getHistoria() {
+<span class="nc" id="L116">        return pelihistoria;</span>
+    }
+
+    /**
+     * Kun tarvitaan kÃ¤siteltÃ¤vÃ¤ksi tietyssÃ¤ ruudussa olevaa nappulaa, sen
+     * tietojenkÃ¤sittelemistÃ¤ varten.
+     *
+     * @param x Halutun napin sijainti x-akselilla.
+     * @param y Halutun napin sijainti y-akselilla.
+     * @return Halutusta sijainnista Nappula, mikÃ¤li sellainen on, muuten null.
+     */
+    public Nappula getNappula(int x, int y) {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (Nappula nappula : nappulat) {</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">            if (nappula.getX() == x &amp;&amp; nappula.getY() == y) {</span>
+<span class="nc" id="L130">                return nappula;</span>
+            }
+<span class="nc" id="L132">        }</span>
+<span class="nc" id="L133">        return null;</span>
+    }
+
+    /**
+     * Tarkistetaan onko parametreinÃ¤ annetussa ruudussa nappulaa.
+     *
+     * @param x Tarkistettavan ruudun x-koordinaatti.
+     * @param y Tarkistettavan ruudun y-koordinaatti.
+     * @return MikÃ¤li ruudulla on nappula palautetaan true, jos ruutu on tyhjÃ¤
+     * palautetaan false.
+     */
+    public boolean onkoNappulaaRuudussa(int x, int y) {
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        for (Nappula nappi : nappulat) {</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">            if (nappi.getX() == x &amp;&amp; nappi.getY() == y) {</span>
+<span class="nc" id="L147">                return true;</span>
+            }
+<span class="nc" id="L149">        }</span>
+<span class="nc" id="L150">        return false;</span>
+    }
+
+    /**
+     * LisÃ¤tÃ¤Ã¤n laudalle(listalle) normaalin shakin aloitusnappulat oikeille
+     * paikoilleen/ruuduille, eli yhteensÃ¤ 16 sotilasta ja 16 upseeria,
+     * valkoisia ja mustia tasapuolisesti. Eli yhteensÃ¤ 32 nappulaa, jotka
+     * vievÃ¤t (aloituksessa) puolet laudan pinta-alasta.
+     */
+    public void asetaAloitusNappulat() {
+<span class="nc" id="L160">        Vari vari = MUSTA;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc" id="L162">            List&lt;Nappula&gt; upseerit = getAloitusUpseerit(vari);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            for (Nappula lisattava : upseerit) {</span>
+<span class="nc" id="L164">                lisaaNappula(lisattava);</span>
+<span class="nc" id="L165">            }</span>
+<span class="nc" id="L166">            vari = VALKOINEN;</span>
+        }
+<span class="nc" id="L168">        int y = 6;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        for (int i = 0; i &lt; 2; i++) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="nc" id="L171">                Nappula sotilas = new Nappula(x, y, SOTILAS, vari);</span>
+<span class="nc" id="L172">                lisaaNappula(sotilas);</span>
+            }
+<span class="nc" id="L174">            vari = MUSTA;</span>
+<span class="nc" id="L175">            y = 1;</span>
+        }
+<span class="nc" id="L177">    }</span>
+
+    /**
+     * Asettaa kuninkaan (Lauta-)luokan oliomuuttujaan. Osaa tarkistaa
+     * asetettavaan kuninkaan vÃ¤rin. Asettamisen jÃ¤lkeen kuninkaan saa
+     * kÃ¤yttÃ¶Ã¶nsÃ¤ getValkoinenKuningas() tai getMustaKuningas() gettereiden
+     * kautta.
+     *
+     * @param kuningas Asetettava kuningas.
+     */
+    public void setKuningas(Nappula kuningas) {
+<span class="nc bnc" id="L188" title="All 4 branches missed.">        if (kuningas.getVari() == VALKOINEN &amp;&amp; kuningas.getArvo() == KUNINGAS) {</span>
+<span class="nc" id="L189">            this.valkoinenKuningas = kuningas;</span>
+<span class="nc bnc" id="L190" title="All 4 branches missed.">        } else if (kuningas.getVari() == MUSTA &amp;&amp; kuningas.getArvo() == KUNINGAS) {</span>
+<span class="nc" id="L191">            this.mustaKuningas = kuningas;</span>
+        }
+<span class="nc" id="L193">    }</span>
+
+    public Nappula getValkoinenKuningas() {
+<span class="nc" id="L196">        return this.valkoinenKuningas;</span>
+    }
+
+    public Nappula getMustaKuningas() {
+<span class="nc" id="L200">        return this.mustaKuningas;</span>
+    }
+
+    /**
+     * Palauttaa parametrina saadun nappulan vastustajan kuninkaan. Esim.
+     * valkoinen sotilas palauttaa mustan kuninkaan.
+     *
+     * @param tarkistettava Nappula jonka vastustajan kuningas tahdotaan.
+     * @return Palauttaa tarkistettavan nappulan vastapuolen kuninkaan.
+     */
+    public Nappula getVastustajanKuningas(Nappula tarkistettava) {
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (tarkistettava.getVari() == MUSTA) {</span>
+<span class="nc" id="L212">            return this.valkoinenKuningas;</span>
+        }
+<span class="nc" id="L214">        return this.mustaKuningas;</span>
+    }
+
+    /**
+     * Palauttaa listan aloituksessa olevista upseereista(eli kaikki paitsi
+     * sotilaat) kyseiselle(parametrina annetulle) vÃ¤rille.
+     *
+     * @param vari Kumman vÃ¤riset upseerit tahdotaan.
+     * @return Kaikki valkoiset tai mustat (aloitus)upseerit.
+     */
+    public List&lt;Nappula&gt; getAloitusUpseerit(Vari vari) {
+<span class="nc" id="L225">        List&lt;Nappula&gt; upseerit = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L226">        int y = 0;</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">        if (vari == VALKOINEN) {</span>
+<span class="nc" id="L228">            y = 7;</span>
+        }
+<span class="nc" id="L230">        Nappula torni = new Nappula(0, y, TORNI, vari);</span>
+<span class="nc" id="L231">        Nappula torni2 = new Nappula(7, y, TORNI, vari);</span>
+<span class="nc" id="L232">        Nappula hevonen = new Nappula(1, y, HEVONEN, vari);</span>
+<span class="nc" id="L233">        Nappula hevonen2 = new Nappula(6, y, HEVONEN, vari);</span>
+<span class="nc" id="L234">        Nappula lahetti = new Nappula(2, y, LAHETTI, vari);</span>
+<span class="nc" id="L235">        Nappula lahetti2 = new Nappula(5, y, LAHETTI, vari);</span>
+<span class="nc" id="L236">        Nappula daami = new Nappula(3, y, KUNINGATAR, vari);</span>
+<span class="nc" id="L237">        Nappula kunkku = new Nappula(4, y, KUNINGAS, vari);</span>
+<span class="nc" id="L238">        upseerit.addAll(Arrays.asList(torni, torni2, hevonen, hevonen2, lahetti, lahetti2, daami, kunkku));</span>
+<span class="nc" id="L239">        return upseerit;</span>
+    }
+
+    public List&lt;Nappula&gt; getNappulaLista() {
+<span class="nc" id="L243">        List&lt;Nappula&gt; nappulatLaudalla = new ArrayList();</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        for (Nappula nappula : nappulat) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (nappula.onkoSyoty() == false) {</span>
+<span class="nc" id="L246">                nappulatLaudalla.add(nappula);</span>
+            }
+<span class="nc" id="L248">        }</span>
+<span class="nc" id="L249">        this.nappulat = nappulatLaudalla;</span>
+<span class="nc" id="L250">        return nappulatLaudalla;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

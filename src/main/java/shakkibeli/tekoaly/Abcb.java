@@ -12,6 +12,7 @@ import shakkibeli.logiikka.Pelilogiikka;
 import shakkibeli.logiikka.Siirto;
 import shakkibeli.nappula.Nappula;
 import shakkibeli.nappula.Vari;
+import static shakkibeli.nappula.Vari.MUSTA;
 import static shakkibeli.nappula.Vari.VALKOINEN;
 
 /**
@@ -32,6 +33,7 @@ public class Abcb {
     private Position previous;
     private Openings openings;
     private Generator generator;
+    private int moveNumber = 1;
 
     public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException {
         this.pelo = pelo;
@@ -42,9 +44,12 @@ public class Abcb {
         this.history = new MyRecord<String>();
         this.openings = new Openings();
         this.generator = new Generator();
+        this.moveConverter = new MoveConverter();
     }
 
     public void suoritaSiirto(Vari vari) {
+        System.out.println("\n\nMOVE NUMBER " + moveNumber++);
+        System.out.println("ihan eka");
         Position currentPosition = new Position();
         for (Nappula nappi : nappulat) {
             if (nappi.onkoSyoty()) {
@@ -54,11 +59,22 @@ public class Abcb {
         }
 
         // Gui doesnt add into history, so we have to do it here..
-        if (previous != null && previous.whitesMove != currentPosition.whitesMove) {
+        if (previous != null) {
             addToHistory(previous, currentPosition);
+        } else if (this.vari == MUSTA) {
+            System.out.println("mustan vuoro!");
+            addToHistory(generator.createStartingPosition(), currentPosition);
         }
 
+        System.out.println("problem begins...");
+
+        /**
+         * OPENING SEARCH *
+         */
         Position nextPosition = figureOutNextPosition(currentPosition);
+        /**
+         * SEARCH OVER *
+         */
 
         addToHistory(currentPosition, nextPosition);
         Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
@@ -69,24 +85,36 @@ public class Abcb {
     }
 
     public Position figureOutNextPosition(Position currentPosition) {
+        System.out.println("search begins");
         if (openings.search(historyToString())) {
+            System.out.println("eka");
             String moveStr = openings.getNextMove();
+            System.out.println("moveStr = " + moveStr);
             Siirto siirto = getNextSiirto(currentPosition, moveStr);
-            Position p = new Position();
-            p.clonePosition(currentPosition, siirto.getX(), siirto.getY());
-            p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();
-            return p;
+            if (siirto != null) {
+                System.out.println("siirto = " + siirto.toString());
+                Position p = new Position();
+                p.clonePosition(currentPosition, siirto.getX(), siirto.getY());
+                p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();
+                System.out.println("opening found!");
+                return p;
+            }
+            System.out.println("could not find opening..");
         }
+        System.out.println("historyToString = " + historyToString());
+        System.out.println("search failed..");
         currentPosition.whitesMove = vari == VALKOINEN;
         return ab.calculateNextPosition(currentPosition, depth, vari == VALKOINEN);
     }
 
     private Siirto getNextSiirto(Position currentPosition, String search) {
+        currentPosition.whitesMove = this.vari == VALKOINEN;
         MyRecord<Position> nextPositions = generator.getNextPositions(currentPosition);
         for (int i = 0; i < nextPositions.size(); i++) {
             Position nextPosition = nextPositions.get(i);
             Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
-            if (siirto.toString().equals(search)) {
+            System.out.println("siirto[" + i + "] = " + siirto.toChessNotation());
+            if (siirto.toChessNotation().equals(search)) {
                 return siirto;
             }
         }
@@ -94,19 +122,26 @@ public class Abcb {
     }
 
     public void addToHistory(Position current, Position next) {
-        history.add(moveConverter.positionsToChessNotation(current, next));
+        String s = moveConverter.positionsToChessNotation(current, next);
+        System.out.println("s = " + s);
+        history.add(s);
     }
 
     public String historyToString() {
         int k = 1;
-        String his = "" + k + '.';
-        for (int i = 0; i < history.size(); i++) {
-            his += " " + history.get(i);
-            if (i % 2 == 0 && i != 0) {
-                his += k + '.';
+        String ret = "";
+        for (int i = 0; i < history.size(); i+=2) {
+            if (k > 1) {
+                ret += " ";
             }
+            if (i+1 < history.size()) {
+                ret += "" + k + ". " + history.get(i) + " " + history.get(i+1);
+            } else {
+               ret += k + ". " + history.get(i);
+            }
+            k += 1;
         }
-        return his;
+        return ret;
     }
 
     public Pelilogiikka getPelo() {

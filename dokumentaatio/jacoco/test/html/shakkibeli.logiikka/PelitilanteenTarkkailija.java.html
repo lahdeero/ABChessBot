@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PelitilanteenTarkkailija.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">shakkibeli.logiikka</a> &gt; <span class="el_source">PelitilanteenTarkkailija.java</span></div><h1>PelitilanteenTarkkailija.java</h1><pre class="source lang-java linenums">package shakkibeli.logiikka;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import shakkibeli.lauta.Lauta;
+import static shakkibeli.nappula.Arvo.*;
+import shakkibeli.nappula.Nappula;
+import static shakkibeli.nappula.Vari.*;
+
+public class PelitilanteenTarkkailija {
+
+    private Pelilogiikka logiikka;
+    private Lauta lauta;
+    private List&lt;Nappula&gt; nappulat;
+
+    /**
+     * Konstruktori asettaa pelilogiikan oliomuuttujaan, hakee pelilogiikan
+     * kautta laudan ja laudan kautta nappulat.
+     *
+     * @param logiikka kÃ¤ytettÃ¤vÃ¤ Pelilogiikka -olio.
+     */
+<span class="nc" id="L25">    public PelitilanteenTarkkailija(Pelilogiikka logiikka) {</span>
+<span class="nc" id="L26">        this.logiikka = logiikka;</span>
+<span class="nc" id="L27">        this.lauta = logiikka.getLauta();</span>
+<span class="nc" id="L28">        this.nappulat = lauta.getNappulaLista();</span>
+<span class="nc" id="L29">    }</span>
+
+    /**
+     * 
+     * @return true mikÃ¤li peli on tasapeli. 
+     */
+    public boolean tarkistaLooppi() {
+<span class="nc" id="L36">        nappulat = logiikka.getNappulaLista();</span>
+<span class="nc" id="L37">        Stack&lt;Siirto&gt; siirrot = new Stack();</span>
+<span class="nc" id="L38">        siirrot = (Stack&lt;Siirto&gt;)logiikka.getLauta().getHistoria().getHistoria().clone();</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (siirrot.size() &lt; 12) {</span>
+<span class="nc" id="L40">            return false;</span>
+        }
+<span class="nc" id="L42">        HashMap&lt;Siirto,Integer&gt; tarkastusmappi = new HashMap();</span>
+        
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        for (int i = 0; i &lt; 12; i++) {</span>
+<span class="nc" id="L45">            Siirto siirto = siirrot.pop();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (!tarkastusmappi.containsKey(siirto)) {</span>
+<span class="nc" id="L47">                tarkastusmappi.put(siirto,1);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            } else if (tarkastusmappi.get(siirto) == 1){</span>
+<span class="nc" id="L49">                tarkastusmappi.put(siirto, tarkastusmappi.get(siirto)+1);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            } else if (tarkastusmappi.get(siirto) == 2) {</span>
+<span class="nc" id="L51">                Logger.getLogger(PelitilanteenTarkkailija.class.getName()).log(Level.WARNING, null, &quot;LOOPPAA!&quot;); </span>
+<span class="nc" id="L52">                return true;</span>
+            }
+        }
+<span class="nc" id="L55">        return false;</span>
+    }
+    /**
+     * Tarkistetaan nimenomaan ettei vuorossa oleva pelaaja voi altistaa omaa
+     * kuningastaan uhatuksi. Metodia kutsutaan (pÃ¤Ã¤sÃ¤Ã¤ntÃ¶isesti) Pelilogiikan
+     * liikutaNappulaa metodissa Pelilogiikan testaaShakkiOmaanPaatyyn-metodin
+     * kautta.
+     *
+     * @param siirto Tarkistettava siirto.
+     * @return True mikÃ¤li liikkuvan pÃ¤Ã¤tyyn tulisi shakki, mikÃ¤li siirto
+     * suoritetaan. Laillinen siirto palauttaa false.
+     */
+    public boolean tuleekoLiikkuvanPaatyynShakki(Siirto siirto) {
+<span class="nc" id="L68">        Nappula mahdollisestiSyotava = null;</span>
+<span class="nc" id="L69">        Nappula testattava = siirto.getNappula();</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (lauta.onkoNappulaaRuudussa(siirto.getUusiX(), siirto.getUusiY())) {</span>
+<span class="nc" id="L72">            mahdollisestiSyotava = lauta.getNappula(siirto.getUusiX(), siirto.getUusiY());</span>
+        }
+<span class="nc" id="L74">        testattava.testiLiiku(siirto.getUusiX(), siirto.getUusiY());</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        for (Nappula nappula : lauta.getNappulaLista()) {</span>
+<span class="nc bnc" id="L77" title="All 6 branches missed.">            if (nappula.getVari() != testattava.getVari() &amp;&amp; !nappula.equals(mahdollisestiSyotava) &amp;&amp; tarkistaShakkaakoNappula(nappula) != null) {</span>
+<span class="nc" id="L78">                testattava.testiLiikuTakaisin();</span>
+<span class="nc" id="L79">                return true;</span>
+            }
+<span class="nc" id="L81">        }</span>
+<span class="nc" id="L82">        testattava.testiLiikuTakaisin();</span>
+<span class="nc" id="L83">        return false;</span>
+    }
+
+    /**
+     * Tarkistetaan tuleeko siirron suorittaneen pelaajan vastustajan kuningas
+     * uhatuksi mikÃ¤li siirto suoritetaan. Huomionarvoista on, ettÃ¤ shakkaava
+     * nappula ei vÃ¤lttÃ¤mÃ¤ttÃ¤ ole siirretty nappula!
+     *
+     * @param siirto Tarkistettava siirto.
+     * @return True jos siirron jÃ¤lkeen vastustajan kuningas on uhattuna, muuten
+     * false.
+     */
+    public boolean tarkistaShakataanko(Siirto siirto) {
+<span class="nc" id="L96">        Nappula liikkunut = siirto.getNappula();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        for (Nappula nappula : logiikka.getNappulaLista()) {</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">            if (liikkunut.getVari() == nappula.getVari() &amp;&amp; tarkistaShakkaakoNappula(nappula) != null) {</span>
+<span class="nc" id="L99">                return true;</span>
+            }
+<span class="nc" id="L101">        }</span>
+<span class="nc" id="L102">        return false;</span>
+    }
+
+    /**
+     * Tarkistetaan uhkaako parametrina annettu Nappula vastustajan Kuningasta.
+     *
+     * @param tarkistettava Se Nappula, jonka osalta tarkistetaan, uhkaako se
+     * vastustajan kuningasta.
+     * @return Null mikÃ¤li nappula ei uhkaa vastustajan kuningasta, muuten
+     * palautetaan uhkaava(eli tarkistettava) Nappula.
+     */
+    public Nappula tarkistaShakkaakoNappula(Nappula tarkistettava) {
+<span class="nc" id="L114">        Nappula vastustajanKuningas = lauta.getVastustajanKuningas(tarkistettava);</span>
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (null != tarkistettava.getArvo()) {</span>
+<span class="nc bnc" id="L117" title="All 7 branches missed.">            switch (tarkistettava.getArvo()) {</span>
+                case SOTILAS:
+<span class="nc" id="L119">                    return tarkistaShakkaakoSotilas(tarkistettava, vastustajanKuningas);</span>
+                case TORNI:
+<span class="nc" id="L121">                    return tarkistaShakkaakoTorni(tarkistettava, vastustajanKuningas);</span>
+                case HEVONEN:
+<span class="nc" id="L123">                    return tarkistaShakkaakoHevonen(tarkistettava, vastustajanKuningas);</span>
+                case LAHETTI:
+<span class="nc" id="L125">                    return tarkistaShakkaakoLahetti(tarkistettava, vastustajanKuningas);</span>
+                case KUNINGATAR:
+<span class="nc" id="L127">                    return tarkistaShakkaakoKuningatar(tarkistettava, vastustajanKuningas);</span>
+                case KUNINGAS:
+<span class="nc" id="L129">                    return tarkistaShakkaakoKuningas(tarkistettava, vastustajanKuningas);</span>
+                default:
+                    break;
+            }
+        }
+<span class="nc" id="L134">        return null;</span>
+    }
+
+    /**
+     * Tarkistaa uhkaako tarkistettavana oleva sotilas vastustajansa kuningasta.
+     *
+     * @param tarkistettava sotilas.
+     * @param vastustajanKuningas kuningas eri vÃ¤riÃ¤ kun tarkistettava.
+     * @return sotilaan mikÃ¤li se shakkaa, muuten null(ei shakkaa).
+     */
+    public Nappula tarkistaShakkaakoSotilas(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (tarkistettava.getVari() == VALKOINEN) {</span>
+<span class="nc" id="L146">            return tarkistaShakkaakoValkoinenSotilas(tarkistettava, vastustajanKuningas);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        } else if (tarkistettava.getVari() == MUSTA) {</span>
+<span class="nc" id="L148">            return tarkistaShakkaakoMustaSotilas(tarkistettava, vastustajanKuningas);</span>
+        }
+<span class="nc" id="L150">        return null;</span>
+    }
+
+    private Nappula tarkistaShakkaakoValkoinenSotilas(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (vastustajanKuningas.getX() == tarkistettava.getX() - 1 &amp;&amp; vastustajanKuningas.getY()</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">                == tarkistettava.getY() - 1 || vastustajanKuningas.getX() == tarkistettava.getX() + 1</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                &amp;&amp; vastustajanKuningas.getY() == tarkistettava.getY() - 1) {</span>
+<span class="nc" id="L157">            return tarkistettava;</span>
+        }
+<span class="nc" id="L159">        return null;</span>
+    }
+
+    private Nappula tarkistaShakkaakoMustaSotilas(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (vastustajanKuningas.getX() == tarkistettava.getX() - 1 &amp;&amp; vastustajanKuningas.getY()</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">                == tarkistettava.getY() + 1 || vastustajanKuningas.getX() == tarkistettava.getX() + 1</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                &amp;&amp; vastustajanKuningas.getY() == tarkistettava.getY() + 1) {</span>
+<span class="nc" id="L166">            return tarkistettava;</span>
+        }
+<span class="nc" id="L168">        return null;</span>
+    }
+
+    /**
+     * Tarkistaa shakkaako parametrina annettu torni vastustajansa kuningasta.
+     *
+     * @param tarkistettava Torni.
+     * @param vastustajanKuningas Eri vÃ¤riÃ¤ kun tarkastettava torni.
+     * @return Tarkistettava torni mikÃ¤li se shakkaa, muuten null(ei shakkaa).
+     */
+    public Nappula tarkistaShakkaakoTorni(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (tarkistettava.getX() == vastustajanKuningas.getX()</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                || tarkistettava.getY() == vastustajanKuningas.getY()) {</span>
+<span class="nc" id="L181">            Siirto testattava = new Siirto(tarkistettava.getX(), tarkistettava.getY(), vastustajanKuningas.getX(), vastustajanKuningas.getY(), tarkistettava);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (logiikka.tarkistaPystyTaiVaakaLiikkuminen(testattava)) {</span>
+<span class="nc" id="L183">                return tarkistettava;</span>
+            }
+        }
+<span class="nc" id="L186">        return null;</span>
+    }
+
+    /**
+     * Tarkistaa shakkaako parametrina annettu heppa vastustajansa kuningasta.
+     *
+     * @param tarkistettava Hevonen.
+     * @param vastustajanKuningas Eri vÃ¤riÃ¤ kun tarkastettava hevonen.
+     * @return Tarkistettava hevonen mikÃ¤li se shakkaa, muuten null(ei shakkaa).
+     */
+    public Nappula tarkistaShakkaakoHevonen(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L197" title="All 4 branches missed.">        if (Math.abs(tarkistettava.getX() - vastustajanKuningas.getX()) == 1 &amp;&amp; Math.abs(tarkistettava.getY() - vastustajanKuningas.getY()) == 2</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">                || Math.abs(tarkistettava.getX() - vastustajanKuningas.getX()) == 2 &amp;&amp; Math.abs(tarkistettava.getY() - vastustajanKuningas.getY()) == 1) {</span>
+<span class="nc" id="L199">            return tarkistettava;</span>
+        }
+<span class="nc" id="L201">        return null;</span>
+    }
+
+    /**
+     * Tarkistaa shakkaako parametrina annettu lÃ¤hetti vastustajansa kuningasta.
+     *
+     * @param tarkistettava LÃ¤hetti.
+     * @param vastustajanKuningas Eri vÃ¤riÃ¤ kun tarkastettava lÃ¤hetti.
+     * @return Tarkistettava lÃ¤hetti mikÃ¤li se shakkaa, muuten null(ei shakkaa).
+     */
+    public Nappula tarkistaShakkaakoLahetti(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc" id="L212">        Siirto testattava = new Siirto(tarkistettava.getX(), tarkistettava.getY(), vastustajanKuningas.getX(), vastustajanKuningas.getY(), tarkistettava);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if (logiikka.tarkistaRistiinLiikkuminen(testattava) == true) {</span>
+<span class="nc" id="L214">            return tarkistettava;</span>
+        }
+<span class="nc" id="L216">        return null;</span>
+    }
+
+    /**
+     * Tarkistaa shakkaako parametrina annettu kuningatar vastustajansa
+     * kuningasta.
+     *
+     * @param tarkistettava Kuningatar.
+     * @param vastustajanKuningas Eri vÃ¤riÃ¤ kun tarkastettava kuningatar.
+     * @return Tarkistettava kuningatar mikÃ¤li se shakkaa, muuten null(ei
+     * shakkaa).
+     */
+    public Nappula tarkistaShakkaakoKuningatar(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc" id="L229">        Siirto testattava = new Siirto(tarkistettava.getX(), tarkistettava.getY(), vastustajanKuningas.getX(), vastustajanKuningas.getY(), tarkistettava);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (logiikka.tarkistaRistiinLiikkuminen(testattava) == true) {</span>
+<span class="nc" id="L231">            return tarkistettava;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        } else if (logiikka.tarkistaPystyTaiVaakaLiikkuminen(testattava)) {</span>
+<span class="nc" id="L233">            return tarkistettava;</span>
+        }
+<span class="nc" id="L235">        return null;</span>
+
+    }
+
+    /**
+     * Tarkistaa etteivÃ¤t kuninkaat pÃ¤Ã¤se viereisiin ruutuihin.
+     *
+     * @param tarkistettava Kuningas.
+     * @param vastustajanKuningas Eri vÃ¤riÃ¤ kun tarkastettava kuningas.
+     * @return Tarkistettava kuningas mikÃ¤li se shakkaa, muuten null(ei
+     * shakkaa).
+     */
+    public Nappula tarkistaShakkaakoKuningas(Nappula tarkistettava, Nappula vastustajanKuningas) {
+<span class="nc bnc" id="L248" title="All 4 branches missed.">        if (Math.abs(tarkistettava.getX() - vastustajanKuningas.getX()) &lt; 2 &amp;&amp; Math.abs(tarkistettava.getY() - vastustajanKuningas.getY()) &lt; 2) {</span>
+<span class="nc" id="L249">            return tarkistettava;</span>
+        }
+<span class="nc" id="L251">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

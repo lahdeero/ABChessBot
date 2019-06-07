@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Generator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.simulate</a> &gt; <span class="el_source">Generator.java</span></div><h1>Generator.java</h1><pre class="source lang-java linenums">package abcb.simulate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import abcb.datastructure.MyRecord;
 import static abcb.simulate.Position.*;
 
-<span class="fc" id="L8">public class Generator {</span>
+<span class="fc" id="L6">public class Generator {</span>
 
     public Position currentPosition;
 
@@ -13,29 +11,35 @@ import static abcb.simulate.Position.*;
      * @return Classic chess starting position
      */
     public Position createStartingPosition() {
-<span class="fc" id="L16">        int[][] board = new int[8][8];</span>
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        for (int i = 0; i &lt; 8; i++) {</span>
-<span class="fc" id="L18">            board[1][i] = blackPawn;</span>
-<span class="fc" id="L19">            board[6][i] = whitePawn;</span>
+<span class="fc" id="L14">        int[][] board = new int[8][8];</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        for (int i = 0; i &lt; 8; i++) {</span>
+<span class="fc" id="L16">            board[1][i] = blackPawn;</span>
+<span class="fc" id="L17">            board[6][i] = whitePawn;</span>
         }
-<span class="fc" id="L21">        board[0][0] = blackRook;</span>
-<span class="fc" id="L22">        board[0][1] = blackKnight;</span>
-<span class="fc" id="L23">        board[0][2] = blackBishop;</span>
-<span class="fc" id="L24">        board[0][3] = blackQueen;</span>
-<span class="fc" id="L25">        board[0][4] = blackKing;</span>
-<span class="fc" id="L26">        board[0][5] = blackBishop;</span>
-<span class="fc" id="L27">        board[0][6] = blackKnight;</span>
-<span class="fc" id="L28">        board[0][7] = blackRook;</span>
-<span class="fc" id="L29">        board[7][0] = whiteRook;</span>
-<span class="fc" id="L30">        board[7][1] = whiteKnight;</span>
-<span class="fc" id="L31">        board[7][2] = whiteBishop;</span>
-<span class="fc" id="L32">        board[7][3] = whiteQueen;</span>
-<span class="fc" id="L33">        board[7][4] = whiteKing;</span>
-<span class="fc" id="L34">        board[7][5] = whiteBishop;</span>
-<span class="fc" id="L35">        board[7][6] = whiteKnight;</span>
-<span class="fc" id="L36">        board[7][7] = whiteRook;</span>
+<span class="fc" id="L19">        board[0][0] = blackRook;</span>
+<span class="fc" id="L20">        board[0][1] = blackKnight;</span>
+<span class="fc" id="L21">        board[0][2] = blackBishop;</span>
+<span class="fc" id="L22">        board[0][3] = blackQueen;</span>
+<span class="fc" id="L23">        board[0][4] = blackKing;</span>
+<span class="fc" id="L24">        board[0][5] = blackBishop;</span>
+<span class="fc" id="L25">        board[0][6] = blackKnight;</span>
+<span class="fc" id="L26">        board[0][7] = blackRook;</span>
+<span class="fc" id="L27">        board[7][0] = whiteRook;</span>
+<span class="fc" id="L28">        board[7][1] = whiteKnight;</span>
+<span class="fc" id="L29">        board[7][2] = whiteBishop;</span>
+<span class="fc" id="L30">        board[7][3] = whiteQueen;</span>
+<span class="fc" id="L31">        board[7][4] = whiteKing;</span>
+<span class="fc" id="L32">        board[7][5] = whiteBishop;</span>
+<span class="fc" id="L33">        board[7][6] = whiteKnight;</span>
+<span class="fc" id="L34">        board[7][7] = whiteRook;</span>
 
-<span class="fc" id="L38">        return new Position(board, true);</span>
+<span class="fc" id="L36">        Position startingPosition = new Position(board, true);</span>
+<span class="fc" id="L37">        startingPosition.whiteCastleKingSide = true;</span>
+<span class="fc" id="L38">        startingPosition.whiteCastleQueenSide = true;</span>
+<span class="fc" id="L39">        startingPosition.blackCastleKingSide = true;</span>
+<span class="fc" id="L40">        startingPosition.blackCastleQueenSide = true;</span>
+        
+<span class="fc" id="L42">        return startingPosition;</span>
     }
 
     /**
@@ -44,267 +48,281 @@ import static abcb.simulate.Position.*;
      * @param currentPosition
      * @return List&lt;Position&gt;
      */
-    public List&lt;Position&gt; getNextPositions(Position currentPosition) {
-<span class="fc" id="L48">        this.currentPosition = currentPosition;</span>
-<span class="fc" id="L49">        List&lt;Position&gt; nextPositions = Collections.synchronizedList(new ArrayList&lt;&gt;());</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (int y = 0; y &lt; 8; y++) {</span>
-<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
-<span class="fc" id="L52">                int piece = currentPosition.board[y][x];</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (piece == 0) {</span>
-<span class="fc" id="L54">                    continue;</span>
+    public MyRecord&lt;Position&gt; getNextPositions(Position currentPosition) {
+<span class="fc" id="L52">        this.currentPosition = currentPosition;</span>
+//        List&lt;Position&gt; nextPositions = Collections.synchronizedList(new MyRecord&lt;&gt;());
+<span class="fc" id="L54">        MyRecord&lt;Position&gt; nextPositions = new MyRecord&lt;&gt;();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int y = 0; y &lt; 8; y++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc" id="L57">                int piece = currentPosition.board[y][x];</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">                if (piece == 0) {</span>
+<span class="fc" id="L59">                    continue;</span>
                 }
-<span class="fc bfc" id="L56" title="All 2 branches covered.">                if (!currentPosition.whitesMove) { // BLACK</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">                    if (piece == blackPawn) {</span>
-<span class="fc" id="L58">                        blackPawnMoves(x, y, nextPositions);</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">                    } else if (piece == blackRook) {</span>
-<span class="fc" id="L60">                        nextPositions.addAll(rookMoves(x, y, blackRook));</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">                    } else if (piece == blackKnight) {</span>
-<span class="fc" id="L62">                        nextPositions.addAll(knightMoves(x, y, blackKnight));</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">                    } else if (piece == blackBishop) {</span>
-<span class="fc" id="L64">                        nextPositions.addAll(bishopMoves(x, y, blackBishop));</span>
-<span class="fc bfc" id="L65" title="All 2 branches covered.">                    } else if (piece == blackQueen) {</span>
-<span class="fc" id="L66">                        nextPositions.addAll(queenMoves(x, y, blackQueen));</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                    } else if (piece == blackKing) {</span>
-<span class="fc" id="L68">                        nextPositions.addAll(kingMoves(x, y, blackKing));</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                if (!currentPosition.whitesMove) { // BLACK</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">                    if (piece == blackPawn) {</span>
+<span class="fc" id="L63">                        blackPawnMoves(x, y, nextPositions);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                    } else if (piece == blackRook) {</span>
+<span class="fc" id="L65">                        nextPositions.addAll(rookMoves(x, y, blackRook));</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">                    } else if (piece == blackKnight) {</span>
+<span class="fc" id="L67">                        nextPositions.addAll(knightMoves(x, y, blackKnight));</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                    } else if (piece == blackBishop) {</span>
+<span class="fc" id="L69">                        nextPositions.addAll(bishopMoves(x, y, blackBishop));</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                    } else if (piece == blackQueen) {</span>
+<span class="fc" id="L71">                        nextPositions.addAll(queenMoves(x, y, blackQueen));</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">                    } else if (piece == blackKing) {</span>
+<span class="fc" id="L73">                        nextPositions.addAll(kingMoves(x, y, blackKing));</span>
                     }
                 } else {  // WHITE
-<span class="fc bfc" id="L71" title="All 2 branches covered.">                    if (piece == whitePawn) {</span>
-<span class="fc" id="L72">                        whitePawnMoves(x, y, nextPositions);</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">                    } else if (piece == whiteRook) {</span>
-<span class="fc" id="L74">                        nextPositions.addAll(rookMoves(x, y, whiteRook));</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">                    } else if (piece == whiteKnight) {</span>
-<span class="fc" id="L76">                        nextPositions.addAll(knightMoves(x, y, whiteKnight));</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">                    } else if (piece == whiteBishop) {</span>
-<span class="fc" id="L78">                        nextPositions.addAll(bishopMoves(x, y, whiteBishop));</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">                    } else if (piece == whiteQueen) {</span>
-<span class="fc" id="L80">                        nextPositions.addAll(queenMoves(x, y, whiteQueen));</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">                    } else if (piece == whiteKing) {</span>
-<span class="fc" id="L82">                        nextPositions.addAll(kingMoves(x, y, whiteKing));</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                    if (piece == whitePawn) {</span>
+<span class="fc" id="L77">                        whitePawnMoves(x, y, nextPositions);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                    } else if (piece == whiteRook) {</span>
+<span class="fc" id="L79">                        nextPositions.addAll(rookMoves(x, y, whiteRook));</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                    } else if (piece == whiteKnight) {</span>
+<span class="fc" id="L81">                        nextPositions.addAll(knightMoves(x, y, whiteKnight));</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                    } else if (piece == whiteBishop) {</span>
+<span class="fc" id="L83">                        nextPositions.addAll(bishopMoves(x, y, whiteBishop));</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">                    } else if (piece == whiteQueen) {</span>
+<span class="fc" id="L85">                        nextPositions.addAll(queenMoves(x, y, whiteQueen));</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">                    } else if (piece == whiteKing) {</span>
+<span class="fc" id="L87">                        nextPositions.addAll(kingMoves(x, y, whiteKing));</span>
                     }
                 }
             }
         }
-<span class="fc" id="L87">        return nextPositions;</span>
+<span class="fc" id="L92">        return nextPositions;</span>
     }
 
-    private List&lt;Position&gt; rookMoves(int x, int y, int piece) {
-<span class="fc" id="L91">        List&lt;Position&gt; nextRooks = new ArrayList&lt;Position&gt;();</span>
-<span class="fc" id="L92">        boolean[] blocked = {false, false, false, false};</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        for (int i = 1; i &lt; 8; i++) {</span>
-<span class="fc bfc" id="L94" title="All 6 branches covered.">            if (!blocked[0] &amp;&amp; insideBoard(x - i, y) &amp;&amp; !occupied(x - i, y, piece)) {</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">                if (eats(x - i, y, piece)) {</span>
-<span class="fc" id="L96">                    blocked[0] = true;</span>
+    private MyRecord&lt;Position&gt; rookMoves(int x, int y, int piece) {
+<span class="fc" id="L96">        MyRecord&lt;Position&gt; nextRooks = new MyRecord&lt;Position&gt;();</span>
+<span class="fc" id="L97">        boolean[] blocked = {false, false, false, false};</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (int i = 1; i &lt; 8; i++) {</span>
+<span class="fc bfc" id="L99" title="All 6 branches covered.">            if (!blocked[0] &amp;&amp; insideBoard(x - i, y) &amp;&amp; !occupied(x - i, y, piece)) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                if (eats(x - i, y, piece)) {</span>
+<span class="fc" id="L101">                    blocked[0] = true;</span>
                 }
-<span class="fc" id="L98">                nextRooks.add(createPosition(x, y, x - i, y, piece));</span>
+<span class="fc" id="L103">                nextRooks.add(createPosition(x, y, x - i, y, piece));</span>
             } else {
-<span class="fc" id="L100">                blocked[0] = true;</span>
+<span class="fc" id="L105">                blocked[0] = true;</span>
             }
-<span class="fc bfc" id="L102" title="All 6 branches covered.">            if (!blocked[1] &amp;&amp; insideBoard(x + i, y) &amp;&amp; !occupied(x + i, y, piece)) {</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">                if (eats(x + i, y, piece)) {</span>
-<span class="fc" id="L104">                    blocked[1] = true;</span>
+<span class="fc bfc" id="L107" title="All 6 branches covered.">            if (!blocked[1] &amp;&amp; insideBoard(x + i, y) &amp;&amp; !occupied(x + i, y, piece)) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                if (eats(x + i, y, piece)) {</span>
+<span class="fc" id="L109">                    blocked[1] = true;</span>
                 }
-<span class="fc" id="L106">                nextRooks.add(createPosition(x, y, x + i, y, piece));</span>
+<span class="fc" id="L111">                nextRooks.add(createPosition(x, y, x + i, y, piece));</span>
             } else {
-<span class="fc" id="L108">                blocked[1] = true;</span>
+<span class="fc" id="L113">                blocked[1] = true;</span>
             }
-<span class="fc bfc" id="L110" title="All 6 branches covered.">            if (!blocked[2] &amp;&amp; insideBoard(x, y - i) &amp;&amp; !occupied(x, y - i, piece)) {</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">                if (eats(x, y - i, piece)) {</span>
-<span class="nc" id="L112">                    blocked[2] = true;</span>
+<span class="fc bfc" id="L115" title="All 6 branches covered.">            if (!blocked[2] &amp;&amp; insideBoard(x, y - i) &amp;&amp; !occupied(x, y - i, piece)) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                if (eats(x, y - i, piece)) {</span>
+<span class="fc" id="L117">                    blocked[2] = true;</span>
                 }
-<span class="fc" id="L114">                nextRooks.add(createPosition(x, y, x, y - i, piece));</span>
+<span class="fc" id="L119">                nextRooks.add(createPosition(x, y, x, y - i, piece));</span>
             } else {
-<span class="fc" id="L116">                blocked[2] = true;</span>
+<span class="fc" id="L121">                blocked[2] = true;</span>
             }
-<span class="fc bfc" id="L118" title="All 6 branches covered.">            if (!blocked[3] &amp;&amp; insideBoard(x, y + i) &amp;&amp; !occupied(x, y + i, piece)) {</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">                if (eats(x, y + i, piece)) {</span>
-<span class="fc" id="L120">                    blocked[3] = true;</span>
+<span class="fc bfc" id="L123" title="All 6 branches covered.">            if (!blocked[3] &amp;&amp; insideBoard(x, y + i) &amp;&amp; !occupied(x, y + i, piece)) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">                if (eats(x, y + i, piece)) {</span>
+<span class="fc" id="L125">                    blocked[3] = true;</span>
                 }
-<span class="fc" id="L122">                nextRooks.add(createPosition(x, y, x, y + i, piece));</span>
+<span class="fc" id="L127">                nextRooks.add(createPosition(x, y, x, y + i, piece));</span>
             } else {
-<span class="fc" id="L124">                blocked[3] = true;</span>
+<span class="fc" id="L129">                blocked[3] = true;</span>
             }
         }
-<span class="fc" id="L127">        return nextRooks;</span>
+<span class="fc" id="L132">        return nextRooks;</span>
     }
 
-    private List&lt;Position&gt; bishopMoves(int x, int y, int piece) {
-<span class="fc" id="L131">        List&lt;Position&gt; nextBishops = new ArrayList&lt;Position&gt;();</span>
-<span class="fc" id="L132">        int k = -1;</span>
-<span class="fc" id="L133">        int e = -1;</span>
-<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (int j = 0; j &lt; 4; j++) {</span>
-<span class="fc" id="L135">            int i = 1;</span>
-<span class="fc bfc" id="L136" title="All 4 branches covered.">            while (insideBoard(x + (k * i), y + (e * i)) &amp;&amp; !occupied(x + (k * i), y + (e * i), piece)) {</span>
-<span class="fc" id="L137">                boolean eating = false;</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">                if (eats(x + k * i, y + e * i, piece)) {</span>
-<span class="fc" id="L139">                    eating = true;</span>
+    private MyRecord&lt;Position&gt; bishopMoves(int x, int y, int piece) {
+<span class="fc" id="L136">        MyRecord&lt;Position&gt; nextBishops = new MyRecord&lt;Position&gt;();</span>
+<span class="fc" id="L137">        int k = -1;</span>
+<span class="fc" id="L138">        int e = -1;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        for (int j = 0; j &lt; 4; j++) {</span>
+<span class="fc" id="L140">            int i = 1;</span>
+<span class="fc bfc" id="L141" title="All 4 branches covered.">            while (insideBoard(x + (k * i), y + (e * i)) &amp;&amp; !occupied(x + (k * i), y + (e * i), piece)) {</span>
+<span class="fc" id="L142">                boolean eating = false;</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                if (eats(x + k * i, y + e * i, piece)) {</span>
+<span class="fc" id="L144">                    eating = true;</span>
                 }
-<span class="fc" id="L141">                Position p = new Position();</span>
-<span class="fc" id="L142">                p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L143">                p.board[y + e * i][x + k * i] = piece;</span>
-<span class="fc" id="L144">                nextBishops.add(p);</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">                if (eating) {</span>
-<span class="fc" id="L146">                    break;</span>
+<span class="fc" id="L146">                Position p = new Position();</span>
+<span class="fc" id="L147">                p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L148">                p.board[y + e * i][x + k * i] = piece;</span>
+<span class="fc" id="L149">                nextBishops.add(p);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">                if (eating) {</span>
+<span class="fc" id="L151">                    break;</span>
                 }
-<span class="fc" id="L148">                i++;</span>
-<span class="fc" id="L149">            }</span>
-<span class="fc bfc" id="L150" title="All 4 branches covered.">            if (k == -1 &amp;&amp; e == -1) {</span>
-<span class="fc" id="L151">                e = 1;</span>
-<span class="pc bpc" id="L152" title="1 of 4 branches missed.">            } else if (k == -1 &amp;&amp; e == 1) {</span>
-<span class="fc" id="L153">                k = 1;</span>
-<span class="fc" id="L154">                e = -1;</span>
-<span class="pc bpc" id="L155" title="1 of 4 branches missed.">            } else if (k == 1 &amp;&amp; e == -1) {</span>
+<span class="fc" id="L153">                i++;</span>
+<span class="fc" id="L154">            }</span>
+<span class="fc bfc" id="L155" title="All 4 branches covered.">            if (k == -1 &amp;&amp; e == -1) {</span>
 <span class="fc" id="L156">                e = 1;</span>
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">            } else if (k == -1 &amp;&amp; e == 1) {</span>
+<span class="fc" id="L158">                k = 1;</span>
+<span class="fc" id="L159">                e = -1;</span>
+<span class="pc bpc" id="L160" title="1 of 4 branches missed.">            } else if (k == 1 &amp;&amp; e == -1) {</span>
+<span class="fc" id="L161">                e = 1;</span>
             }
         }
-<span class="fc" id="L159">        return nextBishops;</span>
+<span class="fc" id="L164">        return nextBishops;</span>
     }
 
-    private List&lt;Position&gt; queenMoves(int x, int y, int piece) {
-<span class="fc" id="L163">        List&lt;Position&gt; queenMoves = new ArrayList&lt;Position&gt;();</span>
-<span class="fc" id="L164">        queenMoves.addAll(rookMoves(x, y, piece));</span>
-<span class="fc" id="L165">        queenMoves.addAll(bishopMoves(x, y, piece));</span>
-<span class="fc" id="L166">        return queenMoves;</span>
+    private MyRecord&lt;Position&gt; queenMoves(int x, int y, int piece) {
+<span class="fc" id="L168">        MyRecord&lt;Position&gt; queenMoves = new MyRecord&lt;Position&gt;();</span>
+<span class="fc" id="L169">        queenMoves.addAll(rookMoves(x, y, piece));</span>
+<span class="fc" id="L170">        queenMoves.addAll(bishopMoves(x, y, piece));</span>
+<span class="fc" id="L171">        return queenMoves;</span>
     }
 
-    private List&lt;Position&gt; kingMoves(int x, int y, int piece) {
-<span class="fc" id="L170">        List&lt;Position&gt; nextKings = new ArrayList&lt;Position&gt;();</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        for (int i = -1; i &lt;= 1; i++) {</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">            for (int j = -1; j &lt;= 1; j++) {</span>
-<span class="fc bfc" id="L173" title="All 4 branches covered.">                if (i == 0 &amp;&amp; j == 0) {</span>
-<span class="fc" id="L174">                    continue;</span>
+    private MyRecord&lt;Position&gt; kingMoves(int x, int y, int piece) {
+<span class="fc" id="L175">        MyRecord&lt;Position&gt; nextKings = new MyRecord&lt;Position&gt;();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int i = -1; i &lt;= 1; i++) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            for (int j = -1; j &lt;= 1; j++) {</span>
+<span class="fc bfc" id="L178" title="All 4 branches covered.">                if (i == 0 &amp;&amp; j == 0) {</span>
+<span class="fc" id="L179">                    continue;</span>
                 }
-<span class="fc bfc" id="L176" title="All 4 branches covered.">                if (insideBoard(x + j, y + i) &amp;&amp; !occupied(x + j, y + i, piece)) {</span>
-<span class="fc" id="L177">                    Position p = new Position();</span>
-<span class="fc" id="L178">                    p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L179">                    p.board[y + i][x + j] = piece;</span>
-<span class="fc" id="L180">                    nextKings.add(p);</span>
-                }
-            }
-        }
-<span class="fc" id="L184">        return nextKings;</span>
-    }
-
-    private List&lt;Position&gt; knightMoves(int x, int y, int piece) {
-<span class="fc" id="L188">        List&lt;Position&gt; nextKnights = new ArrayList&lt;Position&gt;();</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (int i = -2; i &lt;= 2; i++) {</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">            for (int j = -2; j &lt;= 2; j++) {</span>
-<span class="fc bfc" id="L191" title="All 6 branches covered.">                if (Math.abs(i) + Math.abs(j) == 3 &amp;&amp; insideBoard(x + i, y + j) &amp;&amp; !occupied(x + i, y + j, piece)) {</span>
-<span class="fc" id="L192">                    Position p = new Position();</span>
-<span class="fc" id="L193">                    p.clonePosition(currentPosition, x, y);</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">                    p.board[y + j][x + i] = piece &lt; 20 ? whiteKnight : blackKnight;</span>
-<span class="fc" id="L195">                    nextKnights.add(p);</span>
+<span class="fc bfc" id="L181" title="All 4 branches covered.">                if (insideBoard(x + j, y + i) &amp;&amp; !occupied(x + j, y + i, piece)) {</span>
+<span class="fc" id="L182">                    Position p = new Position();</span>
+<span class="fc" id="L183">                    p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L184">                    p.board[y + i][x + j] = piece;</span>
+<span class="fc" id="L185">                    nextKings.add(p);</span>
                 }
             }
         }
-<span class="fc" id="L199">        return nextKnights;</span>
+<span class="fc" id="L189">        return nextKings;</span>
     }
 
-    private List&lt;Position&gt; blackPawnMoves(int x, int y, List&lt;Position&gt; nextPositions) {
-<span class="fc" id="L203">        boolean moves[] = new boolean[4];</span>
-<span class="fc" id="L204">        moves[0] = insideBoard(y + 1, x);</span>
-<span class="pc bpc" id="L205" title="2 of 6 branches missed.">        moves[1] = y == 1 &amp;&amp; currentPosition.board[y + 1][x] == 0 &amp;&amp; currentPosition.board[y + 2][x] == 0;</span>
-<span class="pc bpc" id="L206" title="1 of 4 branches missed.">        moves[2] = insideBoard(x - 1, y + 1) &amp;&amp; isWhitePiece(currentPosition.board[y + 1][x - 1]);</span>
-<span class="pc bpc" id="L207" title="1 of 4 branches missed.">        moves[3] = insideBoard(x + 1, y + 1) &amp;&amp; isWhitePiece(currentPosition.board[y + 1][x + 1]);</span>
-
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (moves[0]) {</span>
-<span class="fc" id="L210">            Position p = new Position();</span>
-<span class="fc" id="L211">            p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L212">            p.board[y + 1][x] = blackPawn;</span>
-<span class="fc" id="L213">            nextPositions.add(p);</span>
+    private MyRecord&lt;Position&gt; knightMoves(int x, int y, int piece) {
+<span class="fc" id="L193">        MyRecord&lt;Position&gt; nextKnights = new MyRecord&lt;&gt;();</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        for (int i = -2; i &lt;= 2; i++) {</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">            for (int j = -2; j &lt;= 2; j++) {</span>
+<span class="fc bfc" id="L196" title="All 6 branches covered.">                if (Math.abs(i) + Math.abs(j) == 3 &amp;&amp; insideBoard(x + i, y + j) &amp;&amp; !occupied(x + i, y + j, piece)) {</span>
+<span class="fc" id="L197">                    Position p = new Position();</span>
+<span class="fc" id="L198">                    p.clonePosition(currentPosition, x, y);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">                    p.board[y + j][x + i] = piece &lt; 20 ? whiteKnight : blackKnight;</span>
+<span class="fc" id="L200">                    nextKnights.add(p);</span>
+                }
+            }
         }
-<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (moves[1]) {</span>
-<span class="fc" id="L216">            Position p = new Position();</span>
-<span class="fc" id="L217">            p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L218">            p.board[y + 2][x] = blackPawn;</span>
-<span class="fc" id="L219">            nextPositions.add(p);</span>
-        }
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">        if (moves[2]) {</span>
-<span class="nc" id="L222">            Position p = new Position();</span>
-<span class="nc" id="L223">            p.clonePosition(currentPosition, x, y);</span>
-<span class="nc" id="L224">            p.board[y + 1][x - 1] = blackPawn;</span>
-<span class="nc" id="L225">            nextPositions.add(p);</span>
-        }
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (moves[3]) {</span>
-<span class="nc" id="L228">            Position p = new Position();</span>
-<span class="nc" id="L229">            p.clonePosition(currentPosition, x, y);</span>
-<span class="nc" id="L230">            p.board[y + 1][x + 1] = blackPawn;</span>
-<span class="nc" id="L231">            nextPositions.add(p);</span>
-        }
-<span class="fc" id="L233">        return nextPositions;</span>
+<span class="fc" id="L204">        return nextKnights;</span>
     }
 
-    private List&lt;Position&gt; whitePawnMoves(int x, int y, List&lt;Position&gt; nextPositions) {
-<span class="fc" id="L237">        boolean moves[] = new boolean[4];</span>
-<span class="fc" id="L238">        moves[0] = insideBoard(x, y - 1);</span>
-<span class="pc bpc" id="L239" title="3 of 6 branches missed.">        moves[1] = y == 6 &amp;&amp; currentPosition.board[y - 1][x] == 0 &amp;&amp; currentPosition.board[y - 2][x] == 0;</span>
-<span class="pc bpc" id="L240" title="1 of 4 branches missed.">        moves[2] = insideBoard(x - 1, y - 1) &amp;&amp; isBlackPiece(currentPosition.board[y - 1][x - 1]);</span>
-<span class="pc bpc" id="L241" title="1 of 4 branches missed.">        moves[3] = insideBoard(x + 1, y - 1) &amp;&amp; isBlackPiece(currentPosition.board[y - 1][x + 1]);</span>
+    private MyRecord&lt;Position&gt; blackPawnMoves(int x, int y, MyRecord&lt;Position&gt; nextPositions) {
+<span class="fc" id="L208">        boolean moves[] = new boolean[4];</span>
+<span class="pc bpc" id="L209" title="1 of 4 branches missed.">        moves[0] = insideBoard(y + 1, x) &amp;&amp; currentPosition.board[y + 1][x] == 0;</span>
+<span class="fc bfc" id="L210" title="All 6 branches covered.">        moves[1] = y == 1 &amp;&amp; currentPosition.board[y + 1][x] == 0 &amp;&amp; currentPosition.board[y + 2][x] == 0;</span>
+<span class="fc bfc" id="L211" title="All 4 branches covered.">        moves[2] = insideBoard(x - 1, y - 1) &amp;&amp; eats(x - 1, y + 1, blackPawn);</span>
+<span class="fc bfc" id="L212" title="All 4 branches covered.">        moves[3] = insideBoard(x + 1, y - 1) &amp;&amp; eats(x + 1, y + 1, blackPawn);</span>
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (moves[0]) {</span>
-<span class="fc" id="L244">            Position p = new Position();</span>
-<span class="fc" id="L245">            p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L246">            p.board[y - 1][x] = whitePawn;</span>
-<span class="fc" id="L247">            nextPositions.add(p);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (moves[0]) {</span>
+<span class="fc" id="L215">            Position p = new Position();</span>
+<span class="fc" id="L216">            p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L217">            pawnMoves(blackPawn, p, x, y+1);</span>
+<span class="fc" id="L218">            nextPositions.add(p);</span>
         }
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        if (moves[1]) {</span>
-<span class="fc" id="L250">            Position p = new Position();</span>
-<span class="fc" id="L251">            p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L252">            p.board[y - 2][x] = whitePawn;</span>
-<span class="fc" id="L253">            nextPositions.add(p);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (moves[1]) {</span>
+<span class="fc" id="L221">            Position p = new Position();</span>
+<span class="fc" id="L222">            p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L223">            p.board[y + 2][x] = blackPawn; // no need to use PawnMoves</span>
+<span class="fc" id="L224">            nextPositions.add(p);</span>
         }
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (moves[2]) {</span>
-<span class="nc" id="L256">            Position p = new Position();</span>
-<span class="nc" id="L257">            p.clonePosition(currentPosition, x, y);</span>
-<span class="nc" id="L258">            p.board[y - 1][x - 1] = whitePawn;</span>
-<span class="nc" id="L259">            nextPositions.add(p);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if (moves[2]) {</span>
+<span class="fc" id="L227">            Position p = new Position();</span>
+<span class="fc" id="L228">            p.clonePosition(currentPosition, x, y);</span>
+//            p.board[y + 1][x - 1] = blackPawn;
+<span class="fc" id="L230">            pawnMoves(blackPawn, p, x-1, y+1);</span>
+<span class="fc" id="L231">            nextPositions.add(p);</span>
         }
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (moves[3]) {</span>
-<span class="nc" id="L262">            Position p = new Position();</span>
-<span class="nc" id="L263">            p.clonePosition(currentPosition, x, y);</span>
-<span class="nc" id="L264">            p.board[y - 1][x + 1] = whitePawn;</span>
-<span class="nc" id="L265">            nextPositions.add(p);</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (moves[3]) {</span>
+<span class="fc" id="L234">            Position p = new Position();</span>
+<span class="fc" id="L235">            p.clonePosition(currentPosition, x, y);</span>
+//            p.board[y + 1][x + 1] = blackPawn;
+<span class="fc" id="L237">            pawnMoves(blackPawn, p, x+1, y+1);</span>
+<span class="fc" id="L238">            nextPositions.add(p);</span>
         }
-<span class="fc" id="L267">        return nextPositions;</span>
+<span class="fc" id="L240">        return nextPositions;</span>
+    }
+    
+    private Position pawnMoves(int piece, Position p, int nx, int ny) {
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        if (piece == 25) {</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">            if (ny == 7) {</span>
+<span class="fc" id="L246">                p.board[ny][nx] = blackQueen;</span>
+            } else {
+<span class="fc" id="L248">                p.board[ny][nx] = blackPawn;</span>
+            }
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        } else if (piece == 15) {</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">            if (ny == 0) {</span>
+<span class="fc" id="L252">                p.board[ny][nx] = whiteQueen;</span>
+            } else {
+<span class="fc" id="L254">                p.board[ny][nx] = whitePawn;</span>
+            }
+        }
+<span class="fc" id="L257">        return p;</span>
+    }
+
+    private MyRecord&lt;Position&gt; whitePawnMoves(int x, int y, MyRecord&lt;Position&gt; nextPositions) {
+<span class="fc" id="L261">        boolean moves[] = new boolean[4];</span>
+<span class="pc bpc" id="L262" title="1 of 4 branches missed.">        moves[0] = insideBoard(x, y - 1) &amp;&amp; currentPosition.board[y - 1][x] == 0;</span>
+<span class="fc bfc" id="L263" title="All 6 branches covered.">        moves[1] = y == 6 &amp;&amp; currentPosition.board[y - 1][x] == 0 &amp;&amp; currentPosition.board[y - 2][x] == 0;</span>
+<span class="fc bfc" id="L264" title="All 4 branches covered.">        moves[2] = insideBoard(x - 1, y - 1) &amp;&amp; eats(x - 1, y - 1, whitePawn);</span>
+<span class="fc bfc" id="L265" title="All 4 branches covered.">        moves[3] = insideBoard(x + 1, y - 1) &amp;&amp; eats(x + 1, y - 1, whitePawn);</span>
+
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        if (moves[0]) {</span>
+<span class="fc" id="L268">            Position p = new Position();</span>
+<span class="fc" id="L269">            p.clonePosition(currentPosition, x, y);</span>
+//            p.board[y - 1][x] = whitePawn;
+<span class="fc" id="L271">            pawnMoves(whitePawn, p, x, y-1);</span>
+<span class="fc" id="L272">            nextPositions.add(p);</span>
+        }
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (moves[1]) {</span>
+<span class="fc" id="L275">            Position p = new Position();</span>
+<span class="fc" id="L276">            p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L277">            p.board[y - 2][x] = whitePawn;</span>
+<span class="fc" id="L278">            nextPositions.add(p);</span>
+        }
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (moves[2]) {</span>
+<span class="fc" id="L281">            Position p = new Position();</span>
+<span class="fc" id="L282">            p.clonePosition(currentPosition, x, y);</span>
+//            p.board[y - 1][x - 1] = whitePawn;
+<span class="fc" id="L284">            pawnMoves(whitePawn, p, x-1, y-1);</span>
+<span class="fc" id="L285">            nextPositions.add(p);</span>
+        }
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (moves[3]) {</span>
+<span class="fc" id="L288">            Position p = new Position();</span>
+<span class="fc" id="L289">            p.clonePosition(currentPosition, x, y);</span>
+//            p.board[y - 1][x + 1] = whitePawn;
+<span class="fc" id="L291">            pawnMoves(whitePawn, p, x+1, y-1);</span>
+<span class="fc" id="L292">            nextPositions.add(p);</span>
+        }
+<span class="fc" id="L294">        return nextPositions;</span>
     }
 
     private boolean occupied(int x, int y, int piece) {
-<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (currentPosition.board[y][x] == 0) {</span>
-<span class="fc" id="L272">            return false;</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if (currentPosition.board[y][x] == 0) {</span>
+<span class="fc" id="L299">            return false;</span>
         }
-<span class="fc bfc" id="L274" title="All 4 branches covered.">        if (currentPosition.board[y][x] &gt;= 20 &amp;&amp; piece &gt;= 20) {</span>
-<span class="fc" id="L275">            return true;</span>
-<span class="fc bfc" id="L276" title="All 4 branches covered.">        } else if (currentPosition.board[y][x] &lt; 20 &amp;&amp; piece &lt; 20) {</span>
-<span class="fc" id="L277">            return true;</span>
+<span class="fc bfc" id="L301" title="All 4 branches covered.">        if (currentPosition.board[y][x] &gt;= 20 &amp;&amp; piece &gt;= 20) {</span>
+<span class="fc" id="L302">            return true;</span>
+<span class="fc bfc" id="L303" title="All 4 branches covered.">        } else if (currentPosition.board[y][x] &lt; 20 &amp;&amp; piece &lt; 20) {</span>
+<span class="fc" id="L304">            return true;</span>
         }
-<span class="fc" id="L279">        return false;</span>
+<span class="fc" id="L306">        return false;</span>
     }
 
     private boolean eats(int x, int y, int piece) {
-<span class="fc bfc" id="L283" title="All 2 branches covered.">        if (currentPosition.board[y][x] == 0) {</span>
-<span class="fc" id="L284">            return false;</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (currentPosition.board[y][x] == 0) {</span>
+<span class="fc" id="L311">            return false;</span>
         }
-<span class="pc bpc" id="L286" title="3 of 8 branches missed.">        return currentPosition.board[y][x] &lt; 20 &amp;&amp; piece &gt;= 20</span>
+<span class="fc bfc" id="L313" title="All 8 branches covered.">        return currentPosition.board[y][x] &lt; 20 &amp;&amp; piece &gt;= 20</span>
                 || currentPosition.board[y][x] &gt;= 20 &amp;&amp; piece &lt; 20;
     }
 
     private Position createPosition(int x, int y, int nx, int ny, int piece) {
-<span class="fc" id="L291">        Position p = new Position();</span>
-<span class="fc" id="L292">        p.clonePosition(currentPosition, x, y);</span>
-<span class="fc" id="L293">        p.board[ny][nx] = piece;</span>
-<span class="fc" id="L294">        return p;</span>
+<span class="fc" id="L318">        Position p = new Position();</span>
+<span class="fc" id="L319">        p.clonePosition(currentPosition, x, y);</span>
+<span class="fc" id="L320">        p.board[ny][nx] = piece;</span>
+<span class="fc" id="L321">        return p;</span>
     }
 
     private boolean insideBoard(int x, int y) {
-<span class="fc bfc" id="L298" title="All 8 branches covered.">        return x &gt;= 0 &amp;&amp; x &lt;= 7 &amp;&amp; y &gt;= 0 &amp;&amp; y &lt;= 7;</span>
+<span class="fc bfc" id="L325" title="All 8 branches covered.">        return x &gt;= 0 &amp;&amp; x &lt;= 7 &amp;&amp; y &gt;= 0 &amp;&amp; y &lt;= 7;</span>
     }
-
-    private boolean isWhitePiece(int piece) {
-<span class="pc bpc" id="L302" title="1 of 4 branches missed.">        return piece &gt;= 10 &amp;&amp; piece &lt;= 15;</span>
-    }
-
-    private boolean isBlackPiece(int piece) {
-<span class="pc bpc" id="L306" title="3 of 4 branches missed.">        return piece &gt;= 20 &amp;&amp; piece &lt;= 25;</span>
-    }
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

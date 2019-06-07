@@ -9,11 +9,11 @@ public class MoveConverter {
         int piece = 0;
         int nx = -1;
         int ny = -1;
-        System.out.println("startingPosition");
-        startingPosition.print();
-        System.out.println("\nnextPosition");
-        nextPosition.print();
-        System.out.println("");
+//        System.out.println("startingPosition");
+//        startingPosition.print();
+//        System.out.println("\nnextPosition");
+//        nextPosition.print();
+//        System.out.println("");
         
         for (int y = 0; y < startingPosition.boardRows; y++) {
             for (int x = 0; x < startingPosition.boardCols; x++) {

@@ -8,50 +8,49 @@ import java.io.FileReader;
 import java.io.IOException;
 
 <span class="fc" id="L10">public class MyFileReader {</span>
-
     public Position fileToPosition(String location) throws IOException {
-<span class="fc" id="L13">        Position position = new Position();</span>
-<span class="fc" id="L14">        File file = new File(location);</span>
-<span class="fc" id="L15">        BufferedReader br = new BufferedReader(new FileReader(file));</span>
+<span class="fc" id="L12">        Position position = new Position();</span>
+<span class="fc" id="L13">        File file = new File(location);</span>
+<span class="fc" id="L14">        BufferedReader br = new BufferedReader(new FileReader(file));</span>
         String st;
-<span class="fc" id="L17">        int y = 0;</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">        while ((st = br.readLine()) != null) {</span>
-<span class="fc bfc" id="L19" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
-<span class="fc" id="L20">                position.board[y][x] = characterToPiece(st.charAt(x));</span>
+<span class="fc" id="L16">        int y = 0;</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        while ((st = br.readLine()) != null) {</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc" id="L19">                position.board[y][x] = characterToPiece(st.charAt(x));</span>
             }
-<span class="fc" id="L22">            y++;</span>
+<span class="fc" id="L21">            y++;</span>
         }
-<span class="fc" id="L24">        return position;</span>
+<span class="fc" id="L23">        return position;</span>
     }
 
     private int characterToPiece(char c) {
-<span class="pc bpc" id="L28" title="6 of 13 branches missed.">        switch (c) {</span>
+<span class="fc bfc" id="L27" title="All 13 branches covered.">        switch (c) {</span>
             case 'K':
-<span class="fc" id="L30">                return whiteKing;</span>
+<span class="fc" id="L29">                return whiteKing;</span>
             case 'Q':
-<span class="nc" id="L32">                return whiteQueen;</span>
+<span class="fc" id="L31">                return whiteQueen;</span>
             case 'B':
-<span class="nc" id="L34">                return whiteBishop;</span>
+<span class="fc" id="L33">                return whiteBishop;</span>
             case 'N':
-<span class="nc" id="L36">                return whiteKnight;</span>
+<span class="fc" id="L35">                return whiteKnight;</span>
             case 'R':
-<span class="fc" id="L38">                return whiteRook;</span>
+<span class="fc" id="L37">                return whiteRook;</span>
             case 'P':
-<span class="fc" id="L40">                return whitePawn;</span>
+<span class="fc" id="L39">                return whitePawn;</span>
             case 'k':
-<span class="fc" id="L42">                return blackKing;</span>
+<span class="fc" id="L41">                return blackKing;</span>
             case 'q':
-<span class="nc" id="L44">                return blackQueen;</span>
+<span class="fc" id="L43">                return blackQueen;</span>
             case 'b':
-<span class="nc" id="L46">                return blackBishop;</span>
+<span class="fc" id="L45">                return blackBishop;</span>
             case 'n':
-<span class="nc" id="L48">                return blackKnight;</span>
+<span class="fc" id="L47">                return blackKnight;</span>
             case 'r':
-<span class="fc" id="L50">                return blackRook;</span>
+<span class="fc" id="L49">                return blackRook;</span>
             case 'p':
-<span class="fc" id="L52">                return blackPawn;</span>
+<span class="fc" id="L51">                return blackPawn;</span>
         }
-<span class="fc" id="L54">        return 0;</span>
+<span class="fc" id="L53">        return 0;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

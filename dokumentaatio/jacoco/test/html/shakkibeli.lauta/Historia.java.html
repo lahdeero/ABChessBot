@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Historia.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">shakkibeli.lauta</a> &gt; <span class="el_source">Historia.java</span></div><h1>Historia.java</h1><pre class="source lang-java linenums">package shakkibeli.lauta;
+
+import shakkibeli.logiikka.Siirto;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ *
+ * Siirtohistoria-luokka.
+ */
+public class Historia {
+
+    private Stack&lt;Siirto&gt; siirrot;
+
+    /**
+     * Konstruktori luo uuden pinon siirroille.
+     */
+
+<span class="nc" id="L20">    public Historia() {</span>
+<span class="nc" id="L21">        this.siirrot = new Stack&lt;&gt;();</span>
+<span class="nc" id="L22">    }</span>
+
+    /**
+     * Palauttaa pinon siirroista.
+     *
+     * @param siirrot Lista siirrot.
+     */
+<span class="nc" id="L29">    public Historia(Stack&lt;Siirto&gt; siirrot) {</span>
+<span class="nc" id="L30">        this.siirrot = siirrot;</span>
+<span class="nc" id="L31">    }</span>
+
+    /**
+     * LisÃ¤Ã¤ siirron siirtohistoriaan.
+     *
+     * @param siirto LisÃ¤ttÃ¤vÃ¤ siirto.
+     */
+    public void lisaaSiirto(Siirto siirto) {
+<span class="nc" id="L39">        this.siirrot.add(siirto);</span>
+<span class="nc" id="L40">    }</span>
+
+    public int getHistoriaKoko() {
+<span class="nc" id="L43">        return this.siirrot.size();</span>
+    }
+
+    public Stack&lt;Siirto&gt; getHistoria() {
+<span class="nc" id="L47">        return this.siirrot;</span>
+    }
+
+    public Siirto getViimeinenSiirto() {
+<span class="nc" id="L51">        return this.siirrot.peek();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

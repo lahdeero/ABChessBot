@@ -1,5 +1,11 @@
 # ABChessbot
 
+### without args:
+
+* Starts gui
+
+### with args:
+
 * args[0] = filename
 * args[1] = color (black or white)
 * args[2] = search tree deepness
@@ -21,6 +27,8 @@ gradle run --args='sample.txt black 5'
 [Viikkoraportti3](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti3.md)
 
 [Viikkoraportti4](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti4.md)
+
+[Viikkoraportti5](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/Viikkoraportti5.md)
 
 [Jacoco](https://github.com/lahdeero/ABChessbot/blob/master/dokumentaatio/jacoco/test/html)
 

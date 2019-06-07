@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pelilogiikka.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">shakkibeli.logiikka</a> &gt; <span class="el_source">Pelilogiikka.java</span></div><h1>Pelilogiikka.java</h1><pre class="source lang-java linenums">package shakkibeli.logiikka;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import shakkibeli.lauta.Lauta;
+import static shakkibeli.nappula.Arvo.*;
+import shakkibeli.nappula.Nappula;
+import static shakkibeli.nappula.Vari.*;
+import shakkibeli.tekoaly.Abcb;
+
+public class Pelilogiikka {
+
+    private Lauta lauta;
+    private PelitilanteenTarkkailija shmapa;
+    private LiikkeenTarkistaja lita;
+    private Abcb tekis;
+    private Abcb tekis2;
+    private int pelaajia;
+    private boolean shakkaa;
+    private int jatkuu;
+    private boolean valkoisenVuoro;
+    private boolean odotaTekoalya;
+
+    /**
+     * Konstruktori luo uuden lauda, sekÃ¤ logiikan apuluokat
+     * PelitilanteenTarkkailijan(entinen shmapa) ja LiikkeenTarkitajan.
+     */
+<span class="nc" id="L30">    public Pelilogiikka() {</span>
+<span class="nc" id="L31">        this.lauta = new Lauta();</span>
+<span class="nc" id="L32">        this.shmapa = new PelitilanteenTarkkailija(this);</span>
+<span class="nc" id="L33">        this.lita = new LiikkeenTarkistaja(this);</span>
+<span class="nc" id="L34">        this.pelaajia = 2;</span>
+<span class="nc" id="L35">        this.jatkuu = 0;</span>
+<span class="nc" id="L36">        lauta.asetaAloitusNappulat();</span>
+<span class="nc" id="L37">        valkoisenVuoro = true;</span>
+<span class="nc" id="L38">    }</span>
+
+    /**
+     * Konstruktori luo uuden laudan, sekÃ¤ logiikan apuluokat(katso parametriton
+     * konstruktori). TÃ¤mÃ¤n lisÃ¤ksi luodaan &quot;tekoÃ¤ly&quot;(Satunnainen) tekispeliÃ¤
+     * varten.
+     *
+     * @param valinta 1 on yksinpeli, 2 on kaksinpeli ja 0 on tekoÃ¤lypeli.
+     */
+<span class="nc" id="L47">    public Pelilogiikka(int valinta) throws IOException {</span>
+<span class="nc" id="L48">        this.lauta = new Lauta();</span>
+<span class="nc" id="L49">        this.shmapa = new PelitilanteenTarkkailija(this);</span>
+<span class="nc" id="L50">        this.lita = new LiikkeenTarkistaja(this);</span>
+<span class="nc" id="L51">        this.pelaajia = valinta;</span>
+<span class="nc" id="L52">        lauta.asetaAloitusNappulat();</span>
+<span class="nc" id="L53">        this.jatkuu = 0;</span>
+<span class="nc" id="L54">        this.tekis = new Abcb(this, lauta.getNappulaLista(), MUSTA);</span>
+<span class="nc" id="L55">        valkoisenVuoro = true;</span>
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (valinta == 0) {</span>
+<span class="nc" id="L58">            this.tekis2 = new Abcb(this, lauta.getNappulaLista(), VALKOINEN);</span>
+        }
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Metodi luo koordinaateista Siirto-olion, jolla kutsuu varsinaista
+     * liikutaNappulaa-metodia.
+     *
+     * @param x SiirrettÃ¤vÃ¤n nappulan sijainti x-akselilla.
+     * @param y SiirrettÃ¤vÃ¤n nappulan sijainti y-akselilla.
+     * @param uusiX Sijainti x-akselilla, johon nappula halutaan siirtÃ¤Ã¤.
+     * @param uusiY Sijainti y-akselilla, johon nappula halutaan siirtÃ¤Ã¤.
+     * @return Palauttaa true mikÃ¤li nappulan siirtÃ¤minen onnistuu, muuten
+     * false.
+     */
+    public boolean liikutaNappulaa(int x, int y, int uusiX, int uusiY) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (getNappula(x, y) != null) {</span>
+<span class="nc" id="L75">            Siirto siirto = new Siirto(x, y, uusiX, uusiY, lauta.getNappula(x, y));</span>
+<span class="nc" id="L76">            return liikutaNappulaa(siirto);</span>
+        }
+<span class="nc" id="L78">        return false;</span>
+    }
+
+    /**
+     * Metodi tarkistaa ettÃ¤ pelin kulku pysyy normaalin shakin sÃ¤Ã¤ntÃ¶jen
+     * mukaisena kun parametrina annettua nappulaa(sisÃ¤ltyy siirto-olioon)
+     * liikutetaan. MikÃ¤li siirto onnistuu pÃ¤ivittÃ¤Ã¤n pelitilanne. Voisi kutsua
+     * pelin keskushermostoksi, tÃ¤rkein metodi.
+     *
+     * @param siirto Annetaan Siirto-olio josta selviÃ¤Ã¤ (liikuteltavan) Nappulan
+     * tiedot, lÃ¤htÃ¶ruutu ja ruutu johon halutaan liikkua
+     * @return Palautetaan true jos nappulan liikkuminen on normaalin shakin
+     * sÃ¤Ã¤ntÃ¶jen rajoissa, muuten false.
+     */
+    public boolean liikutaNappulaa(Siirto siirto) {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (siirto.getNappula().onkoSyoty()) {</span>
+<span class="nc" id="L94">            String epaonnistunutSiirto = siirto.toString() + &quot; / &quot; + siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY();</span>
+<span class="nc" id="L95">            Logger.getLogger(Abcb.class.getName()).log(Level.SEVERE, &quot;Liikutetaan syÃ¶tyÃ¶Ã¤ nappulaa: &quot; + epaonnistunutSiirto, epaonnistunutSiirto);</span>
+        }
+<span class="nc bnc" id="L97" title="All 10 branches missed.">        if (testaaVari(siirto) &amp;&amp; siirto.getUusiX() &gt;= 0 &amp;&amp; siirto.getUusiX() &lt; 8 &amp;&amp; siirto.getUusiY() &gt;= 0 &amp;&amp; siirto.getUusiY() &lt; 8) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (testaaShakkiOmaanPaatyyn(siirto) == false) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                if (lita.tarkistaLiikkuminen(siirto)) {</span>
+                    //System.out.println(siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY());
+<span class="nc" id="L101">                    suoritaLiikkumisToimenpiteet(siirto);</span>
+<span class="nc" id="L102">                    return true;</span>
+                }
+            }
+        }
+<span class="nc" id="L106">        String epaonnistunutSiirto = siirto.toString() + &quot; / &quot; + siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY();</span>
+<span class="nc" id="L107">        Logger.getLogger(Abcb.class.getName()).log(Level.WARNING, &quot;Yritetty virheellista siirtoa: &quot; + epaonnistunutSiirto, epaonnistunutSiirto);</span>
+<span class="nc" id="L108">        return false;</span>
+    }
+
+    /**
+     * Metodi suorittaa onnistuneen siirron mukaiset toimenpiteet pelilogiikkaan
+     * ja laudalle.
+     *
+     * @param siirto Suoritettava(jo laillisuustarkastusten lÃ¤pÃ¤issyt) siirto.
+     */
+    public void suoritaLiikkumisToimenpiteet(Siirto siirto) {
+<span class="nc" id="L118">        siirto.getNappula().liiku(siirto.getUusiX(), siirto.getUusiY());</span>
+<span class="nc" id="L119">        siirto.getNappula().valitse(false);</span>
+<span class="nc bnc" id="L120" title="All 6 branches missed.">        if (siirto.getNappula().getArvo() == SOTILAS &amp;&amp; (siirto.getUusiY() == 0 || siirto.getUusiY() == 7)) {</span>
+<span class="nc" id="L121">            siirto.getNappula().setArvo(KUNINGATAR);</span>
+        }
+
+<span class="nc" id="L124">        shakkaa = shmapa.tarkistaShakataanko(siirto);</span>
+<span class="nc" id="L125">        lita.shakkaa(shakkaa);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        valkoisenVuoro = siirto.getNappula().getVari() != VALKOINEN;</span>
+<span class="nc" id="L127">        lauta.lisaaSiirto(siirto);</span>
+<span class="nc" id="L128">        jatkuu = 1;</span>
+//        if (pelaajia == 0 &amp;&amp; shmapa.tarkistaLooppi()) pakotaPoisLoopista();
+<span class="nc" id="L130">        odotaTekoalya = false;</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Generoi tekoÃ¤lyn siirron ja suorittaa sen. HUOM! Metodia kutsutaan
+     * hiirenkuuntelijasta!
+     */
+    public void suoritaTekoaly() {
+<span class="nc bnc" id="L138" title="All 4 branches missed.">        if (!valkoisenVuoro &amp;&amp; pelaajia &lt; 2) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            if (tekis.getVari() != lauta.getViimeinenSiirto().getNappula().getVari()) {</span>
+<span class="nc" id="L140">                tekis.suoritaSiirto(MUSTA);</span>
+            }
+<span class="nc bnc" id="L142" title="All 4 branches missed.">        } else if (valkoisenVuoro &amp;&amp; pelaajia == 0) {</span>
+<span class="nc" id="L143">            tekis2.suoritaSiirto(VALKOINEN);</span>
+        }
+<span class="nc" id="L145">    }</span>
+
+    /**
+     * TekoÃ¤lyn junnaamisen lopettava metodi.
+     */
+//    public void pakotaPoisLoopista() {
+//        if (pelaajia == 2) {
+//            return;
+//        }
+//        if (valkoisenVuoro) {
+//            tekis2.poisLoopista();
+//        } else {
+//            tekis.poisLoopista();
+//        }
+//    }
+    /**
+     * Testataan ettÃ¤ uusi siirto on erivÃ¤riseltÃ¤, kun edellinen. MikÃ¤li
+     * siirtohistoriasta ei lÃ¶ydy edellistÃ¤ siirtoa, niin oletetaan ettÃ¤
+     * valkoisen vuoro.
+     *
+     * @param siirto Testattava siirto.
+     * @return True mikÃ¤li siirrettÃ¤vÃ¤ on eri vÃ¤riÃ¤ kun viimeksi siirretty tai
+     * mikÃ¤li siirrettÃ¤vÃ¤ on valkoinen eikÃ¤ edellistÃ¤ siirtoa lÃ¶ydy. Laiton
+     * siirto = false.
+     */
+    public boolean testaaVari(Siirto siirto) {
+<span class="nc" id="L171">        Siirto edellinen = lauta.getViimeinenSiirto();</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (edellinen != null) {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            return edellinen.getNappula().getVari() != siirto.getNappula().getVari();</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        } else if (siirto.getNappula().getVari() == VALKOINEN) {</span>
+<span class="nc" id="L175">            return true;</span>
+        }
+<span class="nc" id="L177">        return false;</span>
+    }
+
+    /**
+     * Tarkistetaan ettÃ¤ siirtÃ¤jÃ¤ ei avaa omalle kuninkaalle uhkausta.
+     * Erikoistapauksena ensimmÃ¤inen ehto tarkistaa tornittaessa ettei torniteta
+     * uhatun ruudun yli.
+     *
+     * @param siirto Testattava siirto
+     * @return MikÃ¤li liikutettavan pÃ¤Ã¤tyyn tulee shakki(laiton siirto)
+     * palautetaan true, laillinen siirto palauttaa false.
+     */
+    public boolean testaaShakkiOmaanPaatyyn(Siirto siirto) {
+<span class="nc bnc" id="L190" title="All 4 branches missed.">        if (siirto.getNappula().getArvo() == KUNINGAS &amp;&amp; Math.abs(siirto.getX() - siirto.getUusiX()) == 2) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            if (testaaTornituksenValiinJaavaRuutu(siirto) == false) {</span>
+<span class="nc" id="L192">                return true;</span>
+            }
+        }
+<span class="nc" id="L195">        return shmapa.tuleekoLiikkuvanPaatyynShakki(siirto);</span>
+    }
+
+    /**
+     * Kun halutaan syÃ¶dÃ¤ nappula(nappula a menee nappula b:n pÃ¤Ã¤lle),
+     * tarkistaan ettÃ¤ ne ovat erivÃ¤risiÃ¤, sekÃ¤ ettei kuningas joudu syÃ¶dyksi.
+     * MikÃ¤li nÃ¤in on, poistetaan ruudusta &quot;vanha&quot;(syÃ¶tÃ¤vÃ¤) nappula siihen
+     * siirtyvÃ¤n tieltÃ¤.
+     *
+     * @param siirto Siirto-olio, joka sisÃ¤ltÃ¤Ã¤ syÃ¶vÃ¤n(pelilaudalla pysyvÃ¤n)
+     * nappulan.
+     * @return True mikÃ¤li syÃ¶minen/poistaminen onnistuu, muuten false.
+     */
+    public boolean syoNappula(Siirto siirto) {
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if ((lauta.getNappula(siirto.getUusiX(), siirto.getUusiY()) == null)</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">                || (siirto.getX() == siirto.getUusiX() &amp;&amp; siirto.getY() == siirto.getUusiY())) {</span>
+<span class="nc" id="L211">            String epaonnistunutSiirto = siirto.toString() + &quot; / &quot; + siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY();</span>
+<span class="nc" id="L212">            Logger.getLogger(Abcb.class.getName()).log(Level.SEVERE, &quot;Siirrossa ei siirtoa!&quot; + epaonnistunutSiirto, epaonnistunutSiirto);</span>
+<span class="nc" id="L213">            return false;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        } else if (siirto.getNappula().onkoSyoty()) {</span>
+<span class="nc" id="L215">            String epaonnistunutSiirto = siirto.toString() + &quot; / &quot; + siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY();</span>
+<span class="nc" id="L216">            Logger.getLogger(Abcb.class.getName()).log(Level.SEVERE, &quot;Yritetty liikuttaa syÃ¶tyÃ¤ nappulaa&quot; + epaonnistunutSiirto, epaonnistunutSiirto);</span>
+<span class="nc" id="L217">            return false;</span>
+        }
+<span class="nc" id="L219">        Nappula syotava = lauta.getNappula(siirto.getUusiX(), siirto.getUusiY());</span>
+<span class="nc bnc" id="L220" title="All 6 branches missed.">        if (syotava.getVariKoodi() != siirto.getNappula().getVariKoodi() &amp;&amp; syotava.getArvo() != KUNINGAS &amp;&amp; syotava.onkoSyoty() == false) {</span>
+<span class="nc" id="L221">            syotava.setSyodyksi();</span>
+<span class="nc" id="L222">            lauta.poistaNappula(syotava);</span>
+<span class="nc" id="L223">            return true;</span>
+        }
+<span class="nc" id="L225">        String epaonnistunutSiirto = siirto.toString() + &quot; / &quot; + siirto.getNappula().getVari() + &quot; X: &quot; + siirto.getX() + &quot; Y: &quot; + siirto.getY() + &quot; uusiX: &quot; + siirto.getUusiX() + &quot; uusiY: &quot; + siirto.getUusiY();</span>
+<span class="nc" id="L226">        Logger.getLogger(Abcb.class.getName()).log(Level.SEVERE, &quot;Nappulaa ei voity koska vÃ¤Ã¤rÃ¤ vÃ¤ri, kuningas tai jo syÃ¶ty&quot; + epaonnistunutSiirto, epaonnistunutSiirto);</span>
+<span class="nc" id="L227">        return false;</span>
+    }
+
+    private boolean testaaTornituksenValiinJaavaRuutu(Siirto siirto) {
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (siirto.getUusiX() == 2) {</span>
+<span class="nc" id="L232">            Siirto temp = new Siirto(3, siirto.getY(), siirto.getNappula());</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            if (shmapa.tuleekoLiikkuvanPaatyynShakki(temp) == true) {</span>
+<span class="nc" id="L234">                return false;</span>
+            }
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        } else if (siirto.getUusiX() == 6) {</span>
+<span class="nc" id="L237">            Siirto temp = new Siirto(5, siirto.getY(), siirto.getNappula());</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            if (shmapa.tuleekoLiikkuvanPaatyynShakki(temp) == true) {</span>
+<span class="nc" id="L239">                return false;</span>
+            }
+        }
+<span class="nc" id="L242">        return true;</span>
+    }
+
+    /**
+     * Katso luokasta liikkeenTarkistaja samoin nimetty metodi.
+     *
+     * @param siirto Tarkistettava siirto.
+     * @return true mikÃ¤li siirto on laillinen, muuten false.
+     */
+    public boolean tarkistaPystyTaiVaakaLiikkuminen(Siirto siirto) {
+<span class="nc" id="L252">        return lita.tarkistaPystyTaiVaakaLiikkuminen(siirto);</span>
+    }
+
+    /**
+     * Katso luokasta liikkeenTarkistaja samoin nimetty metodi.
+     *
+     * @param siirto Tarkistettava siirto.
+     * @return true mikÃ¤li siirto on laillinen, muuten false.
+     */
+    public boolean tarkistaRistiinLiikkuminen(Siirto siirto) {
+<span class="nc" id="L262">        return lita.tarkistaRistiinLiikkuminen(siirto);</span>
+    }
+
+    /**
+     * Palauttaa nappulan joka sijaitsee laudalla paikassa x, y.
+     *
+     * @param x Halutun nappulan sijainti x-akselilla.
+     * @param y Halutun nappulan sijainti y-akselilla.
+     * @return Nappulan joka on x- ja y-akselien mÃ¤Ã¤rittÃ¤mÃ¤llÃ¤ ruudulla.
+     */
+    public Nappula getNappula(int x, int y) {
+<span class="nc" id="L273">        return lauta.getNappula(x, y);</span>
+    }
+
+    /**
+     * Kun halutaan asettaa uusi tila peliin, 0 = alotus, perustila 1 = jatkuu,
+     * 2 = matti, 3 = patti/tasapeli.
+     *
+     * @param k Tahdottu tila.
+     */
+    public void setJatkuu(int k) {
+<span class="nc" id="L283">        this.jatkuu = k;</span>
+<span class="nc" id="L284">    }</span>
+
+    /**
+     * Jos peli jatkuu niin palauttaa 1 tai 0(peli ei ole alkanut), muissa
+     * tapauksissa peli on pÃ¤Ã¤ttynyt: 2 = matti ja 3 = patti.
+     *
+     * @return 1 = jatkuu, 2 = matti ja 3 = patti.
+     */
+    public int jatkuuko() {
+<span class="nc" id="L293">        return this.jatkuu;</span>
+    }
+
+    /**
+     * Kertoo uhataanko jompaakumpaa kuningasta.
+     *
+     * @return true mikÃ¤li jompaakumpaa kuningasta uhataan, false jos
+     * ei(kumpaakaan).
+     */
+    public boolean shakkaako() {
+<span class="nc" id="L303">        return this.shakkaa;</span>
+    }
+
+    public Pelilogiikka getLogiikka() {
+<span class="nc" id="L307">        return this;</span>
+    }
+
+    public void setLauta(Lauta lauta) {
+<span class="nc" id="L311">        this.lauta = lauta;</span>
+<span class="nc" id="L312">    }</span>
+
+    public Lauta getLauta() {
+<span class="nc" id="L315">        return this.lauta;</span>
+    }
+
+    public void setLiikkeenTarkistaja(LiikkeenTarkistaja lita) {
+<span class="nc" id="L319">        this.lita = lita;</span>
+<span class="nc" id="L320">    }</span>
+
+    public LiikkeenTarkistaja getLiikkeenTarkistaja() {
+<span class="nc" id="L323">        return this.lita;</span>
+    }
+
+    public List&lt;Nappula&gt; getNappulaLista() {
+<span class="nc" id="L327">        return lauta.getNappulaLista();</span>
+    }
+
+    public boolean isValkoisenVuoro() {
+<span class="nc" id="L331">        return valkoisenVuoro;</span>
+    }
+
+    public void setValkoisenVuoro(boolean valkoisenVuoro) {
+<span class="nc" id="L335">        this.valkoisenVuoro = valkoisenVuoro;</span>
+<span class="nc" id="L336">    }</span>
+
+    public int getPelaajia() {
+<span class="nc" id="L339">        return pelaajia;</span>
+    }
+
+    public void setPelaajia(int pelaajia) {
+<span class="nc" id="L343">        this.pelaajia = pelaajia;</span>
+<span class="nc" id="L344">    }</span>
+
+    public int getJatkuu() {
+<span class="nc" id="L347">        return this.jatkuu;</span>
+    }
+
+    public boolean getValkoisenVuooro() {
+<span class="nc" id="L351">        return this.valkoisenVuoro;</span>
+    }
+
+    public boolean odotaTekoalya() {
+<span class="nc" id="L355">        return odotaTekoalya;</span>
+    }
+
+    public void setOdotaTekoalya(boolean odotaTekoalya) {
+<span class="nc" id="L359">        this.odotaTekoalya = odotaTekoalya;</span>
+<span class="nc" id="L360">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

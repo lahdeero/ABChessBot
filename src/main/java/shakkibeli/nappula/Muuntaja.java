@@ -73,14 +73,11 @@ public class Muuntaja {
      * @return Shakissa käytettävä koordinaattimuoto esim Na2(hevonen ruudussa
      * a2).
      */
-    public String muunna(Nappula nappula) {
+    public String muunna(int x, int y, Nappula nappula) {
         String muunnos = "";
 
-        int x = nappula.getX();
-        int y = nappula.getY();
-
         muunnos = muunnaArvo(muunnos, nappula.getArvo());
-        muunnos = muunnaKoordinaatit(muunnos, nappula.getX(), nappula.getY());
+        muunnos = muunnaKoordinaatit(muunnos, x, y);
 
         return muunnos;
     }

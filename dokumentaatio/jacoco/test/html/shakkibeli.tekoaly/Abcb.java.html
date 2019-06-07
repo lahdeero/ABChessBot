@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Abcb.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">shakkibeli.tekoaly</a> &gt; <span class="el_source">Abcb.java</span></div><h1>Abcb.java</h1><pre class="source lang-java linenums">package shakkibeli.tekoaly;
+
+import abcb.InputReader.Openings;
+import abcb.algorithm.AlphaBeta;
+import abcb.datastructure.MyRecord;
+import abcb.simulate.Generator;
+import abcb.simulate.Position;
+import abcb.util.MoveConverter;
+import java.io.IOException;
+import java.util.List;
+import shakkibeli.logiikka.Pelilogiikka;
+import shakkibeli.logiikka.Siirto;
+import shakkibeli.nappula.Nappula;
+import shakkibeli.nappula.Vari;
+import static shakkibeli.nappula.Vari.MUSTA;
+import static shakkibeli.nappula.Vari.VALKOINEN;
+
+/**
+ * YhistÃ¤Ã¤ uuden botin ja vanhan kÃ¤yttÃ¶liittymÃ¤n. Finenglish koska kÃ¤yttis
+ * suomeks ja botti enkuks.
+ *
+ * @author Eero
+ */
+public class Abcb {
+
+    private Pelilogiikka pelo;
+    private List&lt;Nappula&gt; nappulat;
+    private Vari vari;
+    private AlphaBeta ab;
+    private int depth;
+    private MoveConverter moveConverter;
+    private MyRecord history;
+    private Position previous;
+    private Openings openings;
+    private Generator generator;
+<span class="nc" id="L36">    private int moveNumber = 1;</span>
+
+<span class="nc" id="L38">    public Abcb(Pelilogiikka pelo, List&lt;Nappula&gt; nappulat, Vari vari) throws IOException {</span>
+<span class="nc" id="L39">        this.pelo = pelo;</span>
+<span class="nc" id="L40">        this.nappulat = nappulat;</span>
+<span class="nc" id="L41">        this.vari = vari;</span>
+<span class="nc" id="L42">        this.ab = new AlphaBeta();</span>
+<span class="nc" id="L43">        this.depth = 5;</span>
+<span class="nc" id="L44">        this.history = new MyRecord&lt;String&gt;();</span>
+<span class="nc" id="L45">        this.openings = new Openings();</span>
+<span class="nc" id="L46">        this.generator = new Generator();</span>
+<span class="nc" id="L47">        this.moveConverter = new MoveConverter();</span>
+<span class="nc" id="L48">    }</span>
+
+    public void suoritaSiirto(Vari vari) {
+<span class="nc" id="L51">        System.out.println(&quot;\n\nMOVE NUMBER &quot; + moveNumber++);</span>
+<span class="nc" id="L52">        System.out.println(&quot;ihan eka&quot;);</span>
+<span class="nc" id="L53">        Position currentPosition = new Position();</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (Nappula nappi : nappulat) {</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            if (nappi.onkoSyoty()) {</span>
+<span class="nc" id="L56">                continue;</span>
+            }
+<span class="nc" id="L58">            currentPosition.board[nappi.getY()][nappi.getX()] = nappi.getIntegerValue();</span>
+<span class="nc" id="L59">        }</span>
+
+        // Gui doesnt add into history, so we have to do it here..
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (previous != null) {</span>
+<span class="nc" id="L63">            addToHistory(previous, currentPosition);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        } else if (this.vari == MUSTA) {</span>
+<span class="nc" id="L65">            System.out.println(&quot;mustan vuoro!&quot;);</span>
+<span class="nc" id="L66">            addToHistory(generator.createStartingPosition(), currentPosition);</span>
+        }
+
+<span class="nc" id="L69">        System.out.println(&quot;problem begins...&quot;);</span>
+
+        /**
+         * OPENING SEARCH *
+         */
+<span class="nc" id="L74">        Position nextPosition = figureOutNextPosition(currentPosition);</span>
+        /**
+         * SEARCH OVER *
+         */
+
+<span class="nc" id="L79">        addToHistory(currentPosition, nextPosition);</span>
+<span class="nc" id="L80">        Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);</span>
+<span class="nc" id="L81">        System.out.println(&quot;\n&quot; + siirto.getNappula().toString());</span>
+<span class="nc" id="L82">        System.out.println(siirto.toString());</span>
+<span class="nc" id="L83">        pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat));</span>
+<span class="nc" id="L84">        previous = nextPosition;</span>
+<span class="nc" id="L85">    }</span>
+
+    public Position figureOutNextPosition(Position currentPosition) {
+<span class="nc" id="L88">        System.out.println(&quot;search begins&quot;);</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (openings.search(historyToString())) {</span>
+<span class="nc" id="L90">            System.out.println(&quot;eka&quot;);</span>
+<span class="nc" id="L91">            String moveStr = openings.getNextMove();</span>
+<span class="nc" id="L92">            System.out.println(&quot;moveStr = &quot; + moveStr);</span>
+<span class="nc" id="L93">            Siirto siirto = getNextSiirto(currentPosition, moveStr);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (siirto != null) {</span>
+<span class="nc" id="L95">                System.out.println(&quot;siirto = &quot; + siirto.toString());</span>
+<span class="nc" id="L96">                Position p = new Position();</span>
+<span class="nc" id="L97">                p.clonePosition(currentPosition, siirto.getX(), siirto.getY());</span>
+<span class="nc" id="L98">                p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();</span>
+<span class="nc" id="L99">                System.out.println(&quot;opening found!&quot;);</span>
+<span class="nc" id="L100">                return p;</span>
+            }
+<span class="nc" id="L102">            System.out.println(&quot;could not find opening..&quot;);</span>
+        }
+<span class="nc" id="L104">        System.out.println(&quot;historyToString = &quot; + historyToString());</span>
+<span class="nc" id="L105">        System.out.println(&quot;search failed..&quot;);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        currentPosition.whitesMove = vari == VALKOINEN;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        return ab.calculateNextPosition(currentPosition, depth, vari == VALKOINEN);</span>
+    }
+
+    private Siirto getNextSiirto(Position currentPosition, String search) {
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        currentPosition.whitesMove = this.vari == VALKOINEN;</span>
+<span class="nc" id="L112">        MyRecord&lt;Position&gt; nextPositions = generator.getNextPositions(currentPosition);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        for (int i = 0; i &lt; nextPositions.size(); i++) {</span>
+<span class="nc" id="L114">            Position nextPosition = nextPositions.get(i);</span>
+<span class="nc" id="L115">            Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);</span>
+<span class="nc" id="L116">            System.out.println(&quot;siirto[&quot; + i + &quot;] = &quot; + siirto.toChessNotation());</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (siirto.toChessNotation().equals(search)) {</span>
+<span class="nc" id="L118">                return siirto;</span>
+            }
+        }
+<span class="nc" id="L121">        return null;</span>
+    }
+
+    public void addToHistory(Position current, Position next) {
+<span class="nc" id="L125">        String s = moveConverter.positionsToChessNotation(current, next);</span>
+<span class="nc" id="L126">        System.out.println(&quot;s = &quot; + s);</span>
+<span class="nc" id="L127">        history.add(s);</span>
+<span class="nc" id="L128">    }</span>
+
+    public String historyToString() {
+<span class="nc" id="L131">        int k = 1;</span>
+<span class="nc" id="L132">        String ret = &quot;&quot;;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        for (int i = 0; i &lt; history.size(); i+=2) {</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (k &gt; 1) {</span>
+<span class="nc" id="L135">                ret += &quot; &quot;;</span>
+            }
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (i+1 &lt; history.size()) {</span>
+<span class="nc" id="L138">                ret += &quot;&quot; + k + &quot;. &quot; + history.get(i) + &quot; &quot; + history.get(i+1);</span>
+            } else {
+<span class="nc" id="L140">               ret += k + &quot;. &quot; + history.get(i);</span>
+            }
+<span class="nc" id="L142">            k += 1;</span>
+        }
+<span class="nc" id="L144">        return ret;</span>
+    }
+
+    public Pelilogiikka getPelo() {
+<span class="nc" id="L148">        return pelo;</span>
+    }
+
+    public void setPelo(Pelilogiikka pelo) {
+<span class="nc" id="L152">        this.pelo = pelo;</span>
+<span class="nc" id="L153">    }</span>
+
+    public List&lt;Nappula&gt; getNappulat() {
+<span class="nc" id="L156">        return nappulat;</span>
+    }
+
+    public void setNappulat(List&lt;Nappula&gt; nappulat) {
+<span class="nc" id="L160">        this.nappulat = nappulat;</span>
+<span class="nc" id="L161">    }</span>
+
+    public Vari getVari() {
+<span class="nc" id="L164">        return vari;</span>
+    }
+
+    public void setVari(Vari vari) {
+<span class="nc" id="L168">        this.vari = vari;</span>
+<span class="nc" id="L169">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

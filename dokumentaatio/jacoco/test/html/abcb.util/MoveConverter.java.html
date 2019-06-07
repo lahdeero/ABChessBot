@@ -9,11 +9,11 @@ import static abcb.simulate.Position.*;
 <span class="fc" id="L9">        int piece = 0;</span>
 <span class="fc" id="L10">        int nx = -1;</span>
 <span class="fc" id="L11">        int ny = -1;</span>
-<span class="fc" id="L12">        System.out.println(&quot;startingPosition&quot;);</span>
-<span class="fc" id="L13">        startingPosition.print();</span>
-<span class="fc" id="L14">        System.out.println(&quot;\nnextPosition&quot;);</span>
-<span class="fc" id="L15">        nextPosition.print();</span>
-<span class="fc" id="L16">        System.out.println(&quot;&quot;);</span>
+//        System.out.println(&quot;startingPosition&quot;);
+//        startingPosition.print();
+//        System.out.println(&quot;\nnextPosition&quot;);
+//        nextPosition.print();
+//        System.out.println(&quot;&quot;);
         
 <span class="fc bfc" id="L18" title="All 2 branches covered.">        for (int y = 0; y &lt; startingPosition.boardRows; y++) {</span>
 <span class="fc bfc" id="L19" title="All 2 branches covered.">            for (int x = 0; x &lt; startingPosition.boardCols; x++) {</span>
@@ -32,20 +32,20 @@ import static abcb.simulate.Position.*;
 //        System.out.println(&quot;ny = &quot; + ny);
 <span class="fc" id="L33">        return cordinatesToChessNotation(piece, nx, ny);</span>
     }
-
+    
     private String cordinatesToChessNotation(int piece, int nx, int ny) {
 <span class="pc bpc" id="L37" title="2 of 4 branches missed.">        if (piece == whitePawn || piece == blackPawn) {</span>
 <span class="nc" id="L38">            return numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="pc bpc" id="L39" title="1 of 4 branches missed.">        } else if (piece == whiteRook || piece == blackRook) {</span>
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        } else if (piece == whiteRook || piece == blackRook) {</span>
 <span class="fc" id="L40">            return &quot;R&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="nc bnc" id="L41" title="All 4 branches missed.">        } else if (piece == whiteKnight || piece == blackKnight) {</span>
-<span class="nc" id="L42">            return &quot;N&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="nc bnc" id="L43" title="All 4 branches missed.">        } else if (piece == whiteBishop || piece == blackBishop) {</span>
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">        } else if (piece == whiteKnight || piece == blackKnight) {</span>
+<span class="fc" id="L42">            return &quot;N&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        } else if (piece == whiteBishop || piece == blackBishop) {</span>
 <span class="nc" id="L44">            return &quot;B&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="nc bnc" id="L45" title="All 4 branches missed.">        } else if (piece == whiteQueen || piece == blackQueen) {</span>
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        } else if (piece == whiteQueen || piece == blackQueen) {</span>
 <span class="nc" id="L46">            return &quot;Q&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="nc bnc" id="L47" title="All 4 branches missed.">        } else if (piece == whiteKing || piece == blackKing) {</span>
-<span class="nc" id="L48">            return &quot;K&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        } else if (piece == whiteKing || piece == blackKing) {</span>
+<span class="fc" id="L48">            return &quot;K&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
         }
 <span class="nc" id="L50">        return &quot;Unknown move&quot;;</span>
     }
