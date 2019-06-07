@@ -32,7 +32,7 @@ public class MoveConverter {
 //        System.out.println("ny = " + ny);
         return cordinatesToChessNotation(piece, nx, ny);
     }
-
+    
     private String cordinatesToChessNotation(int piece, int nx, int ny) {
         if (piece == whitePawn || piece == blackPawn) {
             return numberCordinatesToChessCordinates(nx, ny);

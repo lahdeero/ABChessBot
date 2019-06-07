@@ -38,7 +38,7 @@ public class LiikkeenTarkistaja {
      */
     public boolean tarkistaLiikkuminen(Siirto siirto) {
         String tarkistettava = siirto.toString() + " / " + siirto.getNappula().getVari() + " X: " + siirto.getX() + " Y: " + siirto.getY() + " uusiX: " + siirto.getUusiX() + " uusiY: " + siirto.getUusiY();
-        Logger.getLogger(LiikkeenTarkistaja.class.getName()).log(Level.INFO, " tarkistetaan " + siirto.getNappula().toString() + tarkistettava, tarkistettava);
+        Logger.getLogger(LiikkeenTarkistaja.class.getName()).log(Level.INFO, " tarkistetaan " + tarkistettava, tarkistettava);
         if (null != siirto.getNappula().getArvo()) {
             switch (siirto.getNappula().getArvo()) {
                 case SOTILAS:

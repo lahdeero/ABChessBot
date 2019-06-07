@@ -1,5 +1,6 @@
 package shakkibeli.logiikka;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +44,7 @@ public class Pelilogiikka {
      *
      * @param valinta 1 on yksinpeli, 2 on kaksinpeli ja 0 on tekoälypeli.
      */
-    public Pelilogiikka(int valinta) {
+    public Pelilogiikka(int valinta) throws IOException {
         this.lauta = new Lauta();
         this.shmapa = new PelitilanteenTarkkailija(this);
         this.lita = new LiikkeenTarkistaja(this);

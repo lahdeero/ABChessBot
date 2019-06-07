@@ -1,16 +1,15 @@
 package abcb;
 
-import abcb.InputReader.Openings;
+import abcb.argsHandler.CliUi;
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Openings o = new Openings();
-        o.generateOpenings();
+//        Openings o = new Openings();
         
-//        CliUi au = new CliUi();
-//        au.run(args);
+        CliUi au = new CliUi();
+        au.run(args);
 
 //        Generator gen = new Generator();
 //        Position p = gen.createStartingPosition();
