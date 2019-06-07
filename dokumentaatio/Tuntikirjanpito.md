@@ -1,3 +1,7 @@
+8.6.2019 2h Bugien metsästystä
+
+7.6.2019 9h Vanhan käyttöliittymän liittämistä ja alotuspositioita
+
 2.6.2019 3h Tietorakenteita, testejä, päätysotilaan käsittely
 
 31.5.2019 2h Dokumentaatiota, Tietorakenteita

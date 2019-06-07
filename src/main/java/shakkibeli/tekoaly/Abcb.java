@@ -66,8 +66,6 @@ public class Abcb {
             addToHistory(generator.createStartingPosition(), currentPosition);
         }
 
-        System.out.println("problem begins...");
-
         /**
          * OPENING SEARCH *
          */
@@ -85,21 +83,23 @@ public class Abcb {
     }
 
     public Position figureOutNextPosition(Position currentPosition) {
-        System.out.println("search begins");
-        if (openings.search(historyToString())) {
-            System.out.println("eka");
-            String moveStr = openings.getNextMove();
-            System.out.println("moveStr = " + moveStr);
-            Siirto siirto = getNextSiirto(currentPosition, moveStr);
-            if (siirto != null) {
-                System.out.println("siirto = " + siirto.toString());
-                Position p = new Position();
-                p.clonePosition(currentPosition, siirto.getX(), siirto.getY());
-                p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();
-                System.out.println("opening found!");
-                return p;
+        if (history.size() < 20) {
+            System.out.println("search begins");
+            if (openings.search(historyToString())) {
+                System.out.println("eka");
+                String moveStr = openings.getNextMove();
+                System.out.println("moveStr = " + moveStr);
+                Siirto siirto = getNextSiirto(currentPosition, moveStr);
+                if (siirto != null) {
+                    System.out.println("siirto = " + siirto.toString());
+                    Position p = new Position();
+                    p.clonePosition(currentPosition, siirto.getX(), siirto.getY());
+                    p.board[siirto.getUusiY()][siirto.getUusiX()] = siirto.getNappula().getIntegerValue();
+                    System.out.println("opening found!");
+                    return p;
+                }
+                System.out.println("could not find opening..");
             }
-            System.out.println("could not find opening..");
         }
         System.out.println("historyToString = " + historyToString());
         System.out.println("search failed..");
@@ -130,14 +130,14 @@ public class Abcb {
     public String historyToString() {
         int k = 1;
         String ret = "";
-        for (int i = 0; i < history.size(); i+=2) {
+        for (int i = 0; i < history.size(); i += 2) {
             if (k > 1) {
                 ret += " ";
             }
-            if (i+1 < history.size()) {
-                ret += "" + k + ". " + history.get(i) + " " + history.get(i+1);
+            if (i + 1 < history.size()) {
+                ret += "" + k + ". " + history.get(i) + " " + history.get(i + 1);
             } else {
-               ret += k + ". " + history.get(i);
+                ret += k + ". " + history.get(i);
             }
             k += 1;
         }

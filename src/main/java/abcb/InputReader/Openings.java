@@ -45,7 +45,7 @@ public class Openings {
         indexFound = new MyRecord();
         for (int i = 0; i < openings.size(); i++) {
             String opening = openings.get(i);
-            if (opening.contains(history) && !opening.equals(history)) {
+            if (opening.contains(history) && opening.length() > history.length()+2) {
                 resolveNextMove(history, opening);
                 ret = true;
             }
