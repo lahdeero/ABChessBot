@@ -17,15 +17,11 @@ public class Openings {
     private MyRecord<Integer> indexFound;
     private Integer indexSelected;
 
-    public Openings() {
+    public Openings() throws IOException {
         this.randomizer = new Randomizer();
         MyFileReader mfr = new MyFileReader();
-        try {
-            this.openings = mfr.readOpeningsFromFile("openings.txt");
-            this.openingNames = mfr.getOpeningNames();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        this.openings = mfr.readOpeningsFromFile("openings.txt");
+        this.openingNames = mfr.getOpeningNames();
     }
 
     public boolean search(String history) {

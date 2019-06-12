@@ -4,6 +4,7 @@ import abcb.simulate.Generator;
 import abcb.simulate.Position;
 import abcb.util.History;
 import abcb.util.MoveConverter;
+import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class OpeningsTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         openings = new Openings();
         generator = new Generator();
         moveConverter = new MoveConverter();

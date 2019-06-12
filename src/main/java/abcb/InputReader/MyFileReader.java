@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class MyFileReader {
+
     private MyRecord<String> openingNames;
 
     public Position fileToPosition(String location) throws IOException {
@@ -60,8 +61,9 @@ public class MyFileReader {
     public MyRecord<String> readOpeningsFromFile(String filename) throws FileNotFoundException, IOException {
         MyRecord<String> openings = new MyRecord<String>();
         openingNames = new MyRecord<String>();
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        File file = new File(classLoader.getResource(filename).getFile());
+//        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+//        File file = new File(classLoader.getResource(filename).getFile());
+        File file = new File(filename);
 //        System.out.println("File Found : " + file.exists());
 //        String content = new String(Files.readAllBytes(file.toPath()));
 //        System.out.println(content);;
@@ -79,6 +81,7 @@ public class MyFileReader {
         System.out.println("total openingNames = " + openingNames.size());
         return openings;
     }
+
     public MyRecord<String> getOpeningNames() {
         return this.openingNames;
     }
