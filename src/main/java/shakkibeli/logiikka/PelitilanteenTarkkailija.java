@@ -29,31 +29,33 @@ public class PelitilanteenTarkkailija {
     }
 
     /**
-     * 
-     * @return true mikäli peli on tasapeli. 
+     *
+     * @return true mikäli peli on tasapeli.
      */
     public boolean tarkistaLooppi() {
         nappulat = logiikka.getNappulaLista();
-        Stack<Siirto> siirrot = new Stack();
-        siirrot = (Stack<Siirto>)logiikka.getLauta().getHistoria().getHistoria().clone();
-        if (siirrot.size() < 12) {
+        Stack<Siirto> siirrot = (Stack<Siirto>) logiikka.getLauta().getHistoria().getHistoria().clone();
+        System.out.println("siirrot.size() = " + siirrot.size());
+        if (siirrot.size() < 16) {
             return false;
         }
-        HashMap<Siirto,Integer> tarkastusmappi = new HashMap();
-        
-        for (int i = 0; i < 12; i++) {
+        HashMap<Siirto, Integer> tarkastusmappi = new HashMap();
+
+        for (int i = 0; i < 16; i++) {
             Siirto siirto = siirrot.pop();
             if (!tarkastusmappi.containsKey(siirto)) {
-                tarkastusmappi.put(siirto,1);
-            } else if (tarkastusmappi.get(siirto) == 1){
-                tarkastusmappi.put(siirto, tarkastusmappi.get(siirto)+1);
-            } else if (tarkastusmappi.get(siirto) == 2) {
-                Logger.getLogger(PelitilanteenTarkkailija.class.getName()).log(Level.WARNING, null, "LOOPPAA!"); 
+                tarkastusmappi.put(siirto, 1);
+            } else if (tarkastusmappi.get(siirto) >= 1) {
+                tarkastusmappi.put(siirto, tarkastusmappi.get(siirto) + 1);
+            }
+            if (tarkastusmappi.get(siirto) == 4) {
+                Logger.getLogger(PelitilanteenTarkkailija.class.getName()).log(Level.WARNING, null, "LOOPPAA!");
                 return true;
             }
         }
         return false;
     }
+
     /**
      * Tarkistetaan nimenomaan ettei vuorossa oleva pelaaja voi altistaa omaa
      * kuningastaan uhatuksi. Metodia kutsutaan (pääsääntöisesti) Pelilogiikan

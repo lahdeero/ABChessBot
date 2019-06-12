@@ -51,9 +51,12 @@ public class Pelilogiikka {
         this.pelaajia = valinta;
         lauta.asetaAloitusNappulat();
         this.jatkuu = 0;
-        this.tekis = new Abcb(this, lauta.getNappulaLista(), MUSTA);
+
         valkoisenVuoro = true;
 
+        if (valinta <= 1) {
+            this.tekis = new Abcb(this, lauta.getNappulaLista(), MUSTA);
+        }
         if (valinta == 0) {
             this.tekis2 = new Abcb(this, lauta.getNappulaLista(), VALKOINEN);
         }
@@ -126,16 +129,20 @@ public class Pelilogiikka {
         valkoisenVuoro = siirto.getNappula().getVari() != VALKOINEN;
         lauta.lisaaSiirto(siirto);
         jatkuu = 1;
-//        if (pelaajia == 0 && shmapa.tarkistaLooppi()) pakotaPoisLoopista();
+        if (pelaajia == 0 && shmapa.tarkistaLooppi()) {
+            jatkuu = 3;
+        }
         odotaTekoalya = false;
     }
 
     /**
      * Generoi tekoälyn siirron ja suorittaa sen. HUOM! Metodia kutsutaan
-     * hiirenkuuntelijasta!
+     * hiirenkuuntelijasta(yksinpelissä!)!
      */
     public void suoritaTekoaly() {
         if (!valkoisenVuoro && pelaajia < 2) {
+            System.out.println(tekis.getVari());
+            System.out.println(lauta.getViimeinenSiirto().getNappula());
             if (tekis.getVari() != lauta.getViimeinenSiirto().getNappula().getVari()) {
                 tekis.suoritaSiirto(MUSTA);
             }

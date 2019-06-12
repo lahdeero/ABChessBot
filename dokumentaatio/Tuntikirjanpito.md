@@ -1,4 +1,4 @@
-8.6.2019 2h Bugien metsästystä
+8.6.2019 3h Bugien metsästystä, avauksia
 
 7.6.2019 9h Vanhan käyttöliittymän liittämistä ja alotuspositioita
 

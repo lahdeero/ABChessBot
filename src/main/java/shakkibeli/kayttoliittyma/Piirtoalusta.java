@@ -42,7 +42,6 @@ public class Piirtoalusta extends JPanel {
     private ImageIcon valkoinenKuningas;
 
     public Piirtoalusta(Pelilogiikka logiikka, int ruudunSivunPituus) throws IOException {
-
         this.logiikka = logiikka;
         this.ruudunSivunPituus = ruudunSivunPituus;
         this.font = new Font("TimesRoman", Font.PLAIN, ruudunSivunPituus / 4);

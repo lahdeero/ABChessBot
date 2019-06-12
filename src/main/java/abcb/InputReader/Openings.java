@@ -11,7 +11,7 @@ public class Openings {
 
     private MyRecord<String> openingNames;
     private MyRecord<String> openings;
-    private MyRecord<String> nextMove;
+    private MyRecord<String> nextMoves;
     private MyRecord<Integer> indexFound;
     private Integer indexSelected;
     private int previousRandom;
@@ -42,19 +42,20 @@ public class Openings {
 
     public boolean search(String history) {
         boolean ret = false;
-        indexFound = new MyRecord();
+        this.indexFound = new MyRecord();
+        this.nextMoves = new MyRecord<String>();
         for (int i = 0; i < openings.size(); i++) {
             String opening = openings.get(i);
             if (opening.contains(history) && opening.length() > history.length()+2) {
-                resolveNextMove(history, opening);
+                this.nextMoves.add(resolveNextMove(history, opening));
                 ret = true;
             }
         }
         return ret;
     }
     
-    private void resolveNextMove(String history, String opening) {
-        this.nextMove = new MyRecord<String>();
+    private String resolveNextMove(String history, String opening) {
+        
         String move = "";
         System.out.println("history = " + history);
         System.out.println("opening = " + opening);
@@ -66,14 +67,14 @@ public class Openings {
             move += opening.charAt(i++);
         }
         move += opening.charAt(i);
-        this.nextMove.add(move);
+        return move;
     }
 
     public String getNextMove() {
-        int randomIndex = generateRandomInt(this.nextMove.size());
-        System.out.println("random = " + randomIndex + ", max = " + nextMove.size());
+        int randomIndex = generateRandomInt(this.nextMoves.size());
+        System.out.println("random = " + randomIndex + ", max = " + nextMoves.size());
         this.indexSelected = randomIndex;
-        return this.nextMove.get(randomIndex);
+        return this.nextMoves.get(randomIndex);
     }
 
     private int generateRandomInt(int max) {

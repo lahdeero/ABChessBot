@@ -74,12 +74,17 @@ public class Abcb {
          * SEARCH OVER *
          */
 
-        addToHistory(currentPosition, nextPosition);
-        Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
-        System.out.println("\n" + siirto.getNappula().toString());
-        System.out.println(siirto.toString());
-        pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat));
-        previous = nextPosition;
+        if (nextPosition != null) {
+            addToHistory(currentPosition, nextPosition);
+            Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
+            System.out.println("\n" + siirto.getNappula().toString());
+            System.out.println(siirto.toString());
+            pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat));
+            previous = nextPosition;
+        } else {
+            pelo.setJatkuu(2);
+            System.out.println("Game over");
+        }
     }
 
     public Position figureOutNextPosition(Position currentPosition) {

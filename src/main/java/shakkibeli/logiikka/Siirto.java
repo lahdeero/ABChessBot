@@ -141,7 +141,8 @@ public class Siirto {
         hash = 37 * hash + this.y;
         hash = 37 * hash + this.uusix;
         hash = 37 * hash + this.uusiy;
-        hash = 37 * hash + Objects.hashCode(this.liikuteltava);
+        hash = 37 * hash + this.liikuteltava.getArvoKoodi();
+        hash = 37 * hash + this.liikuteltava.getVariKoodi();
         return hash;
     }
 
