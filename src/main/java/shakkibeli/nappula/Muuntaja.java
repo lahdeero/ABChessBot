@@ -18,7 +18,8 @@ public class Muuntaja {
      * Toteuttamatta oleva metodi jonka tarkoituksena olisi muuttaa
      * shakkikoordinaatit numeromuotoon.
      *
-     * @param rivi Shakkikoordinaatit kahdelle siirrolle(valkoisen ja mustan siirrot).
+     * @param rivi Shakkikoordinaatit kahdelle siirrolle(valkoisen ja mustan
+     * siirrot).
      * @return Listana kaksi Siirto-oliota.
      */
     public List<Siirto> muunnaKoordinaateiksi(String rivi) {
@@ -26,25 +27,24 @@ public class Muuntaja {
 
         String[] karsinnat = rivi.split(".");
         String[] siirrot = karsinnat[1].split(" ");
-        Siirto eka = muunnaSiirroksi(siirrot[0], VALKOINEN);
-        Siirto toka = muunnaSiirroksi(siirrot[1], MUSTA);
+//        Siirto eka = muunnaSiirroksi(siirrot[0], VALKOINEN);
+//        Siirto toka = muunnaSiirroksi(siirrot[1], MUSTA);
 
         return palautettava;
     }
 
-    private Siirto muunnaSiirroksi(String siirto, Vari vari) {
-        int x;
-        int y;
-        int nx;
-        int ny;
-
-        if (siirto.length() == 2 && vari == VALKOINEN) {
-            x = muutaKirjainKoordinaatiksi(siirto.charAt(0)) - 2;
-        }
-
-        return null;
-    }
-
+//    private Siirto muunnaSiirroksi(String siirto, Vari vari) {
+//        int x;
+//        int y;
+//        int nx;
+//        int ny;
+//
+//        if (siirto.length() == 2 && vari == VALKOINEN) {
+//            x = muutaKirjainKoordinaatiksi(siirto.charAt(0)) - 2;
+//        }
+//
+//        return null;
+//    }
     private int muutaKirjainKoordinaatiksi(char merkki) {
         if (merkki == 'a') {
             return 0;
@@ -70,21 +70,31 @@ public class Muuntaja {
      * Muuntaa shakkibelin koordinaatit shakkikielelle.
      *
      * @param nappula Nappula jonka koordinaatteja käytetään muuntamisessa.
+     * @param eats Syödäänkö nappula, eli lisätäänkö arvon jälkeen 'x'.
      * @return Shakissa käytettävä koordinaattimuoto esim Na2(hevonen ruudussa
      * a2).
      */
-    public String muunna(int x, int y, Nappula nappula) {
+    public String muunna(int x, int y, Nappula nappula, boolean eats) {
         String muunnos = "";
-
         muunnos = muunnaArvo(muunnos, nappula.getArvo());
+        if (eats) {
+            muunnos += "x";
+        }
         muunnos = muunnaKoordinaatit(muunnos, x, y);
 
         return muunnos;
     }
-    
+
+    public String shakkiKoordinaatit(int x, int y, Nappula nappula) {
+        String muunnos = "";
+        muunnos = muunnaArvo(muunnos, nappula.getArvo());
+        muunnos = muunnaKoordinaatit(muunnos, x, y);
+        return muunnos;
+    }
+
     public String muunnaSiirtoShakkimuotoon(int x, int y, int ux, int uy) {
         String palautettava = "";
-        palautettava = muunnaKoordinaatit(palautettava, x,y);
+        palautettava = muunnaKoordinaatit(palautettava, x, y);
         palautettava += "->";
         palautettava = muunnaKoordinaatit(palautettava, ux, uy);
         return palautettava;

@@ -1,5 +1,6 @@
-package abcb.InputReader;
+package abcb.heurestic;
 
+import abcb.InputReader.MyFileReader;
 import abcb.datastructure.MyRecord;
 import abcb.util.Randomizer;
 import java.io.BufferedReader;
@@ -15,31 +16,16 @@ public class Openings {
     private MyRecord<String> nextMoves;
     private MyRecord<Integer> indexFound;
     private Integer indexSelected;
-    private int previousRandom;
 
-    public Openings() throws IOException {
+    public Openings() {
         this.randomizer = new Randomizer();
-        previousRandom = 1;
-        openings = new MyRecord<String>();
-        openingNames = new MyRecord<String>();
-        String fileName = "openings.txt";
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-//        System.out.println("File Found : " + file.exists());
-//        String content = new String(Files.readAllBytes(file.toPath()));
-//        System.out.println(content);;
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String st;
-        while ((st = br.readLine()) != null) {
-            if (st.length() > 0 && st.charAt(0) == '1' && st.charAt(1) == '.') {
-                openings.add(st);
-            } else if (st.length() > 3) {
-                openingNames.add(st);
-            }
+        MyFileReader mfr = new MyFileReader();
+        try {
+            this.openings = mfr.readOpeningsFromFile("openings.txt");
+            this.openingNames = mfr.getOpeningNames();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("total openings = " + openings.size());
-        System.out.println("total openingNames = " + openingNames.size());
     }
 
     public boolean search(String history) {

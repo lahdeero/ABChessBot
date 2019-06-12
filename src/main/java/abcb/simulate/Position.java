@@ -74,8 +74,8 @@ public class Position {
      * Clones previous position, except leaves moving piece as empty.
      *
      * @param previous
-     * @param cx X-coordinate of removed(moving) piece
-     * @param cy Y-coordinate of removed(moving) piece
+     * @param cx X-coordinate of moving(not cloned) piece
+     * @param cy Y-coordinate of moving(not cloned) piece
      */
     public void clonePosition(Position previous, int cx, int cy) {
         this.parent = previous;

@@ -1,11 +1,11 @@
 package shakkibeli.tekoaly;
 
-import abcb.InputReader.Openings;
+import abcb.heurestic.Openings;
 import abcb.algorithm.AlphaBeta;
 import abcb.datastructure.MyRecord;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
-import abcb.util.MoveConverter;
+import abcb.util.History;
 import abcb.util.Randomizer;
 import java.io.IOException;
 import java.util.List;
@@ -23,14 +23,12 @@ import static shakkibeli.nappula.Vari.VALKOINEN;
  * @author Eero
  */
 public class Abcb {
-
     private Pelilogiikka pelo;
     private List<Nappula> nappulat;
     private Vari vari;
     private AlphaBeta ab;
     private int depth;
-    private MoveConverter moveConverter;
-    private MyRecord history;
+    private History history;
     private Position previous;
     private Openings openings;
     private Generator generator;
@@ -44,10 +42,11 @@ public class Abcb {
         this.vari = vari;
         this.ab = new AlphaBeta();
         this.depth = 5;
-        this.history = new MyRecord<String>();
+        this.history = new History();
+//        this.history = new MyRecord<String>();
         this.openings = new Openings();
         this.generator = new Generator();
-        this.moveConverter = new MoveConverter();
+//        this.moveConverter = new MoveConverter();
         this.randomizer = new Randomizer();
     }
 
@@ -64,9 +63,9 @@ public class Abcb {
 
         // Gui doesnt add into history, so we have to do it here..
         if (previous != null) {
-            addToHistory(previous, currentPosition);
+            history.addToHistory(previous, currentPosition);
         } else if (this.vari == MUSTA) {
-            addToHistory(generator.createStartingPosition(), currentPosition);
+            history.addToHistory(generator.createStartingPosition(), currentPosition);
         }
 
         /**
@@ -83,7 +82,7 @@ public class Abcb {
         }
 
         if (nextPosition != null) {
-            addToHistory(currentPosition, nextPosition);
+            history.addToHistory(currentPosition, nextPosition);
             Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
             System.out.println("\n" + siirto.getNappula().toString());
             System.out.println(siirto.toString());
@@ -104,8 +103,8 @@ public class Abcb {
     }
     
     public Position figureOutNextPosition(Position currentPosition) {
-        if (history.size() < 20) {
-            if (openings.search(historyToString())) {
+        if (history.getSize() < 20) {
+            if (openings.search(history.historyToString())) {
                 String moveStr = openings.getNextMove();
                 Siirto siirto = getNextSiirto(currentPosition, moveStr);
                 if (siirto != null) {
@@ -118,7 +117,7 @@ public class Abcb {
                 System.out.println("could not find opening..");
             }
         }
-        System.out.println("search failed... historyToString = " + historyToString());
+        System.out.println("search failed... historyToString = " + history.historyToString());
         currentPosition.whitesMove = vari == VALKOINEN;
         return ab.calculateNextPosition(currentPosition, depth, vari == VALKOINEN);
     }
@@ -135,29 +134,6 @@ public class Abcb {
             }
         }
         return null;
-    }
-
-    public void addToHistory(Position current, Position next) {
-        String s = moveConverter.positionsToChessNotation(current, next);
-        System.out.println("s = " + s);
-        history.add(s);
-    }
-
-    public String historyToString() {
-        int k = 1;
-        String ret = "";
-        for (int i = 0; i < history.size(); i += 2) {
-            if (k > 1) {
-                ret += " ";
-            }
-            if (i + 1 < history.size()) {
-                ret += "" + k + ". " + history.get(i) + " " + history.get(i + 1);
-            } else {
-                ret += k + ". " + history.get(i);
-            }
-            k += 1;
-        }
-        return ret;
     }
 
     public Pelilogiikka getPelo() {

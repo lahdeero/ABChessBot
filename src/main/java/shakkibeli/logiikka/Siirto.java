@@ -15,6 +15,7 @@ public class Siirto {
     private Nappula liikuteltava;
     private Muuntaja muuntaja;
     private boolean testi;
+    private boolean eats;
 
     /**
      * Kun tarvitaan tieto siitä, mitä halutaan siirtää ja mihin paikalle,
@@ -76,6 +77,7 @@ public class Siirto {
                     } else {
                         this.uusix = x;
                         this.uusiy = y;
+                        this.eats = oldPosition.board[y][x] != 0;
                     }
                 }
             }
@@ -94,7 +96,7 @@ public class Siirto {
     }
     
     public String toChessNotation() {
-        return muuntaja.muunna(this.uusix, this.uusiy, this.liikuteltava);
+        return muuntaja.muunna(this.uusix, this.uusiy, this.liikuteltava, eats);
     }
 
     public void setTesti(boolean testataanko) {

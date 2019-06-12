@@ -1,13 +1,17 @@
 package abcb.InputReader;
 
+import abcb.datastructure.MyRecord;
 import abcb.simulate.Position;
 import static abcb.simulate.Position.*;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class MyFileReader {
+    private MyRecord<String> openingNames;
+
     public Position fileToPosition(String location) throws IOException {
         Position position = new Position();
         File file = new File(location);
@@ -51,5 +55,31 @@ public class MyFileReader {
                 return blackPawn;
         }
         return 0;
+    }
+
+    public MyRecord<String> readOpeningsFromFile(String filename) throws FileNotFoundException, IOException {
+        MyRecord<String> openings = new MyRecord<String>();
+        openingNames = new MyRecord<String>();
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        File file = new File(classLoader.getResource(filename).getFile());
+//        System.out.println("File Found : " + file.exists());
+//        String content = new String(Files.readAllBytes(file.toPath()));
+//        System.out.println(content);;
+
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String st;
+        while ((st = br.readLine()) != null) {
+            if (st.length() > 0 && st.charAt(0) == '1' && st.charAt(1) == '.') {
+                openings.add(st);
+            } else if (st.length() > 3) {
+                openingNames.add(st);
+            }
+        }
+        System.out.println("total openings = " + openings.size());
+        System.out.println("total openingNames = " + openingNames.size());
+        return openings;
+    }
+    public MyRecord<String> getOpeningNames() {
+        return this.openingNames;
     }
 }

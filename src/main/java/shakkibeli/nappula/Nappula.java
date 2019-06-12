@@ -52,7 +52,7 @@ public class Nappula {
      */
     @Override
     public String toString() {
-        return muuntaja.muunna(x,y,this);
+        return muuntaja.shakkiKoordinaatit(x,y,this);
     }
 
     /**

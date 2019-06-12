@@ -1,6 +1,5 @@
 A00 Polish (Sokolsky) opening
 1. b4
-
 A00 Polish, Tuebingen variation
 1. b4 Nh6
 A00 Polish, Outflank variation
