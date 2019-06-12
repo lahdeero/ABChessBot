@@ -1,14 +1,15 @@
 package abcb.InputReader;
 
 import abcb.datastructure.MyRecord;
+import abcb.util.Randomizer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class Openings {
 
+    private Randomizer randomizer;
     private MyRecord<String> openingNames;
     private MyRecord<String> openings;
     private MyRecord<String> nextMoves;
@@ -17,6 +18,7 @@ public class Openings {
     private int previousRandom;
 
     public Openings() throws IOException {
+        this.randomizer = new Randomizer();
         previousRandom = 1;
         openings = new MyRecord<String>();
         openingNames = new MyRecord<String>();
@@ -46,16 +48,15 @@ public class Openings {
         this.nextMoves = new MyRecord<String>();
         for (int i = 0; i < openings.size(); i++) {
             String opening = openings.get(i);
-            if (opening.contains(history) && opening.length() > history.length()+2) {
+            if (opening.contains(history) && opening.length() > history.length() + 2) {
                 this.nextMoves.add(resolveNextMove(history, opening));
                 ret = true;
             }
         }
         return ret;
     }
-    
+
     private String resolveNextMove(String history, String opening) {
-        
         String move = "";
         System.out.println("history = " + history);
         System.out.println("opening = " + opening);
@@ -71,17 +72,12 @@ public class Openings {
     }
 
     public String getNextMove() {
-        int randomIndex = generateRandomInt(this.nextMoves.size());
+        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());
         System.out.println("random = " + randomIndex + ", max = " + nextMoves.size());
         this.indexSelected = randomIndex;
         return this.nextMoves.get(randomIndex);
     }
 
-    private int generateRandomInt(int max) {
-        int random = (int) (System.currentTimeMillis() % max);
-        return random;
-    }
-    
     public String getOpeningName() {
         if (openingNames.size() > indexSelected) {
             return openingNames.get(indexSelected);

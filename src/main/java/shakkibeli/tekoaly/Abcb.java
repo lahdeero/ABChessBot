@@ -6,6 +6,7 @@ import abcb.datastructure.MyRecord;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
 import abcb.util.MoveConverter;
+import abcb.util.Randomizer;
 import java.io.IOException;
 import java.util.List;
 import shakkibeli.logiikka.Pelilogiikka;
@@ -34,6 +35,8 @@ public class Abcb {
     private Openings openings;
     private Generator generator;
     private int moveNumber = 1;
+    private boolean looping;
+    private Randomizer randomizer;
 
     public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException {
         this.pelo = pelo;
@@ -45,6 +48,7 @@ public class Abcb {
         this.openings = new Openings();
         this.generator = new Generator();
         this.moveConverter = new MoveConverter();
+        this.randomizer = new Randomizer();
     }
 
     public void suoritaSiirto(Vari vari) {
@@ -62,17 +66,21 @@ public class Abcb {
         if (previous != null) {
             addToHistory(previous, currentPosition);
         } else if (this.vari == MUSTA) {
-            System.out.println("mustan vuoro!");
             addToHistory(generator.createStartingPosition(), currentPosition);
         }
 
         /**
-         * OPENING SEARCH *
+         * (OPENING / ALPHA-BETA) SEARCH *
          */
         Position nextPosition = figureOutNextPosition(currentPosition);
         /**
          * SEARCH OVER *
          */
+        if (looping) {
+            MyRecord<Position> nextPositions = generator.getNextPositions(currentPosition);
+            nextPosition = nextPositions.get(randomizer.generateRandomInt(nextPositions.size() - 1));
+            looping = false;
+        }
 
         if (nextPosition != null) {
             addToHistory(currentPosition, nextPosition);
@@ -82,11 +90,19 @@ public class Abcb {
             pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat));
             previous = nextPosition;
         } else {
-            pelo.setJatkuu(2);
-            System.out.println("Game over");
+            TekoalynAuttaja ta = new TekoalynAuttaja(pelo);
+            if (!ta.suoritaSiirtoJosMahdollista(nappulat)) {
+                System.out.println("Could not find next move!");
+                if (pelo.shakkaako()) {
+                    pelo.setJatkuu(2);
+                } else {
+                    pelo.setJatkuu(3);
+                }
+                System.out.println("Game over");
+            }
         }
     }
-
+    
     public Position figureOutNextPosition(Position currentPosition) {
         if (history.size() < 20) {
             if (openings.search(historyToString())) {
@@ -168,4 +184,7 @@ public class Abcb {
         this.vari = vari;
     }
 
+    public void forceOutFromLoop() {
+        this.looping = true;
+    }
 }

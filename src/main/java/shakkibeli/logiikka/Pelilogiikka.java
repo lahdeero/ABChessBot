@@ -130,7 +130,11 @@ public class Pelilogiikka {
         lauta.lisaaSiirto(siirto);
         jatkuu = 1;
         if (pelaajia == 0 && shmapa.tarkistaLooppi()) {
-            jatkuu = 3;
+            if (valkoisenVuoro) {
+                tekis2.forceOutFromLoop();
+            } else {
+                tekis.forceOutFromLoop();
+            }
         }
         odotaTekoalya = false;
     }

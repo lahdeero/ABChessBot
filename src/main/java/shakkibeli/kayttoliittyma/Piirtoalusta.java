@@ -128,7 +128,7 @@ public class Piirtoalusta extends JPanel {
         } else if (logiikka.getJatkuu() == 3) {
             piirraTeksti(g, "tasapeli!");
         } else if (logiikka.getPelaajia() == 0 && odota <= 0) {
-            odota = 100;
+            odota = 100; //Hax because otherwise gui goes out-of-sync
             logiikka.suoritaTekoaly();
         } else if (logiikka.getPelaajia() == 0 && !logiikka.odotaTekoalya()) {
             odota--;

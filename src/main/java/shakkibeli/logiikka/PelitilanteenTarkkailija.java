@@ -30,7 +30,7 @@ public class PelitilanteenTarkkailija {
 
     /**
      *
-     * @return true mikäli peli on tasapeli.
+     * @return true mikäli peli on loopissa, tapahtuu usein tekoäly vs tekoäly.
      */
     public boolean tarkistaLooppi() {
         nappulat = logiikka.getNappulaLista();
@@ -48,7 +48,7 @@ public class PelitilanteenTarkkailija {
             } else if (tarkastusmappi.get(siirto) >= 1) {
                 tarkastusmappi.put(siirto, tarkastusmappi.get(siirto) + 1);
             }
-            if (tarkastusmappi.get(siirto) == 4) {
+            if (tarkastusmappi.get(siirto) >= 3) {
                 Logger.getLogger(PelitilanteenTarkkailija.class.getName()).log(Level.WARNING, null, "LOOPPAA!");
                 return true;
             }
