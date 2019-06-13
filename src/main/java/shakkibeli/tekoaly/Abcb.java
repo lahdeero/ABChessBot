@@ -8,6 +8,7 @@ import abcb.simulate.Position;
 import abcb.util.History;
 import abcb.util.Randomizer;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import shakkibeli.logiikka.Pelilogiikka;
 import shakkibeli.logiikka.Siirto;
@@ -36,7 +37,7 @@ public class Abcb {
     private boolean looping;
     private Randomizer randomizer;
 
-    public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException {
+    public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException  {
         this.pelo = pelo;
         this.nappulat = nappulat;
         this.vari = vari;

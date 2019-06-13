@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Openings {
 
@@ -17,7 +18,7 @@ public class Openings {
     private MyRecord<Integer> indexFound;
     private Integer indexSelected;
 
-    public Openings() throws IOException {
+    public Openings() {
         this.randomizer = new Randomizer();
         MyFileReader mfr = new MyFileReader();
         this.openings = mfr.readOpeningsFromFile("openings.txt");

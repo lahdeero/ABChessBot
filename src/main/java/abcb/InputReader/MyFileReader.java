@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MyFileReader {
 
@@ -58,28 +61,35 @@ public class MyFileReader {
         return 0;
     }
 
-    public MyRecord<String> readOpeningsFromFile(String filename) throws FileNotFoundException, IOException {
+    public MyRecord<String> readOpeningsFromFile(String filename) {
         MyRecord<String> openings = new MyRecord<String>();
         openingNames = new MyRecord<String>();
 //        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 //        File file = new File(classLoader.getResource(filename).getFile());
-        File file = new File(filename);
+//        File file = new File("src/main/resources/ " + filename);
+        try {
+            File file = Paths.get(getClass().getClassLoader()
+                    .getResource("openings.txt").toURI()).toFile();
 //        System.out.println("File Found : " + file.exists());
 //        String content = new String(Files.readAllBytes(file.toPath()));
 //        System.out.println(content);;
 
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String st;
-        while ((st = br.readLine()) != null) {
-            if (st.length() > 0 && st.charAt(0) == '1' && st.charAt(1) == '.') {
-                openings.add(st);
-            } else if (st.length() > 3) {
-                openingNames.add(st);
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String st;
+            while ((st = br.readLine()) != null) {
+                if (st.length() > 0 && st.charAt(0) == '1' && st.charAt(1) == '.') {
+                    openings.add(st);
+                } else if (st.length() > 3) {
+                    openingNames.add(st);
+                }
             }
+            System.out.println("total openings = " + openings.size());
+            System.out.println("total openingNames = " + openingNames.size());
+            return openings;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("total openings = " + openings.size());
-        System.out.println("total openingNames = " + openingNames.size());
-        return openings;
+        return new MyRecord<String>();
     }
 
     public MyRecord<String> getOpeningNames() {
