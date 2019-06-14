@@ -5,6 +5,12 @@ import abcb.heurestic.Evaluator;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
 
+/**
+ * Class is for testing purposes only! So we can compare results of main
+ * algorithm/AlphaBeta with this.
+ *
+ * @author Eero
+ */
 public class Minimax {
 
     private Generator generator;
@@ -12,59 +18,74 @@ public class Minimax {
     private Position bestMaxPosition;
     private Position bestMinPosition;
 
-<span class="fc" id="L15">    public Minimax(Generator generator) {</span>
-<span class="fc" id="L16">        this.generator = generator;</span>
-<span class="fc" id="L17">        this.evaluator = new Evaluator();</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L21">    public Minimax(Generator generator) {</span>
+<span class="fc" id="L22">        this.generator = generator;</span>
+<span class="fc" id="L23">        this.evaluator = new Evaluator();</span>
+<span class="fc" id="L24">    }</span>
 
+    /**
+     * Returns Position(next move) with best calculated value
+     *
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
-<span class="fc" id="L21">        Position bestMove = null;</span>
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;</span>
-<span class="fc" id="L23">        MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (int i = 0; i &lt; myRecord.size(); i++) {</span>
-<span class="fc" id="L25">            Position position = (Position) myRecord.get(i);</span>
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            int value = minimax(position, depth - 1, !maxPlayer);</span>
-<span class="pc bpc" id="L27" title="1 of 4 branches missed.">            if (maxPlayer &amp;&amp; value &gt; bestValue) {</span>
-<span class="fc" id="L28">                bestValue = value;</span>
-<span class="fc" id="L29">                bestMove = position;</span>
-<span class="pc bpc" id="L30" title="3 of 4 branches missed.">            } else if (!maxPlayer &amp;&amp; value &lt; bestValue) {</span>
-<span class="nc" id="L31">                bestValue = value;</span>
-<span class="nc" id="L32">                bestMove = position;</span>
+<span class="fc" id="L35">        Position bestMove = null;</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;</span>
+<span class="fc" id="L37">        MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; myRecord.size(); i++) {</span>
+<span class="fc" id="L39">            Position position = (Position) myRecord.get(i);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">            int value = minimax(position, depth - 1, !maxPlayer);</span>
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">            if (maxPlayer &amp;&amp; value &gt; bestValue) {</span>
+<span class="fc" id="L42">                bestValue = value;</span>
+<span class="fc" id="L43">                bestMove = position;</span>
+<span class="pc bpc" id="L44" title="3 of 4 branches missed.">            } else if (!maxPlayer &amp;&amp; value &lt; bestValue) {</span>
+<span class="nc" id="L45">                bestValue = value;</span>
+<span class="nc" id="L46">                bestMove = position;</span>
             }
         }
-<span class="fc" id="L35">        return bestMove;</span>
+<span class="fc" id="L49">        return bestMove;</span>
     }
 
+    /**
+     * Calculates value of currentPosition.
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
     public int minimax(Position currentPosition, int depth, boolean maxPlayer) {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (depth == 0) {</span>
-<span class="fc" id="L40">            return evaluator.evaluate(currentPosition);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (depth == 0) {</span>
+<span class="fc" id="L61">            return evaluator.evaluate(currentPosition);</span>
         }
 
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (maxPlayer) {</span>
-<span class="fc" id="L44">            int value = Integer.MIN_VALUE;</span>
-<span class="fc" id="L45">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
-<span class="fc" id="L47">                Position p = (Position) myRecord.get(i);</span>
-<span class="fc" id="L48">                value = Math.max(value, minimax(p, depth - 1, false));</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (maxPlayer) {</span>
+<span class="fc" id="L65">            int value = Integer.MIN_VALUE;</span>
+<span class="fc" id="L66">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
+<span class="fc" id="L68">                Position p = (Position) myRecord.get(i);</span>
+<span class="fc" id="L69">                value = Math.max(value, minimax(p, depth - 1, false));</span>
             }
-<span class="fc" id="L50">            return value;</span>
+<span class="fc" id="L71">            return value;</span>
         }
-<span class="fc" id="L52">        int value = Integer.MAX_VALUE;</span>
-<span class="fc" id="L53">        MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (int i = 0; i &lt; myRecord.size(); i++) {</span>
-<span class="fc" id="L55">            Position p = (Position) myRecord.get(i);</span>
-<span class="fc" id="L56">            value = Math.min(value, minimax(p, depth - 1, true));</span>
+<span class="fc" id="L73">        int value = Integer.MAX_VALUE;</span>
+<span class="fc" id="L74">        MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (int i = 0; i &lt; myRecord.size(); i++) {</span>
+<span class="fc" id="L76">            Position p = (Position) myRecord.get(i);</span>
+<span class="fc" id="L77">            value = Math.min(value, minimax(p, depth - 1, true));</span>
 
         }
-<span class="fc" id="L59">        return value;</span>
+<span class="fc" id="L80">        return value;</span>
     }
 
     public Position getBestMaxPosition() {
-<span class="nc" id="L63">        return this.bestMaxPosition;</span>
+<span class="nc" id="L84">        return this.bestMaxPosition;</span>
     }
 
     public Position getBestMinPosition() {
-<span class="nc" id="L67">        return this.bestMinPosition;</span>
+<span class="nc" id="L88">        return this.bestMinPosition;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

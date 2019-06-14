@@ -9,6 +9,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * Its hard to calculate moves at start of the chess game. This class provides
+ * usage of opening books to make games more interesting.
+ *
+ * @author Eero
+ */
 public class Openings {
 
     private Randomizer randomizer;
@@ -18,55 +24,67 @@ public class Openings {
     private MyRecord&lt;Integer&gt; indexFound;
     private Integer indexSelected;
 
-<span class="fc" id="L21">    public Openings() {</span>
-<span class="fc" id="L22">        this.randomizer = new Randomizer();</span>
-<span class="fc" id="L23">        MyFileReader mfr = new MyFileReader();</span>
-<span class="fc" id="L24">        this.openings = mfr.readOpeningsFromFile(&quot;openings.txt&quot;);</span>
-<span class="fc" id="L25">        this.openingNames = mfr.getOpeningNames();</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L27">    public Openings() {</span>
+<span class="fc" id="L28">        this.randomizer = new Randomizer();</span>
+<span class="fc" id="L29">        MyFileReader mfr = new MyFileReader();</span>
+<span class="fc" id="L30">        this.openings = mfr.readOpeningsFromFile(&quot;openings.txt&quot;);</span>
+<span class="fc" id="L31">        this.openingNames = mfr.getOpeningNames();</span>
+<span class="fc" id="L32">    }</span>
 
+    /**
+     * Search if there is opening available.
+     *
+     * @param history
+     * @return
+     */
     public boolean search(String history) {
-<span class="fc" id="L29">        boolean ret = false;</span>
-<span class="fc" id="L30">        this.indexFound = new MyRecord();</span>
-<span class="fc" id="L31">        this.nextMoves = new MyRecord&lt;String&gt;();</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        for (int i = 0; i &lt; openings.size(); i++) {</span>
-<span class="fc" id="L33">            String opening = openings.get(i);</span>
-<span class="pc bpc" id="L34" title="1 of 4 branches missed.">            if (opening.contains(history) &amp;&amp; opening.length() &gt; history.length() + 2) {</span>
-<span class="fc" id="L35">                this.nextMoves.add(resolveNextMove(history, opening));</span>
-<span class="fc" id="L36">                ret = true;</span>
+<span class="fc" id="L41">        boolean ret = false;</span>
+<span class="fc" id="L42">        this.indexFound = new MyRecord();</span>
+<span class="fc" id="L43">        this.nextMoves = new MyRecord&lt;String&gt;();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (int i = 0; i &lt; openings.size(); i++) {</span>
+<span class="fc" id="L45">            String opening = openings.get(i);</span>
+<span class="pc bpc" id="L46" title="1 of 4 branches missed.">            if (opening.contains(history) &amp;&amp; opening.length() &gt; history.length() + 2) {</span>
+<span class="fc" id="L47">                this.nextMoves.add(resolveNextMove(history, opening));</span>
+<span class="fc" id="L48">                ret = true;</span>
             }
         }
-<span class="fc" id="L39">        return ret;</span>
+<span class="fc" id="L51">        return ret;</span>
     }
 
     private String resolveNextMove(String history, String opening) {
-<span class="fc" id="L43">        String move = &quot;&quot;;</span>
-<span class="fc" id="L44">        System.out.println(&quot;history = &quot; + history);</span>
-<span class="fc" id="L45">        System.out.println(&quot;opening = &quot; + opening);</span>
-<span class="fc" id="L46">        int i = history.length();</span>
-<span class="pc bpc" id="L47" title="1 of 4 branches missed.">        while (!Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
-<span class="fc" id="L48">            i += 1;</span>
+<span class="fc" id="L55">        String move = &quot;&quot;;</span>
+<span class="fc" id="L56">        System.out.println(&quot;history = &quot; + history);</span>
+<span class="fc" id="L57">        System.out.println(&quot;opening = &quot; + opening);</span>
+<span class="fc" id="L58">        int i = history.length();</span>
+<span class="pc bpc" id="L59" title="1 of 4 branches missed.">        while (!Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
+<span class="fc" id="L60">            i += 1;</span>
         }
-<span class="pc bpc" id="L50" title="1 of 4 branches missed.">        while (Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
-<span class="fc" id="L51">            move += opening.charAt(i++);</span>
+<span class="pc bpc" id="L62" title="1 of 4 branches missed.">        while (Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
+<span class="fc" id="L63">            move += opening.charAt(i++);</span>
         }
-<span class="fc" id="L53">        move += opening.charAt(i);</span>
-<span class="fc" id="L54">        return move;</span>
+<span class="fc" id="L65">        move += opening.charAt(i);</span>
+<span class="fc" id="L66">        return move;</span>
     }
 
+    /**
+     * Returns next move as Algebraic notation. NOTE THAT: search-method should
+     * return true before calling this!
+     *
+     * @return
+     */
     public String getNextMove() {
-<span class="fc" id="L58">        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());</span>
-<span class="fc" id="L59">        System.out.println(&quot;random = &quot; + randomIndex + &quot;, max = &quot; + nextMoves.size());</span>
-<span class="fc" id="L60">        this.indexSelected = randomIndex;</span>
-<span class="fc" id="L61">        return this.nextMoves.get(randomIndex);</span>
+<span class="fc" id="L76">        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());</span>
+<span class="fc" id="L77">        System.out.println(&quot;random = &quot; + randomIndex + &quot;, max = &quot; + nextMoves.size());</span>
+<span class="fc" id="L78">        this.indexSelected = randomIndex;</span>
+<span class="fc" id="L79">        return this.nextMoves.get(randomIndex);</span>
     }
 
     public String getOpeningName() {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (openingNames.size() &gt; indexSelected) {</span>
-<span class="nc" id="L66">            return openingNames.get(indexSelected);</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (openingNames.size() &gt; indexSelected) {</span>
+<span class="nc" id="L84">            return openingNames.get(indexSelected);</span>
         }
-<span class="nc" id="L68">        System.out.println(&quot;index not inside myRecord size!&quot;);</span>
-<span class="nc" id="L69">        return &quot;Unknown opening&quot;;</span>
+<span class="nc" id="L86">        System.out.println(&quot;index not inside myRecord size!&quot;);</span>
+<span class="nc" id="L87">        return &quot;Unknown opening&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
