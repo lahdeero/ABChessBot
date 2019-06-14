@@ -9,6 +9,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+/**
+ * Its hard to calculate moves at start of the chess game. This class provides
+ * usage of opening books to make games more interesting.
+ *
+ * @author Eero
+ */
 public class Openings {
 
     private Randomizer randomizer;
@@ -25,6 +31,12 @@ public class Openings {
         this.openingNames = mfr.getOpeningNames();
     }
 
+    /**
+     * Search if there is opening available.
+     *
+     * @param history
+     * @return
+     */
     public boolean search(String history) {
         boolean ret = false;
         this.indexFound = new MyRecord();
@@ -54,6 +66,12 @@ public class Openings {
         return move;
     }
 
+    /**
+     * Returns next move as Algebraic notation. NOTE THAT: search-method should
+     * return true before calling this!
+     *
+     * @return
+     */
     public String getNextMove() {
         int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());
         System.out.println("random = " + randomIndex + ", max = " + nextMoves.size());

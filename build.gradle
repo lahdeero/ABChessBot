@@ -17,11 +17,30 @@ javadoc {
   source = sourceSets.main.allJava
 }
 
-jacoco {
-	toolVersion = "0.8.3"
-  reportsDir = file("$buildDir/reports/jacoco")
-	applyTo run
+jacocoTestReport {
+    reports {
+        html {
+            enabled true
+        }
+    }
+ 
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'shakkibeli**'
+            ])
+        })
+    }
 }
+test.finalizedBy(project.tasks.jacocoTestReport)
+
+// jacoco {
+// 	toolVersion = "0.8.3"
+//   reportsDir = file("$buildDir/reports/jacoco")
+// 	excludes = ["shakkibeli.**"]
+// 	applyTo run
+// }
+// test.finalizedBy(project.tasks.jacocoTestReport)
 
 task applicationCodeCoverageReport(type:JacocoReport) {
     executionData run

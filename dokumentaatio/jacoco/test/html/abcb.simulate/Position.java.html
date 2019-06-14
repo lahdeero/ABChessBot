@@ -74,8 +74,8 @@ public class Position {
      * Clones previous position, except leaves moving piece as empty.
      *
      * @param previous
-     * @param cx X-coordinate of removed(moving) piece
-     * @param cy Y-coordinate of removed(moving) piece
+     * @param cx X-coordinate of moving(not cloned) piece
+     * @param cy Y-coordinate of moving(not cloned) piece
      */
     public void clonePosition(Position previous, int cx, int cy) {
 <span class="fc" id="L81">        this.parent = previous;</span>
@@ -165,4 +165,4 @@ public class Position {
 <span class="nc" id="L165">        return '.';</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

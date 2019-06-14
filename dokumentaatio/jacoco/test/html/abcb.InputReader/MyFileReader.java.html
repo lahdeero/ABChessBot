@@ -1,56 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyFileReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.InputReader</a> &gt; <span class="el_source">MyFileReader.java</span></div><h1>MyFileReader.java</h1><pre class="source lang-java linenums">package abcb.InputReader;
 
+import abcb.datastructure.MyRecord;
 import abcb.simulate.Position;
 import static abcb.simulate.Position.*;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-<span class="fc" id="L10">public class MyFileReader {</span>
+<span class="fc" id="L15">public class MyFileReader {</span>
+
+    private MyRecord&lt;String&gt; openingNames;
+
     public Position fileToPosition(String location) throws IOException {
-<span class="fc" id="L12">        Position position = new Position();</span>
-<span class="fc" id="L13">        File file = new File(location);</span>
-<span class="fc" id="L14">        BufferedReader br = new BufferedReader(new FileReader(file));</span>
+<span class="fc" id="L20">        Position position = new Position();</span>
+<span class="fc" id="L21">        File file = new File(location);</span>
+<span class="fc" id="L22">        BufferedReader br = new BufferedReader(new FileReader(file));</span>
         String st;
-<span class="fc" id="L16">        int y = 0;</span>
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        while ((st = br.readLine()) != null) {</span>
-<span class="fc bfc" id="L18" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
-<span class="fc" id="L19">                position.board[y][x] = characterToPiece(st.charAt(x));</span>
+<span class="fc" id="L24">        int y = 0;</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        while ((st = br.readLine()) != null) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">            for (int x = 0; x &lt; 8; x++) {</span>
+<span class="fc" id="L27">                position.board[y][x] = characterToPiece(st.charAt(x));</span>
             }
-<span class="fc" id="L21">            y++;</span>
+<span class="fc" id="L29">            y++;</span>
         }
-<span class="fc" id="L23">        return position;</span>
+<span class="fc" id="L31">        return position;</span>
     }
 
     private int characterToPiece(char c) {
-<span class="fc bfc" id="L27" title="All 13 branches covered.">        switch (c) {</span>
+<span class="fc bfc" id="L35" title="All 13 branches covered.">        switch (c) {</span>
             case 'K':
-<span class="fc" id="L29">                return whiteKing;</span>
+<span class="fc" id="L37">                return whiteKing;</span>
             case 'Q':
-<span class="fc" id="L31">                return whiteQueen;</span>
+<span class="fc" id="L39">                return whiteQueen;</span>
             case 'B':
-<span class="fc" id="L33">                return whiteBishop;</span>
+<span class="fc" id="L41">                return whiteBishop;</span>
             case 'N':
-<span class="fc" id="L35">                return whiteKnight;</span>
+<span class="fc" id="L43">                return whiteKnight;</span>
             case 'R':
-<span class="fc" id="L37">                return whiteRook;</span>
+<span class="fc" id="L45">                return whiteRook;</span>
             case 'P':
-<span class="fc" id="L39">                return whitePawn;</span>
+<span class="fc" id="L47">                return whitePawn;</span>
             case 'k':
-<span class="fc" id="L41">                return blackKing;</span>
+<span class="fc" id="L49">                return blackKing;</span>
             case 'q':
-<span class="fc" id="L43">                return blackQueen;</span>
+<span class="fc" id="L51">                return blackQueen;</span>
             case 'b':
-<span class="fc" id="L45">                return blackBishop;</span>
+<span class="fc" id="L53">                return blackBishop;</span>
             case 'n':
-<span class="fc" id="L47">                return blackKnight;</span>
+<span class="fc" id="L55">                return blackKnight;</span>
             case 'r':
-<span class="fc" id="L49">                return blackRook;</span>
+<span class="fc" id="L57">                return blackRook;</span>
             case 'p':
-<span class="fc" id="L51">                return blackPawn;</span>
+<span class="fc" id="L59">                return blackPawn;</span>
         }
-<span class="fc" id="L53">        return 0;</span>
+<span class="fc" id="L61">        return 0;</span>
+    }
+
+    public MyRecord&lt;String&gt; readOpeningsFromFile(String filename) {
+<span class="fc" id="L65">        MyRecord&lt;String&gt; openings = new MyRecord&lt;String&gt;();</span>
+<span class="fc" id="L66">        openingNames = new MyRecord&lt;String&gt;();</span>
+//        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+//        File file = new File(classLoader.getResource(filename).getFile());
+//        File file = new File(&quot;src/main/resources/ &quot; + filename);
+        try {
+<span class="fc" id="L71">            File file = Paths.get(getClass().getClassLoader()</span>
+<span class="fc" id="L72">                    .getResource(&quot;openings.txt&quot;).toURI()).toFile();</span>
+//        System.out.println(&quot;File Found : &quot; + file.exists());
+//        String content = new String(Files.readAllBytes(file.toPath()));
+//        System.out.println(content);;
+
+<span class="fc" id="L77">            BufferedReader br = new BufferedReader(new FileReader(file));</span>
+            String st;
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            while ((st = br.readLine()) != null) {</span>
+<span class="pc bpc" id="L80" title="1 of 6 branches missed.">                if (st.length() &gt; 0 &amp;&amp; st.charAt(0) == '1' &amp;&amp; st.charAt(1) == '.') {</span>
+<span class="fc" id="L81">                    openings.add(st);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                } else if (st.length() &gt; 3) {</span>
+<span class="fc" id="L83">                    openingNames.add(st);</span>
+                }
+            }
+<span class="fc" id="L86">            System.out.println(&quot;total openings = &quot; + openings.size());</span>
+<span class="fc" id="L87">            System.out.println(&quot;total openingNames = &quot; + openingNames.size());</span>
+<span class="fc" id="L88">            return openings;</span>
+<span class="nc" id="L89">        } catch (Exception e) {</span>
+<span class="nc" id="L90">            System.out.println(e.getMessage());</span>
+        }
+<span class="nc" id="L92">        return new MyRecord&lt;String&gt;();</span>
+    }
+
+    public MyRecord&lt;String&gt; getOpeningNames() {
+<span class="fc" id="L96">        return this.openingNames;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

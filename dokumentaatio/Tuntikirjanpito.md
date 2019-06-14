@@ -1,3 +1,7 @@
+14.6.2019 4h Testailua, bugien etsintää, käyttöliittymää, random positioiden alottelua(parempia testejä varten)
+
+13.6.2019 7.5h Käyttliittymäintegraatiota, käytettävyyttä, shakkinotaatioita, testejä, demoon valmistautumista
+
 8.6.2019 3h Bugien metsästystä, avauksia
 
 7.6.2019 9h Vanhan käyttöliittymän liittämistä ja alotuspositioita
@@ -14,7 +18,7 @@
 
 23.5.2019 3h   Simulointia, lukemista
 
-17.5.2019 5,5h   Nappuloiden liikkumiset, Evaluator ja minimax rungot, javadocia, testejä. 
+17.5.2019 5.5h   Nappuloiden liikkumiset, Evaluator ja minimax rungot, javadocia, testejä. 
 
 16.5.2019 8.5h Simulointia, sotilaiden, hevosen liikkumiset, testejä.
 

@@ -1,5 +1,10 @@
 package abcb.datastructure;
 
+/**
+ * Its like poor man's java.util.ArrayList
+ * @author Eero
+ * @param <E> 
+ */
 public class MyRecord<E> {
 
     private E[] arr;

@@ -85,6 +85,25 @@ public class Lauta {
         }
     }
 
+    public void poistaSyodytNappulat() {
+        boolean syotyja = false;
+        for (Nappula nappula : nappulat) {
+            if (nappula.onkoSyoty()) {
+                syotyja = true;
+                break;
+            }
+        }
+        if (syotyja) {
+            List<Nappula> uudetNappulat = new ArrayList<Nappula>();
+            for (Nappula nappula : nappulat) {
+                if (!nappula.onkoSyoty()) {
+                    uudetNappulat.add(nappula);
+                }
+            }
+            this.nappulat = uudetNappulat;
+        }
+    }
+
     /**
      * Lisää siirron siirtohistoriaan.
      *

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>History.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.util</a> &gt; <span class="el_source">History.java</span></div><h1>History.java</h1><pre class="source lang-java linenums">package abcb.util;
+
+import abcb.datastructure.MyRecord;
+import abcb.simulate.Position;
+
+public class History {
+    private MyRecord history;
+    private MoveConverter moveConverter;
+
+<span class="fc" id="L10">    public History() {</span>
+<span class="fc" id="L11">        this.history = new MyRecord&lt;String&gt;();</span>
+<span class="fc" id="L12">        this.moveConverter = new MoveConverter();</span>
+<span class="fc" id="L13">    }</span>
+
+    public void addToHistory(Position current, Position next) {
+<span class="fc" id="L16">        String s = moveConverter.positionsToChessNotation(current, next);</span>
+<span class="fc" id="L17">        System.out.println(&quot;s = &quot; + s);</span>
+<span class="fc" id="L18">        history.add(s);</span>
+<span class="fc" id="L19">    }</span>
+
+    public String historyToString() {
+<span class="fc" id="L22">        int k = 1;</span>
+<span class="fc" id="L23">        String ret = &quot;&quot;;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (int i = 0; i &lt; history.size(); i += 2) {</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (k &gt; 1) {</span>
+<span class="fc" id="L26">                ret += &quot; &quot;;</span>
+            }
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">            if (i + 1 &lt; history.size()) {</span>
+<span class="fc" id="L29">                ret += &quot;&quot; + k + &quot;. &quot; + history.get(i) + &quot; &quot; + history.get(i + 1);</span>
+            } else {
+<span class="nc" id="L31">                ret += k + &quot;. &quot; + history.get(i);</span>
+            }
+<span class="fc" id="L33">            k += 1;</span>
+        }
+<span class="fc" id="L35">        return ret;</span>
+    }
+    
+    public int getSize() {
+<span class="nc" id="L39">        return this.history.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

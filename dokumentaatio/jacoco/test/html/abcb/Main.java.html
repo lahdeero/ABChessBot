@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package abcb;
 
 import abcb.argsHandler.CliUi;
+import abcb.simulate.Generator;
+import abcb.simulate.Position;
+import abcb.util.History;
+import abcb.util.MoveConverter;
 import java.io.IOException;
+import static org.junit.Assert.assertEquals;
 
-<span class="nc" id="L6">public class Main {</span>
+<span class="nc" id="L11">public class Main {</span>
 
     public static void main(String[] args) throws IOException {
 //        Openings o = new Openings();
-        
-<span class="nc" id="L11">        CliUi au = new CliUi();</span>
-<span class="nc" id="L12">        au.run(args);</span>
+<span class="nc" id="L15">        CliUi au = new CliUi();</span>
+<span class="nc" id="L16">        au.run(args);</span>
 
-//        Generator gen = new Generator();
-//        Position p = gen.createStartingPosition();
-//        p.toString();
-//        p.board[6][4] = 0;
-//        p.board[4][4] = whitePawn;
-//        p.whitesMove = false;
-//        System.out.println(p.toString());
-//        System.out.println(p.board[4][6]);
-<span class="nc" id="L22">    }</span>
+//        Generator generator = new Generator();
+//        History history = new History();
+//        MoveConverter moveConverter = new MoveConverter();
+//        Position startingPosition = generator.createStartingPosition();
+//        Position p = moveConverter.move(startingPosition, 4, 6, 4, 4);
+//        history.addToHistory(startingPosition, p);
+//        Position p2 = moveConverter.move(p, 4, 1, 4, 3);
+//        history.addToHistory(p, p2);
+//        Position p3 = moveConverter.move(p2, 6, 7, 5, 5);
+//        history.addToHistory(p2, p3);
+//        Position p4 = moveConverter.move(p3, 3, 1, 3, 2);
+//        history.addToHistory(p3,p4);
+//        Position p5 = moveConverter.move(p4, 3, 6, 3, 4);
+//        history.addToHistory(p4, p5);
+//        Position p6 = moveConverter.move(p5, 4, 3, 3, 4);
+//        history.addToHistory(p5, p6);
+//        System.out.println(history.historyToString());
+        
+//    Openings openings = new Openings();
+//    openings.search(&quot;1. Nh3 d5 2. g3 e5 3. f4 Bxh3 4. Bxh3&quot;);
+//        System.out.println(openings.getNextMove());
+<span class="nc" id="L39">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

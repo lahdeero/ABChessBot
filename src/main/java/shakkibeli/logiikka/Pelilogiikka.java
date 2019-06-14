@@ -59,6 +59,7 @@ public class Pelilogiikka {
         }
         if (valinta == 0) {
             this.tekis2 = new Abcb(this, lauta.getNappulaLista(), VALKOINEN);
+            tekis2.setDepth(6);
         }
     }
 
@@ -128,6 +129,7 @@ public class Pelilogiikka {
         lita.shakkaa(shakkaa);
         valkoisenVuoro = siirto.getNappula().getVari() != VALKOINEN;
         lauta.lisaaSiirto(siirto);
+        lauta.poistaSyodytNappulat();
         jatkuu = 1;
         if (pelaajia == 0 && shmapa.tarkistaLooppi()) {
             if (valkoisenVuoro) {

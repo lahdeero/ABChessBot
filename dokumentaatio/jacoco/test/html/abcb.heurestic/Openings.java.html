@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Openings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.heurestic</a> &gt; <span class="el_source">Openings.java</span></div><h1>Openings.java</h1><pre class="source lang-java linenums">package abcb.heurestic;
+
+import abcb.InputReader.MyFileReader;
+import abcb.datastructure.MyRecord;
+import abcb.util.Randomizer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+public class Openings {
+
+    private Randomizer randomizer;
+    private MyRecord&lt;String&gt; openingNames;
+    private MyRecord&lt;String&gt; openings;
+    private MyRecord&lt;String&gt; nextMoves;
+    private MyRecord&lt;Integer&gt; indexFound;
+    private Integer indexSelected;
+
+<span class="fc" id="L21">    public Openings() {</span>
+<span class="fc" id="L22">        this.randomizer = new Randomizer();</span>
+<span class="fc" id="L23">        MyFileReader mfr = new MyFileReader();</span>
+<span class="fc" id="L24">        this.openings = mfr.readOpeningsFromFile(&quot;openings.txt&quot;);</span>
+<span class="fc" id="L25">        this.openingNames = mfr.getOpeningNames();</span>
+<span class="fc" id="L26">    }</span>
+
+    public boolean search(String history) {
+<span class="fc" id="L29">        boolean ret = false;</span>
+<span class="fc" id="L30">        this.indexFound = new MyRecord();</span>
+<span class="fc" id="L31">        this.nextMoves = new MyRecord&lt;String&gt;();</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        for (int i = 0; i &lt; openings.size(); i++) {</span>
+<span class="fc" id="L33">            String opening = openings.get(i);</span>
+<span class="pc bpc" id="L34" title="1 of 4 branches missed.">            if (opening.contains(history) &amp;&amp; opening.length() &gt; history.length() + 2) {</span>
+<span class="fc" id="L35">                this.nextMoves.add(resolveNextMove(history, opening));</span>
+<span class="fc" id="L36">                ret = true;</span>
+            }
+        }
+<span class="fc" id="L39">        return ret;</span>
+    }
+
+    private String resolveNextMove(String history, String opening) {
+<span class="fc" id="L43">        String move = &quot;&quot;;</span>
+<span class="fc" id="L44">        System.out.println(&quot;history = &quot; + history);</span>
+<span class="fc" id="L45">        System.out.println(&quot;opening = &quot; + opening);</span>
+<span class="fc" id="L46">        int i = history.length();</span>
+<span class="pc bpc" id="L47" title="1 of 4 branches missed.">        while (!Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
+<span class="fc" id="L48">            i += 1;</span>
+        }
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">        while (Character.isLetter(opening.charAt(i)) &amp;&amp; opening.length() &gt; i) {</span>
+<span class="fc" id="L51">            move += opening.charAt(i++);</span>
+        }
+<span class="fc" id="L53">        move += opening.charAt(i);</span>
+<span class="fc" id="L54">        return move;</span>
+    }
+
+    public String getNextMove() {
+<span class="fc" id="L58">        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());</span>
+<span class="fc" id="L59">        System.out.println(&quot;random = &quot; + randomIndex + &quot;, max = &quot; + nextMoves.size());</span>
+<span class="fc" id="L60">        this.indexSelected = randomIndex;</span>
+<span class="fc" id="L61">        return this.nextMoves.get(randomIndex);</span>
+    }
+
+    public String getOpeningName() {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (openingNames.size() &gt; indexSelected) {</span>
+<span class="nc" id="L66">            return openingNames.get(indexSelected);</span>
+        }
+<span class="nc" id="L68">        System.out.println(&quot;index not inside myRecord size!&quot;);</span>
+<span class="nc" id="L69">        return &quot;Unknown opening&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

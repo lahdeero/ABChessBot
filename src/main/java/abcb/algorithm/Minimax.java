@@ -5,6 +5,12 @@ import abcb.heurestic.Evaluator;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
 
+/**
+ * Class is for testing purposes only! So we can compare results of main
+ * algorithm/AlphaBeta with this.
+ *
+ * @author Eero
+ */
 public class Minimax {
 
     private Generator generator;
@@ -17,6 +23,14 @@ public class Minimax {
         this.evaluator = new Evaluator();
     }
 
+    /**
+     * Returns Position(next move) with best calculated value
+     *
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
         Position bestMove = null;
         int bestValue = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
@@ -35,6 +49,13 @@ public class Minimax {
         return bestMove;
     }
 
+    /**
+     * Calculates value of currentPosition.
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
     public int minimax(Position currentPosition, int depth, boolean maxPlayer) {
         if (depth == 0) {
             return evaluator.evaluate(currentPosition);

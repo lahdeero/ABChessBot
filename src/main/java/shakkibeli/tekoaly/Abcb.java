@@ -24,6 +24,7 @@ import static shakkibeli.nappula.Vari.VALKOINEN;
  * @author Eero
  */
 public class Abcb {
+
     private Pelilogiikka pelo;
     private List<Nappula> nappulat;
     private Vari vari;
@@ -37,7 +38,7 @@ public class Abcb {
     private boolean looping;
     private Randomizer randomizer;
 
-    public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException  {
+    public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException {
         this.pelo = pelo;
         this.nappulat = nappulat;
         this.vari = vari;
@@ -102,7 +103,7 @@ public class Abcb {
             }
         }
     }
-    
+
     public Position figureOutNextPosition(Position currentPosition) {
         if (history.getSize() < 20) {
             if (openings.search(history.historyToString())) {
@@ -116,9 +117,11 @@ public class Abcb {
                     return p;
                 }
                 System.out.println("could not find opening..");
+            } else {
+                System.out.println("Search failed");
             }
         }
-        System.out.println("search failed... historyToString = " + history.historyToString());
+        System.out.println("historyToString = " + history.historyToString());
         currentPosition.whitesMove = vari == VALKOINEN;
         return ab.calculateNextPosition(currentPosition, depth, vari == VALKOINEN);
     }
@@ -163,5 +166,9 @@ public class Abcb {
 
     public void forceOutFromLoop() {
         this.looping = true;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 }
