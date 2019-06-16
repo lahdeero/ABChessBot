@@ -3,11 +3,6 @@ package abcb.heurestic;
 import abcb.InputReader.MyFileReader;
 import abcb.datastructure.MyRecord;
 import abcb.util.Randomizer;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * Its hard to calculate moves at start of the chess game. This class provides
@@ -21,7 +16,6 @@ public class Openings {
     private MyRecord<String> openingNames;
     private MyRecord<String> openings;
     private MyRecord<String> nextMoves;
-    private MyRecord<Integer> indexFound;
     private Integer indexSelected;
 
     public Openings() {
@@ -39,7 +33,6 @@ public class Openings {
      */
     public boolean search(String history) {
         boolean ret = false;
-        this.indexFound = new MyRecord();
         this.nextMoves = new MyRecord<String>();
         for (int i = 0; i < openings.size(); i++) {
             String opening = openings.get(i);
@@ -73,8 +66,8 @@ public class Openings {
      * @return
      */
     public String getNextMove() {
-        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size());
-        System.out.println("random = " + randomIndex + ", max = " + nextMoves.size());
+        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size()-1);
+        System.out.println("random = " + randomIndex + ", max = " + (nextMoves.size()-1));
         this.indexSelected = randomIndex;
         return this.nextMoves.get(randomIndex);
     }

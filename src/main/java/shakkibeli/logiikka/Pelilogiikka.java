@@ -59,7 +59,7 @@ public class Pelilogiikka {
         }
         if (valinta == 0) {
             this.tekis2 = new Abcb(this, lauta.getNappulaLista(), VALKOINEN);
-            tekis2.setDepth(6);
+//            tekis2.setDepth(6);
         }
     }
 

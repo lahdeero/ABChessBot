@@ -44,28 +44,35 @@ public class Generator {
     }
 
     /**
-     * Random positions for testing purposes.
+     * Random positions (kings on their sides) for testing purposes.
      *
      * @param piecesPerSide
      * @return
      */
-    public Position generateRandomPosition(int piecesPerSide) {
+    public Position generateRandomPosition(int maxPieces) {
         Randomizer randomizer = new Randomizer();
-        int maxPieces = Position.boardCols * Position.boardRows;
-        if (piecesPerSide > maxPieces) {
-            return null;
-        }
-        Position randomPosition = randomizeKings();
-        for (int i = 0; i < piecesPerSide * 2 - 2; i++) {
-            int rand = randomizer.generateRandomInt(maxPieces);
-
-        }
-        return null;
-    }
-
-    private Position randomizeKings() {
         Position position = new Position();
-        return null;
+        for (int y = 0; y < boardRows; y++) {
+            for (int x = 0; x < boardCols; x++) {
+                int whiteBlackOrEmpty = randomizer.generateRandomInt(4);
+                if (whiteBlackOrEmpty == 2) {
+                    position.board[y][x] = 11 + randomizer.generateRandomInt(4);
+                    maxPieces--;
+                } else if (whiteBlackOrEmpty == 3) {
+                    position.board[y][x] = 21 + randomizer.generateRandomInt(4);
+                    maxPieces--;
+                }
+                if (maxPieces <= 2) {
+                    break;
+                }
+            }
+            if (maxPieces <= 2) {
+                break;
+            }
+        }
+        position.board[0][randomizer.generateRandomInt(boardCols - 1)] = blackKing;
+        position.board[boardRows - 1][randomizer.generateRandomInt(boardCols - 1)] = whiteKing;
+        return position;
     }
 
     /**
@@ -76,7 +83,8 @@ public class Generator {
      */
     public MyRecord<Position> getNextPositions(Position currentPosition) {
         this.currentPosition = currentPosition;
-//        List<Position> nextPositions = Collections.synchronizedList(new MyRecord<>());
+        // List<Position> nextPositions = Collections.synchronizedList(new
+        // MyRecord<>());
         MyRecord<Position> nextPositions = new MyRecord<>();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -98,7 +106,7 @@ public class Generator {
                     } else if (piece == blackKing) {
                         nextPositions.addAll(kingMoves(x, y, blackKing));
                     }
-                } else {  // WHITE
+                } else { // WHITE
                     if (piece == whitePawn) {
                         whitePawnMoves(x, y, nextPositions);
                     } else if (piece == whiteRook) {
@@ -120,7 +128,7 @@ public class Generator {
 
     private MyRecord<Position> rookMoves(int x, int y, int piece) {
         MyRecord<Position> nextRooks = new MyRecord<Position>();
-        boolean[] blocked = {false, false, false, false};
+        boolean[] blocked = { false, false, false, false };
         for (int i = 1; i < 8; i++) {
             if (!blocked[0] && insideBoard(x - i, y) && !occupied(x - i, y, piece)) {
                 if (eats(x - i, y, piece)) {
@@ -234,8 +242,8 @@ public class Generator {
         boolean moves[] = new boolean[4];
         moves[0] = insideBoard(y + 1, x) && currentPosition.board[y + 1][x] == 0;
         moves[1] = y == 1 && currentPosition.board[y + 1][x] == 0 && currentPosition.board[y + 2][x] == 0;
-        moves[2] = insideBoard(x - 1, y - 1) && eats(x - 1, y + 1, blackPawn);
-        moves[3] = insideBoard(x + 1, y - 1) && eats(x + 1, y + 1, blackPawn);
+        moves[2] = insideBoard(x - 1, y + 1) && eats(x - 1, y + 1, blackPawn);
+        moves[3] = insideBoard(x + 1, y + 1) && eats(x + 1, y + 1, blackPawn);
 
         if (moves[0]) {
             Position p = new Position();
@@ -252,14 +260,14 @@ public class Generator {
         if (moves[2]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-//            p.board[y + 1][x - 1] = blackPawn;
+            // p.board[y + 1][x - 1] = blackPawn;
             pawnMoves(blackPawn, p, x - 1, y + 1);
             nextPositions.add(p);
         }
         if (moves[3]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-//            p.board[y + 1][x + 1] = blackPawn;
+            // p.board[y + 1][x + 1] = blackPawn;
             pawnMoves(blackPawn, p, x + 1, y + 1);
             nextPositions.add(p);
         }
@@ -267,18 +275,10 @@ public class Generator {
     }
 
     private Position pawnMoves(int piece, Position p, int nx, int ny) {
-        if (piece == 25) {
-            if (ny == 7) {
-                p.board[ny][nx] = blackQueen;
-            } else {
-                p.board[ny][nx] = blackPawn;
-            }
-        } else if (piece == 15) {
-            if (ny == 0) {
-                p.board[ny][nx] = whiteQueen;
-            } else {
-                p.board[ny][nx] = whitePawn;
-            }
+        if (piece == blackPawn) {
+            p.board[ny][nx] = ny == 7 ? blackQueen : blackPawn;
+        } else if (piece == whitePawn) {
+            p.board[ny][nx] = ny == 0 ? whiteQueen : whitePawn;
         }
         return p;
     }
@@ -293,7 +293,7 @@ public class Generator {
         if (moves[0]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-//            p.board[y - 1][x] = whitePawn;
+            // p.board[y - 1][x] = whitePawn;
             pawnMoves(whitePawn, p, x, y - 1);
             nextPositions.add(p);
         }
@@ -306,14 +306,14 @@ public class Generator {
         if (moves[2]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-//            p.board[y - 1][x - 1] = whitePawn;
+            // p.board[y - 1][x - 1] = whitePawn;
             pawnMoves(whitePawn, p, x - 1, y - 1);
             nextPositions.add(p);
         }
         if (moves[3]) {
             Position p = new Position();
             p.clonePosition(currentPosition, x, y);
-//            p.board[y - 1][x + 1] = whitePawn;
+            // p.board[y - 1][x + 1] = whitePawn;
             pawnMoves(whitePawn, p, x + 1, y - 1);
             nextPositions.add(p);
         }
@@ -336,8 +336,7 @@ public class Generator {
         if (currentPosition.board[y][x] == 0) {
             return false;
         }
-        return currentPosition.board[y][x] < 20 && piece >= 20
-                || currentPosition.board[y][x] >= 20 && piece < 20;
+        return currentPosition.board[y][x] < 20 && piece >= 20 || currentPosition.board[y][x] >= 20 && piece < 20;
     }
 
     private Position createPosition(int x, int y, int nx, int ny, int piece) {

@@ -28,6 +28,10 @@ public class MoveConverter {
 
     public int[] moveToIntArr(Position currentPosition, Position nextPosition) {
         int[] moveArr = new int[5];
+        if (nextPosition == null) {
+            System.out.println("Nextposition null..");
+            return moveArr;
+        }
         for (int y = 0; y < currentPosition.boardRows; y++) {
             for (int x = 0; x < currentPosition.boardCols; x++) {
                 if (currentPosition.board[y][x] != nextPosition.board[y][x]) {
@@ -50,20 +54,25 @@ public class MoveConverter {
         boolean eats = currentPosition.board[ny][nx] != 0;
         if (piece == whitePawn || piece == blackPawn) {
             if (eats) {
-                return "" + (char) (x+'a') + "x" + numberCordinatesToChessCordinates(nx, ny);
+                return "" + (char) (x + 'a') + "x" + numberCordinatesToChessCordinates(nx, ny);
             } else {
                 return numberCordinatesToChessCordinates(nx, ny);
             }
         } else if (piece == whiteRook || piece == blackRook) {
-            return eats ? "Rx" + numberCordinatesToChessCordinates(nx, ny) : "R" + numberCordinatesToChessCordinates(nx, ny);
+            return eats ? "Rx" + numberCordinatesToChessCordinates(nx, ny)
+                    : "R" + numberCordinatesToChessCordinates(nx, ny);
         } else if (piece == whiteKnight || piece == blackKnight) {
-            return eats ? "Nx" + numberCordinatesToChessCordinates(nx, ny) : "N" + numberCordinatesToChessCordinates(nx, ny);
+            return eats ? "Nx" + numberCordinatesToChessCordinates(nx, ny)
+                    : "N" + numberCordinatesToChessCordinates(nx, ny);
         } else if (piece == whiteBishop || piece == blackBishop) {
-            return eats ? "Bx" + numberCordinatesToChessCordinates(nx, ny) : "B" + numberCordinatesToChessCordinates(nx, ny);
+            return eats ? "Bx" + numberCordinatesToChessCordinates(nx, ny)
+                    : "B" + numberCordinatesToChessCordinates(nx, ny);
         } else if (piece == whiteQueen || piece == blackQueen) {
-            return eats ? "Qx" + numberCordinatesToChessCordinates(nx, ny) : "Q" + numberCordinatesToChessCordinates(nx, ny);
+            return eats ? "Qx" + numberCordinatesToChessCordinates(nx, ny)
+                    : "Q" + numberCordinatesToChessCordinates(nx, ny);
         } else if (piece == whiteKing || piece == blackKing) {
-            return eats ? "Kx" + numberCordinatesToChessCordinates(nx, ny) : "K" + numberCordinatesToChessCordinates(nx, ny);
+            return eats ? "Kx" + numberCordinatesToChessCordinates(nx, ny)
+                    : "K" + numberCordinatesToChessCordinates(nx, ny);
         }
         return "Unknown move";
     }

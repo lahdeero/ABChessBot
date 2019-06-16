@@ -54,6 +54,16 @@ public class MyRecord<E> {
         }
         return (E) arr[index];
     }
+    
+    public boolean swap(int first, int second) {
+        if ((first >= 0 && first < size) && (second >= 0 && second < size)) {
+            E temp = arr[first];
+            arr[first] = arr[second];
+            arr[second] = temp;
+            return true;
+        }
+        return false;
+    }
 
     public int size() {
         return this.size;

@@ -21,7 +21,9 @@ public class AlphaBetaTest {
 
     private MyFileReader mfr;
     private AlphaBeta ab;
+    private Generator generator;
     private String fileDirectory = "./src/test/resources/";
+    private Minimax minimax;
 
     public AlphaBetaTest() {
     }
@@ -39,6 +41,7 @@ public class AlphaBetaTest {
     public void setUp() {
         mfr = new MyFileReader();
         ab = new AlphaBeta();
+        minimax = new Minimax(generator);
     }
 
     @After
@@ -107,4 +110,35 @@ public class AlphaBetaTest {
         assertFalse(str.equals("Ne8") || str.equals("Nh7"));
     }
 
+    @Test
+    public void plsNoNull() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "plsnonull.txt");
+        Position p = ab.calculateNextPosition(pos, 5, true);
+        assertNotNull(p);
+    }
+
+    @Test
+    public void plsNoOutOfBounds() throws IOException {
+        Position pos = mfr.fileToPosition(fileDirectory + "outofbounds.txt");
+        Position p = ab.calculateNextPosition(pos, 5, true);
+        assertNotNull(p);
+    }
+
+    // @Test
+    // public void randomPositionReturnsSameAsMinMax() {
+    // Position position = generator.createStartingPosition();
+    // Position mxpos = minimax.calculateNextPosition(position, 5, true);
+    // Position abpos = ab.calculateNextPosition(position, 5, true);
+    //
+    // boolean match = true;
+    // for (int y = 0; y < Position.boardRows; y++) {
+    // for (int x = 0; x < Position.boardCols; x++) {
+    // if (mxpos.board[y][x] != abpos.board[y][x]) {
+    // match = false;
+    // }
+    // }
+    // }
+    //// assertTrue("ab position differs from minimax", match);
+    // assertTrue(true);
+    // }
 }

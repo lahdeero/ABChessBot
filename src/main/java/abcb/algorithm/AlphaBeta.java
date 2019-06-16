@@ -17,6 +17,7 @@ public class AlphaBeta {
     private int bestMin;
     private int bestMax;
     private boolean initialMaxPlayer;
+    public int value;
 
     public AlphaBeta() {
         evaluator = new Evaluator();
@@ -47,7 +48,7 @@ public class AlphaBeta {
 
     /**
      * Calculates next Position using alpha-beta pruning and returns suggested
-     * Position.
+     * Position. Should now return something even own king is gonna die.
      *
      * @param currentPosition
      * @param depth
@@ -58,6 +59,7 @@ public class AlphaBeta {
         setupInitialValues(depth, maxPlayer);
         currentPosition.whitesMove = maxPlayer;
         alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);
+        value = maxPlayer ? bestMax : bestMin;
         return maxPlayer ? bestMaxMove : bestMinMove;
     }
 
@@ -72,7 +74,7 @@ public class AlphaBeta {
             for (int i = 0; i < myRecord.size(); i++) {
                 Position nextPosition = (Position) myRecord.get(i);
                 if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
-                    return Integer.MIN_VALUE;
+                    return Integer.MIN_VALUE + 1; //+1 = preventing null returns
                 }
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.max(value, alphabeta(nextPosition, depth - 1, α, β, false));
@@ -92,7 +94,7 @@ public class AlphaBeta {
             for (int i = 0; i < myRecord.size(); i++) {
                 Position nextPosition = (Position) myRecord.get(i);
                 if (depth == initialDepth - 2 && !nextPosition.kingLives(initialMaxPlayer)) {
-                    return Integer.MAX_VALUE;
+                    return Integer.MAX_VALUE - 1; // -1 = preventing null returns
                 }
                 nextPosition.whitesMove = !currentPosition.whitesMove;
                 value = Math.min(value, alphabeta(nextPosition, depth - 1, α, β, true));

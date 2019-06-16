@@ -5,6 +5,7 @@ public class Position {
     public final static int boardRows = 8;
     public final static int boardCols = 8;
 
+    public int value;
     public static int whiteKing = 10;
     public static int whiteQueen = 11;
     public static int whiteBishop = 12;

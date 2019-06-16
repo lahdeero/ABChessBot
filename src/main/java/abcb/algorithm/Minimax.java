@@ -17,7 +17,8 @@ public class Minimax {
     private Evaluator evaluator;
     private Position bestMaxPosition;
     private Position bestMinPosition;
-
+    public int value;
+    
     public Minimax(Generator generator) {
         this.generator = generator;
         this.evaluator = new Evaluator();
@@ -46,6 +47,7 @@ public class Minimax {
                 bestMove = position;
             }
         }
+        value = bestValue;
         return bestMove;
     }
 

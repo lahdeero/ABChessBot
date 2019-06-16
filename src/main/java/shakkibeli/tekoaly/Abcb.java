@@ -37,6 +37,7 @@ public class Abcb {
     private int moveNumber = 1;
     private boolean looping;
     private Randomizer randomizer;
+    private boolean fail;
 
     public Abcb(Pelilogiikka pelo, List<Nappula> nappulat, Vari vari) throws IOException {
         this.pelo = pelo;
@@ -64,10 +65,12 @@ public class Abcb {
         }
 
         // Gui doesnt add into history, so we have to do it here..
-        if (previous != null) {
-            history.addToHistory(previous, currentPosition);
-        } else if (this.vari == MUSTA) {
-            history.addToHistory(generator.createStartingPosition(), currentPosition);
+        if (!fail) {
+            if (previous != null) {
+                history.addToHistory(previous, currentPosition);
+            } else if (this.vari == MUSTA) {
+                history.addToHistory(generator.createStartingPosition(), currentPosition);
+            }
         }
 
         /**
@@ -88,19 +91,27 @@ public class Abcb {
             Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
             System.out.println("\n" + siirto.getNappula().toString());
             System.out.println(siirto.toString());
-            pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat));
-            previous = nextPosition;
-        } else {
-            TekoalynAuttaja ta = new TekoalynAuttaja(pelo);
-            if (!ta.suoritaSiirtoJosMahdollista(nappulat)) {
-                System.out.println("Could not find next move!");
-                if (pelo.shakkaako()) {
-                    pelo.setJatkuu(2);
-                } else {
-                    pelo.setJatkuu(3);
-                }
-                System.out.println("Game over");
+            if (!pelo.liikutaNappulaa(new Siirto(currentPosition, nextPosition, nappulat))) {
+                whenAlgorithmFails();
+            } else {
+                previous = nextPosition;
             }
+        } else {
+            whenAlgorithmFails();
+        }
+    }
+
+    private void whenAlgorithmFails() {
+        fail = true;
+        TekoalynAuttaja ta = new TekoalynAuttaja(pelo);
+        if (!ta.suoritaSiirtoJosMahdollista(nappulat)) {
+            System.out.println("Could not find next move!");
+            if (pelo.shakkaako()) {
+                pelo.setJatkuu(2);
+            } else {
+                pelo.setJatkuu(3);
+            }
+            System.out.println("Game over");
         }
     }
 
