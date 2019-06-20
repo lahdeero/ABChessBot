@@ -10,6 +10,14 @@ public class Main {
          CliUi au = new CliUi();
          au.run(args);
 
+//       Generator generator = new Generator();
+//       Position randomPosition = generator.generateRandomPosition(16);
+//       AlphaBeta ab = new AlphaBeta();
+//       Position nextPosition = ab.calculateNextPosition(randomPosition, 5, true);
+//       nextPosition.print();
+//        System.out.println(ab.value);
+       
+
 //        AbOld ab = new AbOld();
 //        MyFileReader mfr = new MyFileReader();
 //        String fileDirectory = "./src/test/resources/";

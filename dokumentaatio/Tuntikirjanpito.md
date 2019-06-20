@@ -1,3 +1,7 @@
+20.6.2019 2h Dokumentaation päivitystä
+
+16.6.2019 7h Algoritmien vertailua ja hienosäätöä, Testailua, bugien etsintää
+
 14.6.2019 4h Testailua, bugien etsintää, käyttöliittymää, random positioiden alottelua(parempia testejä varten)
 
 13.6.2019 7.5h Käyttliittymäintegraatiota, käytettävyyttä, shakkinotaatioita, testejä, demoon valmistautumista
