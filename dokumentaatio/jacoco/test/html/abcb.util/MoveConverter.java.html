@@ -5,72 +5,106 @@ import static abcb.simulate.Position.*;
 
 <span class="fc" id="L6">public class MoveConverter {</span>
 
+    /**
+     * Returns new position after move.
+     *
+     * @param position
+     * @param x moving piece x-coordinate
+     * @param y moving piece y-coordinate
+     * @param nx moving piece new x-coordinate
+     * @param ny moving piece new y-coordinate
+     * @return
+     */
     public Position move(Position position, int x, int y, int nx, int ny) {
-<span class="fc" id="L9">        Position p = new Position();</span>
-<span class="fc" id="L10">        p.clonePosition(position, x, y);</span>
-<span class="fc" id="L11">        p.board[ny][nx] = position.board[y][x];</span>
-<span class="fc" id="L12">        p.board[y][x] = 0;</span>
-<span class="fc" id="L13">        System.out.println(&quot;x = &quot; + x + &quot; y = &quot; + y);</span>
-<span class="fc" id="L14">        System.out.println(p.board[y][x]);</span>
-<span class="fc" id="L15">        return p;</span>
+<span class="fc" id="L19">        Position p = new Position();</span>
+<span class="fc" id="L20">        p.clonePosition(position, x, y);</span>
+<span class="fc" id="L21">        p.board[ny][nx] = position.board[y][x];</span>
+<span class="fc" id="L22">        p.board[y][x] = 0;</span>
+<span class="fc" id="L23">        System.out.println(&quot;x = &quot; + x + &quot; y = &quot; + y);</span>
+<span class="fc" id="L24">        System.out.println(p.board[y][x]);</span>
+<span class="fc" id="L25">        return p;</span>
     }
 
+    /**
+     * Returns move as Algebraic notation.
+     *
+     * @param currentPosition
+     * @param nextPosition
+     * @return
+     */
     public String positionsToChessNotation(Position currentPosition, Position nextPosition) {
-<span class="fc" id="L19">        int[] moveArr = moveToIntArr(currentPosition, nextPosition);</span>
-<span class="fc" id="L20">        int x = moveArr[0];</span>
-<span class="fc" id="L21">        int y = moveArr[1];</span>
-<span class="fc" id="L22">        int nx = moveArr[2];</span>
-<span class="fc" id="L23">        int ny = moveArr[3];</span>
-<span class="fc" id="L24">        int piece = moveArr[4];</span>
+<span class="fc" id="L36">        int[] moveArr = moveToIntArr(currentPosition, nextPosition);</span>
+<span class="fc" id="L37">        int x = moveArr[0];</span>
+<span class="fc" id="L38">        int y = moveArr[1];</span>
+<span class="fc" id="L39">        int nx = moveArr[2];</span>
+<span class="fc" id="L40">        int ny = moveArr[3];</span>
+<span class="fc" id="L41">        int piece = moveArr[4];</span>
 
-<span class="fc" id="L26">        return cordinatesToChessNotation(piece, x, y, nx, ny, currentPosition);</span>
+<span class="fc" id="L43">        return cordinatesToChessNotation(piece, x, y, nx, ny, currentPosition);</span>
     }
 
-    public int[] moveToIntArr(Position currentPosition, Position nextPosition) {
-<span class="fc" id="L30">        int[] moveArr = new int[5];</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (int y = 0; y &lt; currentPosition.boardRows; y++) {</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">            for (int x = 0; x &lt; currentPosition.boardCols; x++) {</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">                if (currentPosition.board[y][x] != nextPosition.board[y][x]) {</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">                    if (nextPosition.board[y][x] == 0) {</span>
-<span class="fc" id="L35">                        moveArr[0] = x;</span>
-<span class="fc" id="L36">                        moveArr[1] = y;</span>
+    /**
+     * We could also use object here, moveArr has all information about move we
+     * need here.
+     *
+     * @param currentPosition
+     * @param nextPosition
+     * @return
+     */
+    private int[] moveToIntArr(Position currentPosition, Position nextPosition) {
+<span class="fc" id="L55">        int[] moveArr = new int[5];</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (nextPosition == null) {</span>
+<span class="nc" id="L57">            System.out.println(&quot;Nextposition null..&quot;);</span>
+<span class="nc" id="L58">            return moveArr;</span>
+        }
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (int y = 0; y &lt; currentPosition.boardRows; y++) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            for (int x = 0; x &lt; currentPosition.boardCols; x++) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">                if (currentPosition.board[y][x] != nextPosition.board[y][x]) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                    if (nextPosition.board[y][x] == 0) {</span>
+<span class="fc" id="L64">                        moveArr[0] = x;</span>
+<span class="fc" id="L65">                        moveArr[1] = y;</span>
                     } else {
-<span class="fc" id="L38">                        moveArr[2] = x;</span>
-<span class="fc" id="L39">                        moveArr[3] = y;</span>
-<span class="fc" id="L40">                        moveArr[4] = nextPosition.board[y][x];</span>
+<span class="fc" id="L67">                        moveArr[2] = x;</span>
+<span class="fc" id="L68">                        moveArr[3] = y;</span>
+<span class="fc" id="L69">                        moveArr[4] = nextPosition.board[y][x];</span>
                     }
                 }
             }
         }
-<span class="fc" id="L45">        return moveArr;</span>
+<span class="fc" id="L74">        return moveArr;</span>
     }
 
     private String cordinatesToChessNotation(int piece, int x, int y, int nx, int ny, Position currentPosition) {
-<span class="fc" id="L49">        System.out.println(&quot;nx = &quot; + nx + &quot; ny = &quot; + ny);</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        boolean eats = currentPosition.board[ny][nx] != 0;</span>
-<span class="fc bfc" id="L51" title="All 4 branches covered.">        if (piece == whitePawn || piece == blackPawn) {</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (eats) {</span>
-<span class="fc" id="L53">                return &quot;&quot; + (char) (x+'a') + &quot;x&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="fc" id="L78">        System.out.println(&quot;nx = &quot; + nx + &quot; ny = &quot; + ny);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        boolean eats = currentPosition.board[ny][nx] != 0;</span>
+<span class="fc bfc" id="L80" title="All 4 branches covered.">        if (piece == whitePawn || piece == blackPawn) {</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (eats) {</span>
+<span class="fc" id="L82">                return &quot;&quot; + (char) (x + 'a') + &quot;x&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
             } else {
-<span class="fc" id="L55">                return numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="fc" id="L84">                return numberCordinatesToChessCordinates(nx, ny);</span>
             }
-<span class="fc bfc" id="L57" title="All 4 branches covered.">        } else if (piece == whiteRook || piece == blackRook) {</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            return eats ? &quot;Rx&quot; + numberCordinatesToChessCordinates(nx, ny) : &quot;R&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="fc bfc" id="L59" title="All 4 branches covered.">        } else if (piece == whiteKnight || piece == blackKnight) {</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            return eats ? &quot;Nx&quot; + numberCordinatesToChessCordinates(nx, ny) : &quot;N&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="pc bpc" id="L61" title="2 of 4 branches missed.">        } else if (piece == whiteBishop || piece == blackBishop) {</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            return eats ? &quot;Bx&quot; + numberCordinatesToChessCordinates(nx, ny) : &quot;B&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        } else if (piece == whiteQueen || piece == blackQueen) {</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            return eats ? &quot;Qx&quot; + numberCordinatesToChessCordinates(nx, ny) : &quot;Q&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
-<span class="pc bpc" id="L65" title="2 of 4 branches missed.">        } else if (piece == whiteKing || piece == blackKing) {</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            return eats ? &quot;Kx&quot; + numberCordinatesToChessCordinates(nx, ny) : &quot;K&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">        } else if (piece == whiteRook || piece == blackRook) {</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            return eats ? &quot;Rx&quot; + numberCordinatesToChessCordinates(nx, ny)</span>
+<span class="fc" id="L88">                    : &quot;R&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="fc bfc" id="L89" title="All 4 branches covered.">        } else if (piece == whiteKnight || piece == blackKnight) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            return eats ? &quot;Nx&quot; + numberCordinatesToChessCordinates(nx, ny)</span>
+<span class="fc" id="L91">                    : &quot;N&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">        } else if (piece == whiteBishop || piece == blackBishop) {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            return eats ? &quot;Bx&quot; + numberCordinatesToChessCordinates(nx, ny)</span>
+<span class="nc" id="L94">                    : &quot;B&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">        } else if (piece == whiteQueen || piece == blackQueen) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            return eats ? &quot;Qx&quot; + numberCordinatesToChessCordinates(nx, ny)</span>
+<span class="nc" id="L97">                    : &quot;Q&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
+<span class="pc bpc" id="L98" title="2 of 4 branches missed.">        } else if (piece == whiteKing || piece == blackKing) {</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            return eats ? &quot;Kx&quot; + numberCordinatesToChessCordinates(nx, ny)</span>
+<span class="fc" id="L100">                    : &quot;K&quot; + numberCordinatesToChessCordinates(nx, ny);</span>
         }
-<span class="nc" id="L68">        return &quot;Unknown move&quot;;</span>
+<span class="nc" id="L102">        return &quot;Unknown move&quot;;</span>
     }
 
     private String numberCordinatesToChessCordinates(int x, int y) {
-<span class="fc" id="L72">        char c = (char) (x + 'a');</span>
-<span class="fc" id="L73">        return &quot;&quot; + c + (8 - y);</span>
+<span class="fc" id="L106">        char c = (char) (x + 'a');</span>
+<span class="fc" id="L107">        return &quot;&quot; + c + (8 - y);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

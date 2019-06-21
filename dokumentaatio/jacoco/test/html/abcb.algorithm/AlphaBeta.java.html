@@ -17,21 +17,28 @@ public class AlphaBeta {
     private int bestMin;
     private int bestMax;
     private boolean initialMaxPlayer;
+    public int value;
+    public int leafs;
+    
+<span class="fc" id="L23">    public AlphaBeta() {</span>
+<span class="fc" id="L24">        evaluator = new Evaluator();</span>
+<span class="fc" id="L25">        generator = new Generator();</span>
+<span class="fc" id="L26">        moveConverter = new MoveConverter();</span>
+<span class="fc" id="L27">    }</span>
 
-<span class="fc" id="L21">    public AlphaBeta() {</span>
-<span class="fc" id="L22">        evaluator = new Evaluator();</span>
-<span class="fc" id="L23">        generator = new Generator();</span>
-<span class="fc" id="L24">        moveConverter = new MoveConverter();</span>
-<span class="fc" id="L25">    }</span>
-
+    /**
+     * We run this before executing algorithm.
+     * @param initialDepth
+     * @param maxPlayer 
+     */
     private void setupInitialValues(int initialDepth, boolean maxPlayer) {
-<span class="fc" id="L28">        this.initialDepth = initialDepth;</span>
-<span class="fc" id="L29">        this.bestMax = Integer.MIN_VALUE;</span>
-<span class="fc" id="L30">        this.bestMin = Integer.MAX_VALUE;</span>
-<span class="fc" id="L31">        bestMaxMove = null;</span>
-<span class="fc" id="L32">        bestMinMove = null;</span>
-<span class="fc" id="L33">        this.initialMaxPlayer = maxPlayer;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L35">        this.initialDepth = initialDepth;</span>
+<span class="fc" id="L36">        this.bestMax = Integer.MIN_VALUE;</span>
+<span class="fc" id="L37">        this.bestMin = Integer.MAX_VALUE;</span>
+<span class="fc" id="L38">        bestMaxMove = null;</span>
+<span class="fc" id="L39">        bestMinMove = null;</span>
+<span class="fc" id="L40">        this.initialMaxPlayer = maxPlayer;</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Calculates next move using alpha-beta pruning and returns chess notation.
@@ -42,12 +49,12 @@ public class AlphaBeta {
      * @return
      */
     public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
-<span class="fc" id="L45">        return moveConverter.positionsToChessNotation(currentPosition, calculateNextPosition(currentPosition, depth, maxPlayer));</span>
+<span class="fc" id="L52">        return moveConverter.positionsToChessNotation(currentPosition, calculateNextPosition(currentPosition, depth, maxPlayer));</span>
     }
 
     /**
      * Calculates next Position using alpha-beta pruning and returns suggested
-     * Position.
+     * Position. Should now return something even own king is gonna die.
      *
      * @param currentPosition
      * @param depth
@@ -55,57 +62,59 @@ public class AlphaBeta {
      * @return
      */
     public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
-<span class="fc" id="L58">        setupInitialValues(depth, maxPlayer);</span>
-<span class="fc" id="L59">        currentPosition.whitesMove = maxPlayer;</span>
-<span class="fc" id="L60">        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        return maxPlayer ? bestMaxMove : bestMinMove;</span>
+<span class="fc" id="L65">        setupInitialValues(depth, maxPlayer);</span>
+<span class="fc" id="L66">        currentPosition.whitesMove = maxPlayer;</span>
+<span class="fc" id="L67">        alphabeta(currentPosition, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, maxPlayer);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        value = maxPlayer ? bestMax : bestMin;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        return maxPlayer ? bestMaxMove : bestMinMove;</span>
     }
 
     private int alphabeta(Position currentPosition, int depth, int Î±, int Î², boolean maxPlayer) {
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (depth == 0) {</span>
-<span class="fc" id="L66">            return evaluator.evaluate(currentPosition);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (depth == 0) {</span>
+<span class="fc" id="L74">            leafs += 1;</span>
+<span class="fc" id="L75">            return evaluator.evaluate(currentPosition);</span>
         }
 
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (maxPlayer) {</span>
-<span class="fc" id="L70">            int value = Integer.MIN_VALUE;</span>
-<span class="fc" id="L71">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
-<span class="fc" id="L73">                Position nextPosition = (Position) myRecord.get(i);</span>
-<span class="pc bpc" id="L74" title="1 of 4 branches missed.">                if (depth == initialDepth - 2 &amp;&amp; !nextPosition.kingLives(initialMaxPlayer)) {</span>
-<span class="nc" id="L75">                    return Integer.MIN_VALUE;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (maxPlayer) {</span>
+<span class="fc" id="L79">            int value = Integer.MIN_VALUE;</span>
+<span class="fc" id="L80">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
+<span class="fc" id="L82">                Position nextPosition = (Position) myRecord.get(i);</span>
+<span class="fc bfc" id="L83" title="All 4 branches covered.">                if (depth == initialDepth - 2 &amp;&amp; !nextPosition.kingLives(initialMaxPlayer)) {</span>
+<span class="fc" id="L84">                    return Integer.MIN_VALUE + 1; //+1 = preventing null returns</span>
                 }
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
-<span class="fc" id="L78">                value = Math.max(value, alphabeta(nextPosition, depth - 1, Î±, Î², false));</span>
-<span class="fc" id="L79">                Î± = Math.max(Î±, value);</span>
-<span class="fc bfc" id="L80" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î± &gt; bestMax) {</span>
-<span class="fc" id="L81">                    bestMax = Î±;</span>
-<span class="fc" id="L82">                    bestMaxMove = nextPosition;</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
+<span class="fc" id="L87">                value = Math.max(value, alphabeta(nextPosition, depth - 1, Î±, Î², false));</span>
+<span class="fc" id="L88">                Î± = Math.max(Î±, value);</span>
+<span class="fc bfc" id="L89" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î± &gt; bestMax) {</span>
+<span class="fc" id="L90">                    bestMax = Î±;</span>
+<span class="fc" id="L91">                    bestMaxMove = nextPosition;</span>
                 }
-<span class="fc bfc" id="L84" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
-<span class="fc" id="L85">                    break;</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
+<span class="fc" id="L94">                    break;</span>
                 }
             }
-<span class="fc" id="L88">            return value;</span>
+<span class="fc" id="L97">            return value;</span>
         } else {
-<span class="fc" id="L90">            int value = Integer.MAX_VALUE;</span>
-<span class="fc" id="L91">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
-<span class="fc" id="L93">                Position nextPosition = (Position) myRecord.get(i);</span>
-<span class="fc bfc" id="L94" title="All 4 branches covered.">                if (depth == initialDepth - 2 &amp;&amp; !nextPosition.kingLives(initialMaxPlayer)) {</span>
-<span class="fc" id="L95">                    return Integer.MAX_VALUE;</span>
+<span class="fc" id="L99">            int value = Integer.MAX_VALUE;</span>
+<span class="fc" id="L100">            MyRecord myRecord = generator.getNextPositions(currentPosition);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            for (int i = 0; i &lt; myRecord.size(); i++) {</span>
+<span class="fc" id="L102">                Position nextPosition = (Position) myRecord.get(i);</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">                if (depth == initialDepth - 2 &amp;&amp; !nextPosition.kingLives(initialMaxPlayer)) {</span>
+<span class="fc" id="L104">                    return Integer.MAX_VALUE - 1; // -1 = preventing null returns</span>
                 }
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
-<span class="fc" id="L98">                value = Math.min(value, alphabeta(nextPosition, depth - 1, Î±, Î², true));</span>
-<span class="fc" id="L99">                Î² = Math.min(Î², value);</span>
-<span class="fc bfc" id="L100" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î² &lt; bestMin) {</span>
-<span class="fc" id="L101">                    bestMin = Î²;</span>
-<span class="fc" id="L102">                    bestMinMove = nextPosition;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                nextPosition.whitesMove = !currentPosition.whitesMove;</span>
+<span class="fc" id="L107">                value = Math.min(value, alphabeta(nextPosition, depth - 1, Î±, Î², true));</span>
+<span class="fc" id="L108">                Î² = Math.min(Î², value);</span>
+<span class="fc bfc" id="L109" title="All 4 branches covered.">                if (depth == initialDepth &amp;&amp; Î² &lt; bestMin) {</span>
+<span class="fc" id="L110">                    bestMin = Î²;</span>
+<span class="fc" id="L111">                    bestMinMove = nextPosition;</span>
                 }
-<span class="fc bfc" id="L104" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
-<span class="fc" id="L105">                    break;</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                if (Î± &gt;= Î²) {</span>
+<span class="fc" id="L114">                    break;</span>
                 }
             }
-<span class="fc" id="L108">            return value;</span>
+<span class="fc" id="L117">            return value;</span>
         }
     }
 }

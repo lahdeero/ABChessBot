@@ -3,40 +3,47 @@
 import abcb.datastructure.MyRecord;
 import abcb.simulate.Position;
 
+/**
+ * We can log our games with this.
+ * @author Eero
+ */
 public class History {
     private MyRecord history;
     private MoveConverter moveConverter;
 
-<span class="fc" id="L10">    public History() {</span>
-<span class="fc" id="L11">        this.history = new MyRecord&lt;String&gt;();</span>
-<span class="fc" id="L12">        this.moveConverter = new MoveConverter();</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L14">    public History() {</span>
+<span class="fc" id="L15">        this.history = new MyRecord&lt;String&gt;();</span>
+<span class="fc" id="L16">        this.moveConverter = new MoveConverter();</span>
+<span class="fc" id="L17">    }</span>
 
     public void addToHistory(Position current, Position next) {
-<span class="fc" id="L16">        String s = moveConverter.positionsToChessNotation(current, next);</span>
-<span class="fc" id="L17">        System.out.println(&quot;s = &quot; + s);</span>
-<span class="fc" id="L18">        history.add(s);</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L20">        String s = moveConverter.positionsToChessNotation(current, next);</span>
+<span class="fc" id="L21">        System.out.println(&quot;s = &quot; + s);</span>
+<span class="fc" id="L22">        history.add(s);</span>
+<span class="fc" id="L23">    }</span>
 
+    /**
+     * @return String presents chess game moving history.
+     */
     public String historyToString() {
-<span class="fc" id="L22">        int k = 1;</span>
-<span class="fc" id="L23">        String ret = &quot;&quot;;</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (int i = 0; i &lt; history.size(); i += 2) {</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (k &gt; 1) {</span>
-<span class="fc" id="L26">                ret += &quot; &quot;;</span>
+<span class="fc" id="L29">        int k = 1;</span>
+<span class="fc" id="L30">        String ret = &quot;&quot;;</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (int i = 0; i &lt; history.size(); i += 2) {</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (k &gt; 1) {</span>
+<span class="fc" id="L33">                ret += &quot; &quot;;</span>
             }
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">            if (i + 1 &lt; history.size()) {</span>
-<span class="fc" id="L29">                ret += &quot;&quot; + k + &quot;. &quot; + history.get(i) + &quot; &quot; + history.get(i + 1);</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">            if (i + 1 &lt; history.size()) {</span>
+<span class="fc" id="L36">                ret += &quot;&quot; + k + &quot;. &quot; + history.get(i) + &quot; &quot; + history.get(i + 1);</span>
             } else {
-<span class="nc" id="L31">                ret += k + &quot;. &quot; + history.get(i);</span>
+<span class="nc" id="L38">                ret += k + &quot;. &quot; + history.get(i);</span>
             }
-<span class="fc" id="L33">            k += 1;</span>
+<span class="fc" id="L40">            k += 1;</span>
         }
-<span class="fc" id="L35">        return ret;</span>
+<span class="fc" id="L42">        return ret;</span>
     }
     
     public int getSize() {
-<span class="nc" id="L39">        return this.history.size();</span>
+<span class="nc" id="L46">        return this.history.size();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

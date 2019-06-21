@@ -54,9 +54,25 @@ public class MyRecord&lt;E&gt; {
         }
 <span class="fc" id="L55">        return (E) arr[index];</span>
     }
+    
+    /**
+     * Swaps object at first index with object at second index.
+     * @param first
+     * @param second
+     * @return 
+     */
+    public boolean swap(int first, int second) {
+<span class="nc bnc" id="L65" title="All 8 branches missed.">        if ((first &gt;= 0 &amp;&amp; first &lt; size) &amp;&amp; (second &gt;= 0 &amp;&amp; second &lt; size)) {</span>
+<span class="nc" id="L66">            E temp = arr[first];</span>
+<span class="nc" id="L67">            arr[first] = arr[second];</span>
+<span class="nc" id="L68">            arr[second] = temp;</span>
+<span class="nc" id="L69">            return true;</span>
+        }
+<span class="nc" id="L71">        return false;</span>
+    }
 
     public int size() {
-<span class="fc" id="L59">        return this.size;</span>
+<span class="fc" id="L75">        return this.size;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

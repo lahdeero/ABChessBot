@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbOld.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ABChessbot</a> &gt; <a href="index.source.html" class="el_package">abcb.algorithm</a> &gt; <span class="el_source">AbOld.java</span></div><h1>AbOld.java</h1><pre class="source lang-java linenums">package abcb.algorithm;
+
+import abcb.datastructure.MyRecord;
+import abcb.heurestic.Evaluator;
+import abcb.simulate.Generator;
+import abcb.simulate.Position;
+import abcb.util.MoveConverter;
+
+public class AbOld {
+
+    private Evaluator evaluator;
+    private Generator generator;
+    private MoveConverter moveConverter;
+    public int value;
+
+<span class="nc" id="L16">    public AbOld() {</span>
+<span class="nc" id="L17">        evaluator = new Evaluator();</span>
+<span class="nc" id="L18">        generator = new Generator();</span>
+<span class="nc" id="L19">        moveConverter = new MoveConverter();</span>
+<span class="nc" id="L20">    }</span>
+
+    /**
+     * Calculates next move using alpha-beta pruning and returns chess notation.
+     *
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
+    public String calculateNextMove(Position currentPosition, int depth, boolean maxPlayer) {
+<span class="nc" id="L31">        return moveConverter.positionsToChessNotation(currentPosition, calculateNextPosition(currentPosition, depth, maxPlayer));</span>
+    }
+
+    /**
+     * Calculates next Position using alpha-beta pruning and returns suggested
+     * Position.
+     *
+     * @param currentPosition
+     * @param depth
+     * @param maxPlayer
+     * @return
+     */
+    public Position calculateNextPosition(Position currentPosition, int depth, boolean maxPlayer) {
+<span class="nc" id="L44">        currentPosition.whitesMove = maxPlayer;</span>
+<span class="nc" id="L45">        MyRecord&lt;Position&gt; nextPositions = generator.getNextPositions(currentPosition);</span>
+<span class="nc" id="L46">        int alpha = Integer.MIN_VALUE;</span>
+<span class="nc" id="L47">        int beta = Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        for (int i = 0; i &lt; nextPositions.size(); i++) {</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            int value = alphabeta(nextPositions.get(i), depth - 1, alpha, beta, !maxPlayer, maxPlayer);</span>
+<span class="nc" id="L50">            nextPositions.get(i).value = value;</span>
+        }
+<span class="nc" id="L52">        quicksort(nextPositions, 0, nextPositions.size() - 1);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (maxPlayer) {</span>
+<span class="nc" id="L54">            value = nextPositions.get(nextPositions.size() -1).value;</span>
+<span class="nc" id="L55">            return nextPositions.get(nextPositions.size() - 1);</span>
+        }
+<span class="nc" id="L57">        value = nextPositions.get(0).value;</span>
+<span class="nc" id="L58">        return nextPositions.get(0);</span>
+    }
+
+    private int alphabeta(Position currentPosition, int depth, int alpha, int beta, boolean maxPlayer, boolean initialMaxPlayer) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (depth == 0) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (!currentPosition.kingLives(initialMaxPlayer)) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                return initialMaxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;</span>
+            }
+<span class="nc" id="L66">            return evaluator.evaluate(currentPosition);</span>
+        }
+
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (maxPlayer) {</span>
+<span class="nc" id="L70">            int value = Integer.MIN_VALUE;</span>
+<span class="nc" id="L71">            MyRecord&lt;Position&gt; nextPositions = generator.getNextPositions(currentPosition);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            for (int i = 0; i &lt; nextPositions.size(); i++) {</span>
+<span class="nc" id="L73">                int search = alphabeta(nextPositions.get(i), depth - 1, alpha, beta, false, initialMaxPlayer);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                value = value &gt; search ? value : search;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                alpha = alpha &gt; value ? alpha : value;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (alpha &gt;= beta) {</span>
+<span class="nc" id="L77">                    break;</span>
+                }
+            }
+<span class="nc" id="L80">            return value;</span>
+        } else {
+<span class="nc" id="L82">            int value = Integer.MAX_VALUE;</span>
+<span class="nc" id="L83">            MyRecord&lt;Position&gt; nextPositions = generator.getNextPositions(currentPosition);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            for (int i = 0; i &lt; nextPositions.size(); i++) {</span>
+<span class="nc" id="L85">                int search = alphabeta(nextPositions.get(i), depth - 1, alpha, beta, true, initialMaxPlayer);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                value = value &lt; search ? value : search;</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                beta = beta &lt; value ? beta : value;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                if (alpha &gt;= beta) {</span>
+<span class="nc" id="L89">                    break;</span>
+                }
+            }
+<span class="nc" id="L92">            return value;</span>
+        }
+    }
+
+    private void quicksort(MyRecord&lt;Position&gt; A, int low, int high) {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (low &lt; high) {</span>
+<span class="nc" id="L98">            int p = partition(A, low, high);</span>
+<span class="nc" id="L99">            quicksort(A, low, p - 1);</span>
+<span class="nc" id="L100">            quicksort(A, p + 1, high);</span>
+        }
+<span class="nc" id="L102">    }</span>
+
+    private int partition(MyRecord&lt;Position&gt; A, int low, int high) {
+<span class="nc" id="L105">        int pivot = A.get(high).value;</span>
+<span class="nc" id="L106">        int i = low;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        for (int j = low; j &lt; high; j++) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (A.get(j).value &lt; pivot) {</span>
+<span class="nc" id="L109">                A.swap(i, j);</span>
+<span class="nc" id="L110">                i += 1;</span>
+            }
+        }
+<span class="nc" id="L113">        A.swap(i, high);</span>
+<span class="nc" id="L114">        return i;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

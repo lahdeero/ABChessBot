@@ -2,9 +2,19 @@
 
 <span class="fc" id="L3">public class Randomizer {</span>
 
+    /**
+     * Return &quot;random&quot; integer between 0 and max
+     *
+     * @param max
+     * @return
+     */
     public int generateRandomInt(int max) {
-<span class="fc" id="L6">        int random = (int) (System.currentTimeMillis() % max);</span>
-<span class="fc" id="L7">        return random;</span>
+//        if (max &lt;= 0) {
+//            return 0;
+//        }
+//        int random = (int) (System.currentTimeMillis() % (max+1));
+//        return random;
+<span class="fc" id="L17">        return (int)(Math.random() * ((max - 0) + 1)) + 0;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
