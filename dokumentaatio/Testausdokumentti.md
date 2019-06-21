@@ -33,7 +33,7 @@ Paras testaamistapa on silti pelata bottia vastaan.
 
 Seuraavat graafit olen luonut satunnaisista tilanteista simuloimalla ja laskemalla keskiarvoja.
 
-Suuntaa-antavia mittauksia hakupuun syvyyden suhteen:
+Suuntaa-antavia mittauksia ajan(sekunneissa) suhteesta hakupuun syvyyteen:
 
 ![Syvyys/aika suhde](https://github.com/lahdeero/ABChessBot/blob/master/dokumentaatio/depthtimes.png)
 
