@@ -3,6 +3,10 @@ package abcb.heurestic;
 import abcb.simulate.Position;
 import static abcb.simulate.Position.*;
 
+/**
+ * Evaluates chess board situation based on pieces on board.
+ * @author Eero
+ */
 public class Evaluator {
 
     public final int pawnValue;
@@ -21,6 +25,11 @@ public class Evaluator {
         kingValue = 100000;
     }
 
+    /**
+     * Evaluates chess board situation based on pieces on board.
+     * @param p
+     * @return 
+     */
     public int evaluate(Position p) {
         int value = 0;
         for (int y = 0; y < 8; y++) {

@@ -3,6 +3,10 @@ package abcb.util;
 import abcb.datastructure.MyRecord;
 import abcb.simulate.Position;
 
+/**
+ * We can log our games with this.
+ * @author Eero
+ */
 public class History {
     private MyRecord history;
     private MoveConverter moveConverter;
@@ -18,6 +22,9 @@ public class History {
         history.add(s);
     }
 
+    /**
+     * @return String presents chess game moving history.
+     */
     public String historyToString() {
         int k = 1;
         String ret = "";

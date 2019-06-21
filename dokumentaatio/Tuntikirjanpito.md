@@ -1,3 +1,5 @@
+21.6.2019 6h Mittauksia, Graafeja, string contains(oma versio)
+
 20.6.2019 2h Dokumentaation päivitystä
 
 16.6.2019 7h Algoritmien vertailua ja hienosäätöä, Testailua, bugien etsintää

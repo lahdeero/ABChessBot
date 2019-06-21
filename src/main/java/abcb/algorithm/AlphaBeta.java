@@ -18,13 +18,19 @@ public class AlphaBeta {
     private int bestMax;
     private boolean initialMaxPlayer;
     public int value;
-
+    public int leafs;
+    
     public AlphaBeta() {
         evaluator = new Evaluator();
         generator = new Generator();
         moveConverter = new MoveConverter();
     }
 
+    /**
+     * We run this before executing algorithm.
+     * @param initialDepth
+     * @param maxPlayer 
+     */
     private void setupInitialValues(int initialDepth, boolean maxPlayer) {
         this.initialDepth = initialDepth;
         this.bestMax = Integer.MIN_VALUE;
@@ -65,6 +71,7 @@ public class AlphaBeta {
 
     private int alphabeta(Position currentPosition, int depth, int α, int β, boolean maxPlayer) {
         if (depth == 0) {
+            leafs += 1;
             return evaluator.evaluate(currentPosition);
         }
 

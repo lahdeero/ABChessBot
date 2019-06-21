@@ -36,12 +36,32 @@ public class Openings {
         this.nextMoves = new MyRecord<String>();
         for (int i = 0; i < openings.size(); i++) {
             String opening = openings.get(i);
-            if (opening.contains(history) && opening.length() > history.length() + 2) {
+            if (myContains(opening, history) && opening.length() > history.length() + 2) {
                 this.nextMoves.add(resolveNextMove(history, opening));
                 ret = true;
             }
         }
         return ret;
+    }
+
+    private boolean myContains(String str2, String search2) {
+        int k = 0;
+        int f = 0;
+        String str = str2.toLowerCase();
+        String search = search2.toLowerCase();
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == search.charAt(k)) {
+                k += 1;
+                f += 1;
+                if (f == search.length()) {
+                    return true;
+                }
+            } else {
+                k = 0;
+                f = 0;
+            }
+        }
+        return false;
     }
 
     private String resolveNextMove(String history, String opening) {
@@ -66,8 +86,8 @@ public class Openings {
      * @return
      */
     public String getNextMove() {
-        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size()-1);
-        System.out.println("random = " + randomIndex + ", max = " + (nextMoves.size()-1));
+        int randomIndex = randomizer.generateRandomInt(this.nextMoves.size() - 1);
+        System.out.println("random = " + randomIndex + ", max = " + (nextMoves.size() - 1));
         this.indexSelected = randomIndex;
         return this.nextMoves.get(randomIndex);
     }

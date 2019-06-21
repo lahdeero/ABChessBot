@@ -1,7 +1,6 @@
 package abcb;
 
 import abcb.algorithm.AlphaBeta;
-import abcb.algorithm.AbOld;
 import abcb.algorithm.Minimax;
 import abcb.simulate.Generator;
 import abcb.simulate.Position;
@@ -14,56 +13,39 @@ public class TimeTest {
     public long[] values = new long[3];
     public String[] moves = new String[3];
     public boolean maxPlayer;
+    private Minimax minimax;
+    private Generator generator;
+    private AlphaBeta ab;
 
     public TimeTest() {
         this.moveConverter = new MoveConverter();
+        generator = new Generator();
+        minimax = new Minimax(generator);
+
     }
 
-    public void run() {
-        Generator generator = new Generator();
-        Minimax minimax = new Minimax(generator);
-        AlphaBeta ab = new AlphaBeta();
-        AbOld old = new AbOld();
-
+    public double run(int depth) {
         maxPlayer = true;
-        int depth = 4;
-
         Position position = generator.generateRandomPosition(16);
         position.whitesMove = maxPlayer;
-        position.print();
+//        position.print();
 
-        long start;
-        long end;
-
-        start = System.nanoTime();
-        Position mxpos = minimax.calculateNextPosition(position, depth, maxPlayer);
-        end = System.nanoTime();
-        times[0] = end - start;
-        values[0] = minimax.value;
-        moves[0] = moveConverter.positionsToChessNotation(position, mxpos);
-        System.out.println("minimax valmis");
-
-        start = System.nanoTime();
+        long start = System.nanoTime();
         Position abpos = ab.calculateNextPosition(position, depth, maxPlayer);
-        end = System.nanoTime();
-        times[1] = end - start;
-        values[1] = ab.value;
-        moves[1] = moveConverter.positionsToChessNotation(position, abpos);
-        System.out.println("ab valmis");
+        long end = System.nanoTime();
+//        abpos.print();
 
-        start = System.nanoTime();
-        Position oldpos = old.calculateNextPosition(position, depth, maxPlayer);
-        end = System.nanoTime();
-        times[2] = end - start;
-        values[2] = old.value;
-        moves[2] = moveConverter.positionsToChessNotation(position, oldpos);
-        System.out.println("vanha valmis");
+        return (double) (end - start) / 1000000000;
+    }
 
-        printPositions(mxpos, abpos, oldpos);
-        printMoves();
-        printValues();
-        printTimes();
-
+    public int runLeafs(int depth) {
+        AlphaBeta ab = new AlphaBeta();
+        maxPlayer = true;
+        Position position = generator.generateRandomPosition(16);
+        position.whitesMove = maxPlayer;
+//        position.print();
+        Position abpos = ab.calculateNextPosition(position, depth, maxPlayer);
+        return ab.leafs;
     }
 
     private void printMoves() {

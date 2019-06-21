@@ -54,7 +54,7 @@ public class Generator {
         Position position = new Position();
         for (int y = 0; y < boardRows; y++) {
             for (int x = 0; x < boardCols; x++) {
-                int whiteBlackOrEmpty = randomizer.generateRandomInt(4);
+                int whiteBlackOrEmpty = randomizer.generateRandomInt(6);
                 if (whiteBlackOrEmpty == 2) {
                     position.board[y][x] = 11 + randomizer.generateRandomInt(4);
                     maxPieces--;

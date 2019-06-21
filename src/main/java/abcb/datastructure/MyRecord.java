@@ -55,6 +55,12 @@ public class MyRecord<E> {
         return (E) arr[index];
     }
     
+    /**
+     * Swaps object at first index with object at second index.
+     * @param first
+     * @param second
+     * @return 
+     */
     public boolean swap(int first, int second) {
         if ((first >= 0 && first < size) && (second >= 0 && second < size)) {
             E temp = arr[first];

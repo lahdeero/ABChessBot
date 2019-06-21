@@ -5,6 +5,16 @@ import static abcb.simulate.Position.*;
 
 public class MoveConverter {
 
+    /**
+     * Returns new position after move.
+     *
+     * @param position
+     * @param x moving piece x-coordinate
+     * @param y moving piece y-coordinate
+     * @param nx moving piece new x-coordinate
+     * @param ny moving piece new y-coordinate
+     * @return
+     */
     public Position move(Position position, int x, int y, int nx, int ny) {
         Position p = new Position();
         p.clonePosition(position, x, y);
@@ -15,6 +25,13 @@ public class MoveConverter {
         return p;
     }
 
+    /**
+     * Returns move as Algebraic notation.
+     *
+     * @param currentPosition
+     * @param nextPosition
+     * @return
+     */
     public String positionsToChessNotation(Position currentPosition, Position nextPosition) {
         int[] moveArr = moveToIntArr(currentPosition, nextPosition);
         int x = moveArr[0];
@@ -26,7 +43,15 @@ public class MoveConverter {
         return cordinatesToChessNotation(piece, x, y, nx, ny, currentPosition);
     }
 
-    public int[] moveToIntArr(Position currentPosition, Position nextPosition) {
+    /**
+     * We could also use object here, moveArr has all information about move we
+     * need here.
+     *
+     * @param currentPosition
+     * @param nextPosition
+     * @return
+     */
+    private int[] moveToIntArr(Position currentPosition, Position nextPosition) {
         int[] moveArr = new int[5];
         if (nextPosition == null) {
             System.out.println("Nextposition null..");

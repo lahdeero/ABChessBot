@@ -44,6 +44,10 @@ public class Position {
         this.whitesMove = whitesMove;
     }
 
+    /**
+     * Position to FEN string, still not fully implemented..
+     * @return 
+     */
     @Override
     public String toString() {
         String fen = "";
