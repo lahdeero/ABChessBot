@@ -1,9 +1,22 @@
 # ABChessbot
 
+## Instructions
+
+### binaries
+
+1. Download ABChessbot.jar.jar and openings.txt (to same folder!)
+2. java -jar ABChessbot.jar
+
+### source
+
+1. git clone https://github.com/lahdeero/ABChessBot.git
+2. cd ABChessBot
+3. gradle run
+
 ### without args:
 
 * Starts gui
-* Note that openings.txt should be in same path with .jar !
+* Note that openings.txt should be in same path when executing .jar !
 
 ### with args:
 
