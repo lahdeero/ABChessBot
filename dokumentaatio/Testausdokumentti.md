@@ -35,11 +35,11 @@ Seuraavat graafit olen luonut satunnaisista tilanteista simuloimalla ja laskemal
 
 Suuntaa-antavia mittauksia hakupuun syvyyden suhteen:
 
-[Kuva tähän]
+[Syvyys/aika suhde](https://github.com/lahdeero/ABChessBot/blob/master/dokumentaatio/depthtimes.png)
 
 Suuntaa-antavia mittauksia lehtisolmujen lukumäärästä syvyyden suhteen:
 
-[Toinen kuva tähän]
+[Syvyys/lehtisolmu suhde](https://github.com/lahdeero/ABChessBot/blob/master/dokumentaatio/depthtimes.png)
 
 
 
