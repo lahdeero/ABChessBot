@@ -44,7 +44,16 @@ public class Openings {
         return ret;
     }
 
+    /**
+     * Checks if string contains search
+     * @param str2
+     * @param search2
+     * @return true if search is found from string, otherwise false.
+     */
     private boolean myContains(String str2, String search2) {
+        if (search2.length() == 0) {
+            return true;
+        }
         int k = 0;
         int f = 0;
         String str = str2.toLowerCase();

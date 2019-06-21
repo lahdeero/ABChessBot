@@ -65,13 +65,17 @@ public class MyFileReader {
 //        File file = new File(classLoader.getResource(filename).getFile());
 //        File file = new File("src/main/resources/ " + filename);
         try {
-            File file = Paths.get(getClass().getClassLoader()
-                    .getResource("openings.txt").toURI()).toFile();
+            //            File file = Paths.get(getClass().getClassLoader()
+//            .
+//            getResource("openings.txt").toURI()
+//            ).toFile();
 //        System.out.println("File Found : " + file.exists());
 //        String content = new String(Files.readAllBytes(file.toPath()));
 //        System.out.println(content);;
-
+            File file = new File(filename);
             BufferedReader br = new BufferedReader(new FileReader(file));
+
+//            BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null) {
                 if (st.length() > 0 && st.charAt(0) == '1' && st.charAt(1) == '.') {

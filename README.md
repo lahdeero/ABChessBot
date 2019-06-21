@@ -3,6 +3,7 @@
 ### without args:
 
 * Starts gui
+* Note that openings.txt should be in same path with .jar !
 
 ### with args:
 

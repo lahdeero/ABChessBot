@@ -39,7 +39,7 @@ Suuntaa-antavia mittauksia ajan(sekunneissa) suhteesta hakupuun syvyyteen:
 
 Suuntaa-antavia mittauksia lehtisolmujen lukumäärästä syvyyden suhteen:
 
-![Syvyys/lehtisolmu suhde](https://github.com/lahdeero/ABChessBot/blob/master/dokumentaatio/depthtimes.png)
+![Syvyys/lehtisolmu suhde](https://github.com/lahdeero/ABChessBot/blob/master/dokumentaatio/depthleaves.png)
 
 
 
