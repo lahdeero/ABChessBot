@@ -143,7 +143,7 @@ public class Abcb {
         for (int i = 0; i < nextPositions.size(); i++) {
             Position nextPosition = nextPositions.get(i);
             Siirto siirto = new Siirto(currentPosition, nextPosition, nappulat);
-            System.out.println("siirto[" + i + "] = " + siirto.toChessNotation());
+            //System.out.println("siirto[" + i + "] = " + siirto.toChessNotation());
             if (siirto.toChessNotation().equals(search)) {
                 return siirto;
             }

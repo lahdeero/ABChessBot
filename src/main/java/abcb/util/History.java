@@ -18,7 +18,7 @@ public class History {
 
     public void addToHistory(Position current, Position next) {
         String s = moveConverter.positionsToChessNotation(current, next);
-        System.out.println("s = " + s);
+        // System.out.println("s = " + s);
         history.add(s);
     }
 
